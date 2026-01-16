@@ -1,0 +1,12 @@
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Domain\bin\Debug\net8.0\WorkFlowDesk.Domain.deps.json
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Domain\bin\Debug\net8.0\WorkFlowDesk.Domain.dll
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Domain\bin\Debug\net8.0\WorkFlowDesk.Domain.pdb
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Domain\obj\Debug\net8.0\WorkFlowDesk.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Domain\obj\Debug\net8.0\WorkFlowDesk.Domain.AssemblyInfoInputs.cache
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Domain\obj\Debug\net8.0\WorkFlowDesk.Domain.AssemblyInfo.cs
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Domain\obj\Debug\net8.0\WorkFlowDesk.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Domain\obj\Debug\net8.0\WorkFlowDesk.Domain.sourcelink.json
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Domain\obj\Debug\net8.0\WorkFlowDesk.Domain.dll
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Domain\obj\Debug\net8.0\refint\WorkFlowDesk.Domain.dll
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Domain\obj\Debug\net8.0\WorkFlowDesk.Domain.pdb
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Domain\obj\Debug\net8.0\ref\WorkFlowDesk.Domain.dll
