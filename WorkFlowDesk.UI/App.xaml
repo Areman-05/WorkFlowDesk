@@ -1,7 +1,7 @@
-﻿<Application x:Class="WorkFlowDesk.App"
+<Application x:Class="WorkFlowDesk.UI.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:WorkFlowDesk"
+             xmlns:local="clr-namespace:WorkFlowDesk.UI"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

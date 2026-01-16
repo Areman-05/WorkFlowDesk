@@ -1,8 +1,8 @@
-﻿using System.Configuration;
+using System.Configuration;
 using System.Data;
 using System.Windows;
 
-namespace WorkFlowDesk
+namespace WorkFlowDesk.UI
 {
     /// <summary>
     /// Interaction logic for App.xaml
