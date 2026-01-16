@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WorkFlowDesk.Data\WorkFlowDesk.Data.csproj" />
+    <ProjectReference Include="..\WorkFlowDesk.ViewModel\WorkFlowDesk.ViewModel.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
