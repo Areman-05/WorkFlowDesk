@@ -5,8 +5,51 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorkFlowDesk.UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="WorkFlowDesk" Height="600" Width="1000"
+        WindowStartupLocation="CenterScreen">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
+        <!-- Sidebar -->
+        <Border Grid.Column="0" Background="#2C3E50">
+            <StackPanel>
+                <TextBlock Text="WorkFlowDesk" 
+                           Foreground="White" 
+                           FontSize="20" 
+                           FontWeight="Bold" 
+                           Margin="15,20,15,30"
+                           HorizontalAlignment="Center"/>
+                
+                <Button Content="Dashboard" 
+                        Style="{StaticResource SidebarButtonStyle}"
+                        Margin="10,5"/>
+                <Button Content="Empleados" 
+                        Style="{StaticResource SidebarButtonStyle}"
+                        Margin="10,5"/>
+                <Button Content="Proyectos" 
+                        Style="{StaticResource SidebarButtonStyle}"
+                        Margin="10,5"/>
+                <Button Content="Tareas" 
+                        Style="{StaticResource SidebarButtonStyle}"
+                        Margin="10,5"/>
+                <Button Content="Clientes" 
+                        Style="{StaticResource SidebarButtonStyle}"
+                        Margin="10,5"/>
+                <Button Content="Reportes" 
+                        Style="{StaticResource SidebarButtonStyle}"
+                        Margin="10,5"/>
+                <Button Content="Configuración" 
+                        Style="{StaticResource SidebarButtonStyle}"
+                        Margin="10,5"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Content Area -->
+        <Grid Grid.Column="1">
+            <ContentControl x:Name="ContentArea"/>
+        </Grid>
     </Grid>
 </Window>
