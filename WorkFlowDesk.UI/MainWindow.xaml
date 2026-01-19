@@ -25,24 +25,31 @@
                 
                 <Button Content="Dashboard" 
                         Style="{StaticResource SidebarButtonStyle}"
+                        Command="{Binding NavigateToDashboardCommand}"
                         Margin="10,5"/>
                 <Button Content="Empleados" 
                         Style="{StaticResource SidebarButtonStyle}"
+                        Command="{Binding NavigateToEmpleadosCommand}"
                         Margin="10,5"/>
                 <Button Content="Proyectos" 
                         Style="{StaticResource SidebarButtonStyle}"
+                        Command="{Binding NavigateToProyectosCommand}"
                         Margin="10,5"/>
                 <Button Content="Tareas" 
                         Style="{StaticResource SidebarButtonStyle}"
+                        Command="{Binding NavigateToTareasCommand}"
                         Margin="10,5"/>
                 <Button Content="Clientes" 
                         Style="{StaticResource SidebarButtonStyle}"
+                        Command="{Binding NavigateToClientesCommand}"
                         Margin="10,5"/>
                 <Button Content="Reportes" 
                         Style="{StaticResource SidebarButtonStyle}"
+                        Command="{Binding NavigateToReportesCommand}"
                         Margin="10,5"/>
                 <Button Content="Configuración" 
                         Style="{StaticResource SidebarButtonStyle}"
+                        Command="{Binding NavigateToConfiguracionCommand}"
                         Margin="10,5"/>
             </StackPanel>
         </Border>
