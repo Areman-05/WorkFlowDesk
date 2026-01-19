@@ -32,6 +32,10 @@ public static class ServiceLocator
         services.AddScoped<IPasswordHasherService, PasswordHasherService>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IUsuarioService, UsuarioService>();
+        services.AddScoped<IEmpleadoService, EmpleadoService>();
+        services.AddScoped<IProyectoService, ProyectoService>();
+        services.AddScoped<ITareaService, TareaService>();
+        services.AddScoped<IClienteService, ClienteService>();
 
         _serviceProvider = services.BuildServiceProvider();
     }
