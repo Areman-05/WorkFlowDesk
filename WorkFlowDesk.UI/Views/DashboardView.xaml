@@ -6,19 +6,113 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="20">
-        <StackPanel>
-            <TextBlock Text="Dashboard" 
-                       FontSize="24" 
-                       FontWeight="Bold" 
-                       Margin="0,0,0,20"/>
-            
-            <TextBlock Text="Bienvenido a WorkFlowDesk" 
-                       FontSize="16" 
-                       Margin="0,0,0,10"/>
-            
-            <TextBlock Text="Sistema de gestión empresarial" 
-                       FontSize="14" 
-                       Foreground="Gray"/>
-        </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="Dashboard" 
+                   FontSize="24" 
+                   FontWeight="Bold" 
+                   Margin="0,0,0,30"/>
+
+        <UniformGrid Grid.Row="1" Columns="3" Rows="2">
+            <Border Background="#3498DB" 
+                    CornerRadius="5" 
+                    Padding="20" 
+                    Margin="5">
+                <StackPanel>
+                    <TextBlock Text="Empleados" 
+                               Foreground="White" 
+                               FontSize="14" 
+                               Margin="0,0,0,5"/>
+                    <TextBlock Text="{Binding TotalEmpleados}" 
+                               Foreground="White" 
+                               FontSize="32" 
+                               FontWeight="Bold"/>
+                </StackPanel>
+            </Border>
+
+            <Border Background="#2ECC71" 
+                    CornerRadius="5" 
+                    Padding="20" 
+                    Margin="5">
+                <StackPanel>
+                    <TextBlock Text="Proyectos" 
+                               Foreground="White" 
+                               FontSize="14" 
+                               Margin="0,0,0,5"/>
+                    <TextBlock Text="{Binding TotalProyectos}" 
+                               Foreground="White" 
+                               FontSize="32" 
+                               FontWeight="Bold"/>
+                </StackPanel>
+            </Border>
+
+            <Border Background="#E74C3C" 
+                    CornerRadius="5" 
+                    Padding="20" 
+                    Margin="5">
+                <StackPanel>
+                    <TextBlock Text="Tareas" 
+                               Foreground="White" 
+                               FontSize="14" 
+                               Margin="0,0,0,5"/>
+                    <TextBlock Text="{Binding TotalTareas}" 
+                               Foreground="White" 
+                               FontSize="32" 
+                               FontWeight="Bold"/>
+                </StackPanel>
+            </Border>
+
+            <Border Background="#9B59B6" 
+                    CornerRadius="5" 
+                    Padding="20" 
+                    Margin="5">
+                <StackPanel>
+                    <TextBlock Text="Clientes" 
+                               Foreground="White" 
+                               FontSize="14" 
+                               Margin="0,0,0,5"/>
+                    <TextBlock Text="{Binding TotalClientes}" 
+                               Foreground="White" 
+                               FontSize="32" 
+                               FontWeight="Bold"/>
+                </StackPanel>
+            </Border>
+
+            <Border Background="#F39C12" 
+                    CornerRadius="5" 
+                    Padding="20" 
+                    Margin="5">
+                <StackPanel>
+                    <TextBlock Text="Tareas Pendientes" 
+                               Foreground="White" 
+                               FontSize="14" 
+                               Margin="0,0,0,5"/>
+                    <TextBlock Text="{Binding TareasPendientes}" 
+                               Foreground="White" 
+                               FontSize="32" 
+                               FontWeight="Bold"/>
+                </StackPanel>
+            </Border>
+
+            <Border Background="#1ABC9C" 
+                    CornerRadius="5" 
+                    Padding="20" 
+                    Margin="5">
+                <StackPanel>
+                    <TextBlock Text="Proyectos en Progreso" 
+                               Foreground="White" 
+                               FontSize="14" 
+                               Margin="0,0,0,5"/>
+                    <TextBlock Text="{Binding ProyectosEnProgreso}" 
+                               Foreground="White" 
+                               FontSize="32" 
+                               FontWeight="Bold"/>
+                </StackPanel>
+            </Border>
+        </UniformGrid>
     </Grid>
 </UserControl>

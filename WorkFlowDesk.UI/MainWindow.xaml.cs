@@ -32,7 +32,14 @@ namespace WorkFlowDesk.UI
             switch (viewName)
             {
                 case "Dashboard":
-                    _navigationService.NavigateTo<DashboardView>();
+                    var empleadoService = ServiceLocator.GetService<Services.Interfaces.IEmpleadoService>();
+                    var proyectoService = ServiceLocator.GetService<Services.Interfaces.IProyectoService>();
+                    var tareaService = ServiceLocator.GetService<Services.Interfaces.ITareaService>();
+                    var clienteService = ServiceLocator.GetService<Services.Interfaces.IClienteService>();
+                    var dashboardViewModel = new DashboardViewModel(empleadoService, proyectoService, tareaService, clienteService);
+                    var dashboardView = new DashboardView();
+                    dashboardView.DataContext = dashboardViewModel;
+                    _navigationService.NavigateTo(dashboardView);
                     break;
                 case "Empleados":
                     var empleadosService = ServiceLocator.GetService<Services.Interfaces.IEmpleadoService>();
