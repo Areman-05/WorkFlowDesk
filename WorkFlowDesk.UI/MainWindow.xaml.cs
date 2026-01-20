@@ -56,6 +56,11 @@ namespace WorkFlowDesk.UI
                     var tareasViewModel = new TareasViewModel(tareasService);
                     _navigationService.NavigateTo(new TareasView(tareasViewModel));
                     break;
+                case "Clientes":
+                    var clientesService = ServiceLocator.GetService<Services.Interfaces.IClienteService>();
+                    var clientesViewModel = new ClientesViewModel(clientesService);
+                    _navigationService.NavigateTo(new ClientesView(clientesViewModel));
+                    break;
             }
         }
     }
