@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WorkFlowDesk.Services\WorkFlowDesk.Services.csproj" />
+    <ProjectReference Include="..\WorkFlowDesk.Common\WorkFlowDesk.Common.csproj" />
   </ItemGroup>
 
 </Project>

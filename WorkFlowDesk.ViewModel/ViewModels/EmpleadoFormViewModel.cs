@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.Input;
+using WorkFlowDesk.Common.Helpers;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.ViewModel.Base;
@@ -56,7 +57,20 @@ public class EmpleadoFormViewModel : ViewModelBase
         {
             _empleado.Email = value;
             OnPropertyChanged();
+            ValidarEmail();
             GuardarCommand.NotifyCanExecuteChanged();
+        }
+    }
+
+    private void ValidarEmail()
+    {
+        if (!string.IsNullOrWhiteSpace(Email) && !ValidationHelper.IsValidEmail(Email))
+        {
+            ErrorMessage = "El formato del email no es válido";
+        }
+        else if (string.IsNullOrWhiteSpace(ErrorMessage) || ErrorMessage.Contains("email"))
+        {
+            ErrorMessage = null;
         }
     }
 
