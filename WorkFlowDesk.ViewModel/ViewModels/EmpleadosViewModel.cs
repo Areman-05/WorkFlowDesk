@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.Input;
+using WorkFlowDesk.Common.Helpers;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.ViewModel.Base;
@@ -9,6 +10,7 @@ public class EmpleadosViewModel : ViewModelBase
 {
     private readonly IEmpleadoService _empleadoService;
     private IEnumerable<Empleado> _empleados = new List<Empleado>();
+    private IEnumerable<Empleado> _empleadosFiltrados = new List<Empleado>();
     private Empleado? _empleadoSeleccionado;
     private string _textoBusqueda = string.Empty;
 
@@ -25,8 +27,8 @@ public class EmpleadosViewModel : ViewModelBase
 
     public IEnumerable<Empleado> Empleados
     {
-        get => _empleados;
-        set => SetProperty(ref _empleados, value);
+        get => _empleadosFiltrados;
+        set => SetProperty(ref _empleadosFiltrados, value);
     }
 
     public Empleado? EmpleadoSeleccionado
@@ -63,7 +65,8 @@ public class EmpleadosViewModel : ViewModelBase
         IsLoading = true;
         try
         {
-            Empleados = await _empleadoService.GetAllAsync();
+            _empleados = await _empleadoService.GetAllAsync();
+            FiltrarEmpleados();
         }
         catch (Exception ex)
         {
@@ -119,6 +122,20 @@ public class EmpleadosViewModel : ViewModelBase
 
     private void FiltrarEmpleados()
     {
-        // La lógica de filtrado se puede mejorar más adelante
+        if (string.IsNullOrWhiteSpace(TextoBusqueda))
+        {
+            Empleados = _empleados;
+            return;
+        }
+
+        Empleados = SearchHelper.FilterByText(
+            _empleados,
+            TextoBusqueda,
+            e => e.Nombre,
+            e => e.Apellidos,
+            e => e.Email,
+            e => e.Departamento,
+            e => e.Cargo
+        );
     }
 }
