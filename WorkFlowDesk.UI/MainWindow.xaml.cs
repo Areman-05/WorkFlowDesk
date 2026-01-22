@@ -61,6 +61,11 @@ namespace WorkFlowDesk.UI
                     var clientesViewModel = new ClientesViewModel(clientesService);
                     _navigationService.NavigateTo(new ClientesView(clientesViewModel));
                     break;
+                case "Reportes":
+                    var reporteService = ServiceLocator.GetService<Services.Interfaces.IReporteService>();
+                    var reportesViewModel = new ReportesViewModel(reporteService);
+                    _navigationService.NavigateTo(new ReportesView(reportesViewModel));
+                    break;
             }
         }
     }
