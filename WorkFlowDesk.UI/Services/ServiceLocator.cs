@@ -36,6 +36,8 @@ public static class ServiceLocator
         services.AddScoped<IProyectoService, ProyectoService>();
         services.AddScoped<ITareaService, TareaService>();
         services.AddScoped<IClienteService, ClienteService>();
+        services.AddScoped<IReporteService, ReporteService>();
+        services.AddScoped<IDatabaseInitializationService, DatabaseInitializationService>();
 
         _serviceProvider = services.BuildServiceProvider();
     }
