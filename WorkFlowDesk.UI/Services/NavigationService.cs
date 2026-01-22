@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
 
 namespace WorkFlowDesk.UI.Services;
@@ -5,6 +7,8 @@ namespace WorkFlowDesk.UI.Services;
 public class NavigationService
 {
     private ContentControl? _contentArea;
+    private readonly Stack<UserControl> _navigationHistory = new();
+    private UserControl? _currentView;
 
     public void Initialize(ContentControl contentArea)
     {
@@ -13,11 +17,37 @@ public class NavigationService
 
     public void NavigateTo(UserControl view)
     {
+        if (_currentView != null && _currentView != view)
+        {
+            _navigationHistory.Push(_currentView);
+        }
+
+        _currentView = view;
         _contentArea?.SetCurrentValue(ContentControl.ContentProperty, view);
     }
 
     public void NavigateTo<T>() where T : UserControl, new()
     {
         NavigateTo(new T());
+    }
+
+    public bool CanGoBack()
+    {
+        return _navigationHistory.Count > 0;
+    }
+
+    public void GoBack()
+    {
+        if (CanGoBack())
+        {
+            var previousView = _navigationHistory.Pop();
+            _currentView = previousView;
+            _contentArea?.SetCurrentValue(ContentControl.ContentProperty, previousView);
+        }
+    }
+
+    public void ClearHistory()
+    {
+        _navigationHistory.Clear();
     }
 }
