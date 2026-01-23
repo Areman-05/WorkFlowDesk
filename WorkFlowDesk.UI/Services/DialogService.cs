@@ -59,4 +59,26 @@ public static class DialogService
         // Por ahora retornamos null, se implementará cuando tengamos la vista
         return null;
     }
+
+    public static bool? ShowClienteForm(ClienteFormViewModel viewModel)
+    {
+        var window = new Window
+        {
+            Title = viewModel.Titulo,
+            Width = 600,
+            Height = 600,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            Owner = Application.Current.MainWindow,
+            ResizeMode = ResizeMode.CanResize
+        };
+
+        var formView = new ClienteFormView();
+        formView.DataContext = viewModel;
+
+        viewModel.Guardado += (s, e) => window.DialogResult = true;
+        viewModel.Cancelado += (s, e) => window.DialogResult = false;
+
+        window.Content = formView;
+        return window.ShowDialog();
+    }
 }
