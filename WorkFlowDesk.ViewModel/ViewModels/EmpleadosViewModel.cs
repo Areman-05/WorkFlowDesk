@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.Input;
 using System.Windows;
 using WorkFlowDesk.Common.Helpers;
+using WorkFlowDesk.Common.Logging;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.ViewModel.Base;
@@ -71,7 +72,9 @@ public class EmpleadosViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            ErrorMessage = $"Error al cargar empleados: {ex.Message}";
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
+            SimpleLogger.LogError("Error al cargar empleados", ex);
         }
         finally
         {
@@ -120,7 +123,9 @@ public class EmpleadosViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            ErrorMessage = $"Error al eliminar empleado: {ex.Message}";
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
+            SimpleLogger.LogError("Error al eliminar empleado", ex);
         }
         finally
         {
