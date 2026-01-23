@@ -38,6 +38,7 @@ public static class ServiceLocator
         services.AddScoped<IClienteService, ClienteService>();
         services.AddScoped<IReporteService, ReporteService>();
         services.AddScoped<IDatabaseInitializationService, DatabaseInitializationService>();
+        services.AddScoped<IExportService, ExportService>();
 
         _serviceProvider = services.BuildServiceProvider();
     }
