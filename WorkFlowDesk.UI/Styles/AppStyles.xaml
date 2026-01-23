@@ -128,6 +128,31 @@
         <Setter Property="Margin" Value="0,0,0,5"/>
     </Style>
 
+    <!-- Error Message Style -->
+    <Style x:Key="ErrorMessageStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#E74C3C"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Margin" Value="0,5,0,0"/>
+        <Setter Property="Padding" Value="10,8"/>
+        <Setter Property="Background" Value="#FADBD8"/>
+        <Setter Property="BorderBrush" Value="#E74C3C"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="3"/>
+    </Style>
+
+    <!-- Success Message Style -->
+    <Style x:Key="SuccessMessageStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#27AE60"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="Margin" Value="0,5,0,0"/>
+        <Setter Property="Padding" Value="10,8"/>
+        <Setter Property="Background" Value="#D5F4E6"/>
+        <Setter Property="BorderBrush" Value="#27AE60"/>
+        <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
     <!-- Boolean to Visibility Converter -->
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     
