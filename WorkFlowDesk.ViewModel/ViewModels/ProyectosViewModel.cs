@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.Input;
+using System.Windows;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.ViewModel.Base;
@@ -87,6 +88,15 @@ public class ProyectosViewModel : ViewModelBase
     private async Task EliminarProyectoAsync(Proyecto? proyecto)
     {
         if (proyecto == null) return;
+
+        var resultado = MessageBox.Show(
+            $"¿Está seguro de que desea eliminar el proyecto '{proyecto.Nombre}'?",
+            "Confirmar eliminación",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Question);
+
+        if (resultado != MessageBoxResult.Yes)
+            return;
 
         IsLoading = true;
         try

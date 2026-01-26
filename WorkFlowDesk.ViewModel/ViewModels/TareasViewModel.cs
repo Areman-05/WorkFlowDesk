@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.Input;
+using System.Windows;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.ViewModel.Base;
@@ -108,6 +109,15 @@ public class TareasViewModel : ViewModelBase
     private async Task EliminarTareaAsync(Tarea? tarea)
     {
         if (tarea == null) return;
+
+        var resultado = MessageBox.Show(
+            $"¿Está seguro de que desea eliminar la tarea '{tarea.Titulo}'?",
+            "Confirmar eliminación",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Question);
+
+        if (resultado != MessageBoxResult.Yes)
+            return;
 
         IsLoading = true;
         try

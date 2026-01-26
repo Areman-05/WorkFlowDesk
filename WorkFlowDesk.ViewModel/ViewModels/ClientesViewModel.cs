@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.Input;
+using System.Windows;
 using WorkFlowDesk.Common.Helpers;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
@@ -101,6 +102,15 @@ public class ClientesViewModel : ViewModelBase
     private async Task EliminarClienteAsync(Cliente? cliente)
     {
         if (cliente == null) return;
+
+        var resultado = MessageBox.Show(
+            $"¿Está seguro de que desea eliminar al cliente '{cliente.Nombre}'?",
+            "Confirmar eliminación",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Question);
+
+        if (resultado != MessageBoxResult.Yes)
+            return;
 
         IsLoading = true;
         try
