@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.Input;
+using WorkFlowDesk.Common.Helpers;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.ViewModel.Base;
@@ -9,6 +10,7 @@ public class ClientesViewModel : ViewModelBase
 {
     private readonly IClienteService _clienteService;
     private IEnumerable<Cliente> _clientes = new List<Cliente>();
+    private IEnumerable<Cliente> _clientesFiltrados = new List<Cliente>();
     private Cliente? _clienteSeleccionado;
     private string _textoBusqueda = string.Empty;
 
@@ -25,8 +27,8 @@ public class ClientesViewModel : ViewModelBase
 
     public IEnumerable<Cliente> Clientes
     {
-        get => _clientes;
-        set => SetProperty(ref _clientes, value);
+        get => _clientesFiltrados;
+        set => SetProperty(ref _clientesFiltrados, value);
     }
 
     public Cliente? ClienteSeleccionado
@@ -63,7 +65,8 @@ public class ClientesViewModel : ViewModelBase
         IsLoading = true;
         try
         {
-            Clientes = await _clienteService.GetActivosAsync();
+            _clientes = await _clienteService.GetActivosAsync();
+            FiltrarClientes();
         }
         catch (Exception ex)
         {
@@ -119,6 +122,19 @@ public class ClientesViewModel : ViewModelBase
 
     private void FiltrarClientes()
     {
-        // La lógica de filtrado se puede mejorar más adelante
+        if (string.IsNullOrWhiteSpace(TextoBusqueda))
+        {
+            Clientes = _clientes;
+            return;
+        }
+
+        Clientes = SearchHelper.FilterByText(
+            _clientes,
+            TextoBusqueda,
+            c => c.Nombre,
+            c => c.Empresa,
+            c => c.Email,
+            c => c.Telefono
+        );
     }
 }
