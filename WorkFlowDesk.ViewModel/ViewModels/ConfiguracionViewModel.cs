@@ -72,7 +72,8 @@ public class ConfiguracionViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            ErrorMessage = $"Error al cargar configuración: {ex.Message}";
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
         }
         finally
         {
@@ -92,7 +93,8 @@ public class ConfiguracionViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            ErrorMessage = $"Error al guardar configuración: {ex.Message}";
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
         }
     }
 
@@ -107,7 +109,8 @@ public class ConfiguracionViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            ErrorMessage = $"Error al crear backup: {ex.Message}";
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
         }
         finally
         {
@@ -125,7 +128,8 @@ public class ConfiguracionViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            ErrorMessage = $"Error al inicializar base de datos: {ex.Message}";
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
         }
         finally
         {
