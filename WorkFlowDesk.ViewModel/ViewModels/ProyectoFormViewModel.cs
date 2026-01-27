@@ -1,3 +1,4 @@
+using System.Linq;
 using CommunityToolkit.Mvvm.Input;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
@@ -122,6 +123,9 @@ public class ProyectoFormViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
+
+    public IEnumerable<EstadoProyecto> EstadosProyecto { get; } =
+        Enum.GetValues(typeof(EstadoProyecto)).Cast<EstadoProyecto>();
 
     public IAsyncRelayCommand GuardarCommand { get; }
     public IRelayCommand CancelarCommand { get; }
