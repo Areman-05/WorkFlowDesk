@@ -54,9 +54,8 @@
                           IsChecked="{Binding Activo}"
                           Margin="0,0,0,15"/>
 
-                <TextBlock Text="{Binding ErrorMessage}" 
-                           Foreground="Red" 
-                           TextWrapping="Wrap" 
+                <TextBlock Text="{Binding ErrorMessage}"
+                           Style="{StaticResource ErrorMessageStyle}"
                            Margin="0,10,0,0"
                            Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
             </StackPanel>
