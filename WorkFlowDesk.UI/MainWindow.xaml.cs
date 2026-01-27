@@ -66,6 +66,12 @@ namespace WorkFlowDesk.UI
                     var reportesViewModel = new ReportesViewModel(reporteService);
                     _navigationService.NavigateTo(new ReportesView(reportesViewModel));
                     break;
+                case "Configuracion":
+                    var backupSvc = ServiceLocator.GetService<Services.Interfaces.IBackupService>();
+                    var dbInitSvc = ServiceLocator.GetService<Services.Interfaces.IDatabaseInitializationService>();
+                    var configVm = new ConfiguracionViewModel(backupSvc, dbInitSvc);
+                    _navigationService.NavigateTo(new ConfiguracionView(configVm));
+                    break;
             }
         }
     }
