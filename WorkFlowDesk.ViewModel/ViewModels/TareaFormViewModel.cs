@@ -1,3 +1,4 @@
+using System.Linq;
 using CommunityToolkit.Mvvm.Input;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
@@ -123,6 +124,12 @@ public class TareaFormViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
+
+    public IEnumerable<PrioridadTarea> PrioridadesTarea { get; } =
+        Enum.GetValues(typeof(PrioridadTarea)).Cast<PrioridadTarea>();
+
+    public IEnumerable<EstadoTarea> EstadosTarea { get; } =
+        Enum.GetValues(typeof(EstadoTarea)).Cast<EstadoTarea>();
 
     public IAsyncRelayCommand GuardarCommand { get; }
     public IRelayCommand CancelarCommand { get; }
