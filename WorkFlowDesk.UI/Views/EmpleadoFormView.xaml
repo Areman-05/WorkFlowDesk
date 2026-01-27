@@ -31,7 +31,8 @@
                          Margin="0,0,0,15"/>
 
                 <TextBlock Text="Email *" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+                         ToolTip="{x:Static helpers:FormTooltips.Email}"
                          Margin="0,0,0,15"/>
 
                 <TextBlock Text="Teléfono" Margin="0,0,0,5"/>
