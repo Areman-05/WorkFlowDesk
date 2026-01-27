@@ -2,11 +2,13 @@ using WorkFlowDesk.Domain.Entities;
 
 namespace WorkFlowDesk.Common.Services;
 
+/// <summary>Gestiona el usuario y estado de la sesión actual de la aplicación.</summary>
 public static class SessionService
 {
     private static Usuario? _currentUser;
     private static DateTime? _sessionStartTime;
 
+    /// <summary>Usuario actualmente autenticado, o null si no hay sesión.</summary>
     public static Usuario? CurrentUser
     {
         get => _currentUser;
@@ -31,6 +33,7 @@ public static class SessionService
         SessionStarted?.Invoke(null, EventArgs.Empty);
     }
 
+    /// <summary>Cierra la sesión y borra el usuario actual.</summary>
     public static void ClearSession()
     {
         var hadSession = IsAuthenticated;
