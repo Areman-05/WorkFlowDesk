@@ -1,5 +1,6 @@
 using System.Linq;
 using CommunityToolkit.Mvvm.Input;
+using WorkFlowDesk.Common.Helpers;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.ViewModel.Base;
@@ -156,6 +157,13 @@ public class ProyectoFormViewModel : ViewModelBase
     {
         IsLoading = true;
         ErrorMessage = null;
+
+        if (FechaFin.HasValue && !DateRangeValidator.IsValidDateRange(FechaInicio, FechaFin))
+        {
+            ErrorMessage = "La fecha de fin debe ser posterior o igual a la fecha de inicio.";
+            IsLoading = false;
+            return;
+        }
 
         try
         {
