@@ -77,7 +77,8 @@ public class TareasViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            ErrorMessage = $"Error al cargar tareas: {ex.Message}";
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
         }
         finally
         {
@@ -127,7 +128,8 @@ public class TareasViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            ErrorMessage = $"Error al eliminar tarea: {ex.Message}";
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
         }
         finally
         {
