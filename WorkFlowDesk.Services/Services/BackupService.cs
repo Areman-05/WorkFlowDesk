@@ -4,6 +4,11 @@ using WorkFlowDesk.Services.Interfaces;
 
 namespace WorkFlowDesk.Services.Services;
 
+/// <summary>
+/// Servicio de backup y restauración. CreateBackupAsync genera actualmente
+/// un archivo JSON con metadatos; una implementación futura puede realizar
+/// backup real de la base de datos SQL Server.
+/// </summary>
 public class BackupService : IBackupService
 {
     private readonly ApplicationDbContext _context;
