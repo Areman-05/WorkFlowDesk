@@ -28,9 +28,8 @@
             <PasswordBox local:PasswordBoxHelper.Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}" 
                          Margin="0,0,0,15"/>
             
-            <TextBlock Text="{Binding ErrorMessage}" 
-                       Foreground="Red" 
-                       TextWrapping="Wrap" 
+            <TextBlock Text="{Binding ErrorMessage}"
+                       Style="{StaticResource ErrorMessageStyle}"
                        Margin="0,0,0,15"
                        Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
             
