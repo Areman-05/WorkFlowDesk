@@ -62,8 +62,14 @@ public static class DialogService
             ResizeMode = ResizeMode.CanResize
         };
 
-        // Por ahora retornamos null, se implementará cuando tengamos la vista
-        return null;
+        var formView = new TareaFormView();
+        formView.DataContext = viewModel;
+
+        viewModel.Guardado += (s, e) => window.DialogResult = true;
+        viewModel.Cancelado += (s, e) => window.DialogResult = false;
+
+        window.Content = formView;
+        return window.ShowDialog();
     }
 
     public static bool? ShowClienteForm(ClienteFormViewModel viewModel)
