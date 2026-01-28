@@ -91,7 +91,8 @@ public class DashboardViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            ErrorMessage = $"Error al cargar estadísticas: {ex.Message}";
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
         }
         finally
         {
