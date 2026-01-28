@@ -27,7 +27,8 @@
                          Margin="0,0,0,15"/>
 
                 <TextBlock Text="Apellidos *" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding Apellidos, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Text="{Binding Apellidos, UpdateSourceTrigger=PropertyChanged}"
+                         ToolTip="{x:Static helpers:FormTooltips.Apellidos}"
                          Margin="0,0,0,15"/>
 
                 <TextBlock Text="Email *" Margin="0,0,0,5"/>
@@ -36,7 +37,8 @@
                          Margin="0,0,0,15"/>
 
                 <TextBlock Text="Teléfono" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding Telefono, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Text="{Binding Telefono, UpdateSourceTrigger=PropertyChanged}"
+                         ToolTip="{x:Static helpers:FormTooltips.Telefono}"
                          Margin="0,0,0,15"/>
 
                 <TextBlock Text="Departamento" Margin="0,0,0,5"/>
