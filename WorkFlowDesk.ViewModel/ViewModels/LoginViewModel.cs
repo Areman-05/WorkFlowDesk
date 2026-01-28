@@ -62,7 +62,8 @@ public class LoginViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            ErrorMessage = $"Error al iniciar sesión: {ex.Message}";
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
         }
         finally
         {
