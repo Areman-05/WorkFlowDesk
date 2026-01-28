@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:helpers="clr-namespace:WorkFlowDesk.UI.Helpers"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="700">
     <Grid Margin="20">
@@ -22,6 +23,7 @@
             <StackPanel>
                 <TextBlock Text="Nombre *" Margin="0,0,0,5"/>
                 <TextBox Text="{Binding Nombre, UpdateSourceTrigger=PropertyChanged}"
+                         ToolTip="{x:Static helpers:FormTooltips.NombreProyecto}"
                          Style="{StaticResource ModernTextBoxStyle}"
                          Margin="0,0,0,15"/>
 
