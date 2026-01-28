@@ -178,6 +178,7 @@
         <Setter Property="BorderThickness" Value="1"/>
     </Style>
 
+    <!-- Converters -->
     <!-- Boolean to Visibility Converter -->
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     
