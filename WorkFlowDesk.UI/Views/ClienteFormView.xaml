@@ -45,7 +45,8 @@
                          Margin="0,0,0,15"/>
 
                 <TextBlock Text="Dirección" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding Direccion, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Text="{Binding Direccion, UpdateSourceTrigger=PropertyChanged}"
+                         ToolTip="{x:Static helpers:FormTooltips.Direccion}"
                          Style="{StaticResource ModernTextBoxStyle}"
                          TextWrapping="Wrap"
                          AcceptsReturn="True"
