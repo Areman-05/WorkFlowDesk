@@ -1,5 +1,6 @@
 namespace WorkFlowDesk.Common.Configuration;
 
+/// <summary>Configuración general de la aplicación.</summary>
 public class AppSettings
 {
     public string ApplicationName { get; set; } = "WorkFlowDesk";
