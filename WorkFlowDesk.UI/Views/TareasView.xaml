@@ -41,8 +41,28 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Título" Binding="{Binding Titulo}" Width="*"/>
                 <DataGridTextColumn Header="Descripción" Binding="{Binding Descripcion}" Width="2*"/>
-                <DataGridTextColumn Header="Prioridad" Binding="{Binding Prioridad}" Width="100"/>
-                <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="100"/>
+                <DataGridTemplateColumn Header="Prioridad" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <Binding Path="Prioridad" Converter="{StaticResource EnumToStringConverter}"/>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Estado" Width="100">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <Binding Path="Estado" Converter="{StaticResource EnumToStringConverter}"/>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Fecha Vencimiento" Binding="{Binding FechaVencimiento, StringFormat=dd/MM/yyyy}" Width="120"/>
                 <DataGridTemplateColumn Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
