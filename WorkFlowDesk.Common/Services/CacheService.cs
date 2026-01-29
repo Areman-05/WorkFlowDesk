@@ -2,6 +2,7 @@ using System.Collections.Concurrent;
 
 namespace WorkFlowDesk.Common.Services;
 
+/// <summary>Servicio de caché en memoria con expiración configurable.</summary>
 public class CacheService
 {
     private readonly ConcurrentDictionary<string, CacheItem> _cache = new();
