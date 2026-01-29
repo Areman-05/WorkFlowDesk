@@ -42,15 +42,18 @@
                          Margin="0,0,0,15"/>
 
                 <TextBlock Text="Departamento" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding Departamento, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Text="{Binding Departamento, UpdateSourceTrigger=PropertyChanged}"
+                         ToolTip="{x:Static helpers:FormTooltips.Departamento}"
                          Margin="0,0,0,15"/>
 
                 <TextBlock Text="Cargo" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding Cargo, UpdateSourceTrigger=PropertyChanged}" 
+                <TextBox Text="{Binding Cargo, UpdateSourceTrigger=PropertyChanged}"
+                         ToolTip="{x:Static helpers:FormTooltips.Cargo}"
                          Margin="0,0,0,15"/>
 
                 <TextBlock Text="Estado" Margin="0,0,0,5"/>
-                <ComboBox SelectedItem="{Binding Estado}" 
+                <ComboBox SelectedItem="{Binding Estado}"
+                          ToolTip="{x:Static helpers:FormTooltips.Estado}"
                           Margin="0,0,0,15">
                     <ComboBoxItem Content="Activo" Tag="Activo"/>
                     <ComboBoxItem Content="Inactivo" Tag="Inactivo"/>
@@ -59,7 +62,8 @@
                 </ComboBox>
 
                 <TextBlock Text="Fecha de Contratación *" Margin="0,0,0,5"/>
-                <DatePicker SelectedDate="{Binding FechaContratacion}" 
+                <DatePicker SelectedDate="{Binding FechaContratacion}"
+                            ToolTip="{x:Static helpers:FormTooltips.FechaContratacion}"
                             Margin="0,0,0,15"/>
 
                 <TextBlock Text="{Binding ErrorMessage}"
