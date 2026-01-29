@@ -70,6 +70,7 @@
                 <TextBlock Text="Fecha de Contratación *" Margin="0,0,0,5"/>
                 <DatePicker SelectedDate="{Binding FechaContratacion}"
                             ToolTip="{x:Static helpers:FormTooltips.FechaContratacion}"
+                            Style="{StaticResource ModernDatePickerStyle}"
                             Margin="0,0,0,15"/>
 
                 <TextBlock Text="{Binding ErrorMessage}"
