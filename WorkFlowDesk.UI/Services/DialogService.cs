@@ -4,6 +4,7 @@ using WorkFlowDesk.ViewModel.ViewModels;
 
 namespace WorkFlowDesk.UI.Services;
 
+/// <summary>Muestra formularios modales (Empleado, Cliente, Proyecto, Tarea).</summary>
 public static class DialogService
 {
     public static bool? ShowEmpleadoForm(EmpleadoFormViewModel viewModel)
