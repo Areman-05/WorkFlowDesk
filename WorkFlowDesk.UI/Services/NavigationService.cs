@@ -4,6 +4,7 @@ using System.Windows.Controls;
 
 namespace WorkFlowDesk.UI.Services;
 
+/// <summary>Gestiona la navegación entre vistas y el historial para volver atrás.</summary>
 public class NavigationService
 {
     private ContentControl? _contentArea;
