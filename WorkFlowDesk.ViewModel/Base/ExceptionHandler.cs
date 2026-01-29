@@ -2,8 +2,10 @@ using WorkFlowDesk.Services.Exceptions;
 
 namespace WorkFlowDesk.ViewModel.Base;
 
+/// <summary>Centraliza el manejo y el mensaje de excepciones para la capa de presentación.</summary>
 public static class ExceptionHandler
 {
+    /// <summary>Devuelve un mensaje amigable según el tipo de excepción.</summary>
     public static string HandleException(Exception ex)
     {
         return ex switch
@@ -15,6 +17,7 @@ public static class ExceptionHandler
         };
     }
 
+    /// <summary>Registra la excepción (por defecto en Debug).</summary>
     public static void LogException(Exception ex)
     {
         // Aquí se puede agregar logging más adelante
