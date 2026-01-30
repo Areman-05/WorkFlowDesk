@@ -154,6 +154,7 @@
         <Setter Property="Margin" Value="0,0,0,5"/>
     </Style>
 
+    <!-- Mensajes -->
     <!-- Error Message Style -->
     <Style x:Key="ErrorMessageStyle" TargetType="TextBlock">
         <Setter Property="Foreground" Value="#E74C3C"/>
