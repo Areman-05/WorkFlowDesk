@@ -3,6 +3,7 @@ using WorkFlowDesk.Services.Interfaces;
 
 namespace WorkFlowDesk.Services.Services;
 
+/// <summary>Servicio de exportación a CSV y texto.</summary>
 public class ExportService : IExportService
 {
     public async Task<string> ExportToCsvAsync<T>(IEnumerable<T> data, string fileName)
