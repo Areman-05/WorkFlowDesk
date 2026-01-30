@@ -1,7 +1,9 @@
 namespace WorkFlowDesk.Common.Helpers;
 
+/// <summary>Utilidades para fechas (formato, rangos, días entre).</summary>
 public static class DateHelper
 {
+    /// <summary>Formatea la fecha como dd/MM/yyyy o cadena vacía si es null.</summary>
     public static string ToShortDateString(DateTime? date)
     {
         return date?.ToString("dd/MM/yyyy") ?? string.Empty;
