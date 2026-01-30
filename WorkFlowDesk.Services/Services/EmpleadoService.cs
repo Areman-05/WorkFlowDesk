@@ -6,6 +6,7 @@ using WorkFlowDesk.Services.Interfaces;
 
 namespace WorkFlowDesk.Services.Services;
 
+/// <summary>Servicio de gestión de empleados.</summary>
 public class EmpleadoService : IEmpleadoService
 {
     private readonly ApplicationDbContext _context;
