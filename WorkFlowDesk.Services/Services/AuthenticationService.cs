@@ -5,6 +5,7 @@ using WorkFlowDesk.Services.Interfaces;
 
 namespace WorkFlowDesk.Services.Services;
 
+/// <summary>Servicio de autenticación de usuarios.</summary>
 public class AuthenticationService : IAuthenticationService
 {
     private readonly ApplicationDbContext _context;
