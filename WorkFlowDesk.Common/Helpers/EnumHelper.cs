@@ -3,8 +3,10 @@ using System.Reflection;
 
 namespace WorkFlowDesk.Common.Helpers;
 
+/// <summary>Utilidades para enums (descripción, parseo, valores).</summary>
 public static class EnumHelper
 {
+    /// <summary>Obtiene la descripción del valor enum o su ToString.</summary>
     public static string GetDescription(Enum value)
     {
         var field = value.GetType().GetField(value.ToString());
