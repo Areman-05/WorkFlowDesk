@@ -29,6 +29,7 @@
 
                 <TextBlock Text="Descripción" Margin="0,0,0,5"/>
                 <TextBox Text="{Binding Descripcion, UpdateSourceTrigger=PropertyChanged}"
+                         ToolTip="{x:Static helpers:FormTooltips.DescripcionTarea}"
                          Style="{StaticResource ModernTextBoxStyle}"
                          TextWrapping="Wrap"
                          AcceptsReturn="True"
@@ -38,6 +39,7 @@
                 <TextBlock Text="Prioridad" Margin="0,0,0,5"/>
                 <ComboBox ItemsSource="{Binding PrioridadesTarea}"
                           SelectedItem="{Binding Prioridad}"
+                          ToolTip="{x:Static helpers:FormTooltips.Prioridad}"
                           Style="{StaticResource ModernComboBoxStyle}"
                           Margin="0,0,0,15">
                     <ComboBox.ItemTemplate>
@@ -71,6 +73,7 @@
 
                 <TextBlock Text="Fecha vencimiento" Margin="0,0,0,5"/>
                 <DatePicker SelectedDate="{Binding FechaVencimiento}"
+                            ToolTip="{x:Static helpers:FormTooltips.FechaVencimiento}"
                             Style="{StaticResource ModernDatePickerStyle}"
                             Margin="0,0,0,15"/>
 
