@@ -29,6 +29,7 @@
 
                 <TextBlock Text="Descripción" Margin="0,0,0,5"/>
                 <TextBox Text="{Binding Descripcion, UpdateSourceTrigger=PropertyChanged}"
+                         ToolTip="{x:Static helpers:FormTooltips.DescripcionProyecto}"
                          Style="{StaticResource ModernTextBoxStyle}"
                          TextWrapping="Wrap"
                          AcceptsReturn="True"
@@ -54,11 +55,13 @@
 
                 <TextBlock Text="Fecha inicio" Margin="0,0,0,5"/>
                 <DatePicker SelectedDate="{Binding FechaInicio}"
+                            ToolTip="{x:Static helpers:FormTooltips.FechaInicio}"
                             Style="{StaticResource ModernDatePickerStyle}"
                             Margin="0,0,0,15"/>
 
                 <TextBlock Text="Fecha fin (opcional)" Margin="0,0,0,5"/>
                 <DatePicker SelectedDate="{Binding FechaFin}"
+                            ToolTip="{x:Static helpers:FormTooltips.FechaFin}"
                             Style="{StaticResource ModernDatePickerStyle}"
                             Margin="0,0,0,15"/>
 
