@@ -6,6 +6,7 @@ using WorkFlowDesk.Services.Interfaces;
 
 namespace WorkFlowDesk.Services.Services;
 
+/// <summary>Servicio de inicialización y seed de la base de datos.</summary>
 public class DatabaseInitializationService : IDatabaseInitializationService
 {
     private readonly ApplicationDbContext _context;
