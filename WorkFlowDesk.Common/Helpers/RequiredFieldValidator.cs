@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WorkFlowDesk.Common.Helpers;
 
+/// <summary>Validador de campos requeridos.</summary>
 public static class RequiredFieldValidator
 {
     public static ValidationResult? ValidateRequired(string? value, string fieldName)
