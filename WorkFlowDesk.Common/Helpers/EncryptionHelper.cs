@@ -3,6 +3,7 @@ using System.Text;
 
 namespace WorkFlowDesk.Common.Helpers;
 
+/// <summary>Encriptación AES y generación de claves.</summary>
 public static class EncryptionHelper
 {
     public static string Encrypt(string plainText, string key)
