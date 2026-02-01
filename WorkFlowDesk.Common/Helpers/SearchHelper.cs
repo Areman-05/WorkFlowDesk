@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 
 namespace WorkFlowDesk.Common.Helpers;
 
+/// <summary>Filtrado de colecciones por texto o propiedad.</summary>
 public static class SearchHelper
 {
     public static IEnumerable<T> FilterByText<T>(IEnumerable<T> items, string searchText, params Func<T, string>[] propertySelectors)
