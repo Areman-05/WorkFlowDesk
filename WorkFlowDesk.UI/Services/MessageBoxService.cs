@@ -2,6 +2,7 @@ using System.Windows;
 
 namespace WorkFlowDesk.UI.Services;
 
+/// <summary>Muestra cuadros de diálogo (confirmación, error, información).</summary>
 public static class MessageBoxService
 {
     public static MessageBoxResult ShowConfirmation(string message, string title = "Confirmar")
