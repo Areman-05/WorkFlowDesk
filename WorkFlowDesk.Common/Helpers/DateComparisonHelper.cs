@@ -1,5 +1,6 @@
 namespace WorkFlowDesk.Common.Helpers;
 
+/// <summary>Utilidades para comparar fechas (hoy, esta semana, este mes, etc.).</summary>
 public static class DateComparisonHelper
 {
     public static bool IsToday(DateTime date)
