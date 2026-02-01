@@ -2,6 +2,7 @@ using System.Text.RegularExpressions;
 
 namespace WorkFlowDesk.Common.Helpers;
 
+/// <summary>Validación de email, teléfono y otros formatos.</summary>
 public static class ValidationHelper
 {
     private static readonly Regex EmailRegex = new(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.Compiled);
