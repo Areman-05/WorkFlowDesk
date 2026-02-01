@@ -7,6 +7,7 @@ using WorkFlowDesk.Services.Services;
 
 namespace WorkFlowDesk.UI.Services;
 
+/// <summary>Contenedor de servicios de la aplicación (DI).</summary>
 public static class ServiceLocator
 {
     private static ServiceProvider? _serviceProvider;
