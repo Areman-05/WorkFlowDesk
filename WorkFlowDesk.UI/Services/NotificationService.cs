@@ -4,6 +4,7 @@ using System.Windows.Media;
 
 namespace WorkFlowDesk.UI.Services;
 
+/// <summary>Muestra notificaciones (éxito, error, advertencia, confirmación).</summary>
 public static class NotificationService
 {
     public static event EventHandler<string>? NotificationShown;
