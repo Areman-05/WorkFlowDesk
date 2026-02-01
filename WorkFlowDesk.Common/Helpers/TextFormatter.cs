@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace WorkFlowDesk.Common.Helpers;
 
+/// <summary>Formateo de texto (mayúsculas, título, truncar, etc.).</summary>
 public static class TextFormatter
 {
     public static string CapitalizeFirstLetter(string text)
