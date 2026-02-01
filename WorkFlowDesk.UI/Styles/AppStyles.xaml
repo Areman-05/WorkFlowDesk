@@ -75,6 +75,7 @@
         </Style.Triggers>
     </Style>
 
+    <!-- DataGrid -->
     <!-- DataGrid Style -->
     <Style x:Key="ModernDataGridStyle" TargetType="DataGrid">
         <Setter Property="AlternatingRowBackground" Value="#F8F9FA"/>
@@ -146,6 +147,7 @@
         <Setter Property="Padding" Value="5"/>
     </Style>
 
+    <!-- Label -->
     <!-- Label Style -->
     <Style x:Key="FormLabelStyle" TargetType="TextBlock">
         <Setter Property="FontSize" Value="14"/>
