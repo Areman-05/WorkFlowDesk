@@ -1,5 +1,6 @@
 namespace WorkFlowDesk.Common.Helpers;
 
+/// <summary>Utilidades para formatear y parsear fechas.</summary>
 public static class DateTimeHelper
 {
     public static string ToDisplayString(DateTime? date, string format = "dd/MM/yyyy")
