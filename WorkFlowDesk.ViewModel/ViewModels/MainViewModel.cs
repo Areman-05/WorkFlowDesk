@@ -4,6 +4,7 @@ using WorkFlowDesk.ViewModel.Base;
 
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
+/// <summary>ViewModel principal con comandos de navegación al sidebar.</summary>
 public class MainViewModel : ViewModelBase
 {
     public IRelayCommand NavigateToDashboardCommand { get; }
