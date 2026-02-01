@@ -2,6 +2,7 @@ using System.Globalization;
 
 namespace WorkFlowDesk.Common.Helpers;
 
+/// <summary>Formateo de moneda y números.</summary>
 public static class CurrencyHelper
 {
     private static readonly CultureInfo DefaultCulture = new("es-ES");
