@@ -4,6 +4,7 @@ using WorkFlowDesk.Services.Interfaces;
 
 namespace WorkFlowDesk.Services.Services;
 
+/// <summary>Servicio de hash y verificación de contraseñas.</summary>
 public class PasswordHasherService : IPasswordHasherService
 {
     public string HashPassword(string password)
