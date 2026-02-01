@@ -5,6 +5,7 @@ using WorkFlowDesk.Services.Interfaces;
 
 namespace WorkFlowDesk.Services.Services;
 
+/// <summary>Servicio de reportes y estadísticas.</summary>
 public class ReporteService : IReporteService
 {
     private readonly ApplicationDbContext _context;
