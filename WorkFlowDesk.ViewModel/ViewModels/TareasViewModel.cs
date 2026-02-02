@@ -6,6 +6,7 @@ using WorkFlowDesk.ViewModel.Base;
 
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
+/// <summary>ViewModel de listado y gestión de tareas.</summary>
 public class TareasViewModel : ViewModelBase
 {
     private readonly ITareaService _tareaService;
