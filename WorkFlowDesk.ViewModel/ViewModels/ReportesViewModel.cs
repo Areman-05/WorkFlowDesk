@@ -3,6 +3,7 @@ using WorkFlowDesk.ViewModel.Base;
 
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
+/// <summary>ViewModel de reportes y estadísticas.</summary>
 public class ReportesViewModel : ViewModelBase
 {
     private readonly IReporteService _reporteService;
