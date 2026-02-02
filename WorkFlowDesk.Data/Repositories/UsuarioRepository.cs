@@ -4,6 +4,7 @@ using WorkFlowDesk.Domain.Entities;
 
 namespace WorkFlowDesk.Data.Repositories;
 
+/// <summary>Repositorio de usuarios con consultas por nombre y email.</summary>
 public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
 {
     public UsuarioRepository(ApplicationDbContext context) : base(context)
