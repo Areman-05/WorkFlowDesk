@@ -5,6 +5,7 @@ using WorkFlowDesk.Common.Helpers;
 
 namespace WorkFlowDesk.UI.Converters;
 
+/// <summary>Convierte un enum a su descripción (atributo Description) para binding.</summary>
 public class EnumToDescriptionConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
