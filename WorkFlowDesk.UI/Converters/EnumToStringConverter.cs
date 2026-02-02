@@ -5,6 +5,7 @@ using WorkFlowDesk.Common.Helpers;
 
 namespace WorkFlowDesk.UI.Converters;
 
+/// <summary>Convierte un enum a cadena legible para binding en WPF.</summary>
 public class EnumToStringConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
