@@ -6,6 +6,7 @@ using WorkFlowDesk.ViewModel.Base;
 
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
+/// <summary>ViewModel del formulario de tarea (alta/edición).</summary>
 public class TareaFormViewModel : ViewModelBase
 {
     private readonly ITareaService _tareaService;
