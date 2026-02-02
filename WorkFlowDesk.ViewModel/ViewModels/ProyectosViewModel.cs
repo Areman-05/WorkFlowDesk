@@ -6,6 +6,7 @@ using WorkFlowDesk.ViewModel.Base;
 
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
+/// <summary>ViewModel de listado y gestión de proyectos.</summary>
 public class ProyectosViewModel : ViewModelBase
 {
     private readonly IProyectoService _proyectoService;
