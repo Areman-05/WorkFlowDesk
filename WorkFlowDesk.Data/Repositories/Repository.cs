@@ -4,6 +4,7 @@ using WorkFlowDesk.Data.Repositories;
 
 namespace WorkFlowDesk.Data.Repositories;
 
+/// <summary>Repositorio genérico CRUD con Entity Framework.</summary>
 public class Repository<T> : IRepository<T> where T : class
 {
     protected readonly ApplicationDbContext _context;
