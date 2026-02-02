@@ -1,4 +1,5 @@
 using System.Windows.Controls;
+using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.UI.Services;
 using WorkFlowDesk.ViewModel.ViewModels;
 
@@ -20,9 +21,9 @@ public partial class TareasView : UserControl
 
     private void OnTareaCreada(object? sender, Domain.Entities.Tarea _)
     {
-        var tareaService = ServiceLocator.GetService<Services.Interfaces.ITareaService>();
-        var proyectoService = ServiceLocator.GetService<Services.Interfaces.IProyectoService>();
-        var empleadoService = ServiceLocator.GetService<Services.Interfaces.IEmpleadoService>();
+        var tareaService = ServiceLocator.GetService<ITareaService>();
+        var proyectoService = ServiceLocator.GetService<IProyectoService>();
+        var empleadoService = ServiceLocator.GetService<IEmpleadoService>();
         var formViewModel = new TareaFormViewModel(tareaService, proyectoService, empleadoService, tarea: null);
 
         if (DialogService.ShowTareaForm(formViewModel) == true)
@@ -33,9 +34,9 @@ public partial class TareasView : UserControl
 
     private void OnTareaEditada(object? sender, Domain.Entities.Tarea tarea)
     {
-        var tareaService = ServiceLocator.GetService<Services.Interfaces.ITareaService>();
-        var proyectoService = ServiceLocator.GetService<Services.Interfaces.IProyectoService>();
-        var empleadoService = ServiceLocator.GetService<Services.Interfaces.IEmpleadoService>();
+        var tareaService = ServiceLocator.GetService<ITareaService>();
+        var proyectoService = ServiceLocator.GetService<IProyectoService>();
+        var empleadoService = ServiceLocator.GetService<IEmpleadoService>();
         var formViewModel = new TareaFormViewModel(tareaService, proyectoService, empleadoService, tarea);
 
         if (DialogService.ShowTareaForm(formViewModel) == true)

@@ -1,0 +1,16 @@
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Common\bin\Debug\net8.0\WorkFlowDesk.Common.deps.json
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Common\bin\Debug\net8.0\WorkFlowDesk.Common.dll
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Common\bin\Debug\net8.0\WorkFlowDesk.Common.pdb
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Common\bin\Debug\net8.0\WorkFlowDesk.Domain.dll
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Common\bin\Debug\net8.0\WorkFlowDesk.Domain.pdb
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Common\obj\Debug\net8.0\WorkFlowDesk.Common.csproj.AssemblyReference.cache
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Common\obj\Debug\net8.0\WorkFlowDesk.Common.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Common\obj\Debug\net8.0\WorkFlowDesk.Common.AssemblyInfoInputs.cache
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Common\obj\Debug\net8.0\WorkFlowDesk.Common.AssemblyInfo.cs
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Common\obj\Debug\net8.0\WorkFlowDesk.Common.csproj.CoreCompileInputs.cache
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Common\obj\Debug\net8.0\WorkFlowDesk.Common.sourcelink.json
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Common\obj\Debug\net8.0\WorkFlow.CFF9F408.Up2Date
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Common\obj\Debug\net8.0\WorkFlowDesk.Common.dll
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Common\obj\Debug\net8.0\refint\WorkFlowDesk.Common.dll
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Common\obj\Debug\net8.0\WorkFlowDesk.Common.pdb
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.Common\obj\Debug\net8.0\ref\WorkFlowDesk.Common.dll

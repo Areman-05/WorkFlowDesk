@@ -1,6 +1,7 @@
 using System.Windows;
 using WorkFlowDesk.Common.Services;
 using WorkFlowDesk.Domain.Entities;
+using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.UI.Services;
 using WorkFlowDesk.UI.Views;
 using WorkFlowDesk.ViewModel.ViewModels;
@@ -14,28 +15,27 @@ namespace WorkFlowDesk.UI
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e);
             ServiceLocator.ConfigureServices();
             InitializeDatabase();
+            base.OnStartup(e);
         }
 
         private void InitializeDatabase()
         {
             try
             {
-                var dbInitService = ServiceLocator.GetService<Services.Interfaces.IDatabaseInitializationService>();
-                Task.Run(async () => await dbInitService.InitializeAsync());
+                var dbInitService = ServiceLocator.GetService<IDatabaseInitializationService>();
+                dbInitService.InitializeAsync().GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
-                // Log error pero no bloquear el inicio de la aplicación
                 System.Diagnostics.Debug.WriteLine($"Error al inicializar base de datos: {ex.Message}");
             }
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            var authService = ServiceLocator.GetService<Services.Interfaces.IAuthenticationService>();
+            var authService = ServiceLocator.GetService<IAuthenticationService>();
             var loginViewModel = new LoginViewModel(authService);
             var loginView = new LoginView(loginViewModel);
 

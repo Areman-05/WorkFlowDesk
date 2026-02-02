@@ -1,7 +1,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace WorkFlowDesk.UI;
+namespace WorkFlowDesk.UI.Converters;
 
 /// <summary>Invierte un valor booleano para binding (ej. IsEnabled vs IsBusy).</summary>
 public class InverseBooleanConverter : IValueConverter

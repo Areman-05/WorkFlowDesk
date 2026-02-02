@@ -1,8 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <ProjectReference Include="..\WorkFlowDesk.Domain\WorkFlowDesk.Domain.csproj" />
     <ProjectReference Include="..\WorkFlowDesk.Data\WorkFlowDesk.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
   </ItemGroup>
 
   <PropertyGroup>

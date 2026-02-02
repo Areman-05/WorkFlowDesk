@@ -1,4 +1,5 @@
 using System.Windows.Controls;
+using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.UI.Services;
 using WorkFlowDesk.ViewModel.ViewModels;
 
@@ -9,10 +10,10 @@ public partial class DashboardView : UserControl
     public DashboardView()
     {
         InitializeComponent();
-        var empleadoService = ServiceLocator.GetService<Services.Interfaces.IEmpleadoService>();
-        var proyectoService = ServiceLocator.GetService<Services.Interfaces.IProyectoService>();
-        var tareaService = ServiceLocator.GetService<Services.Interfaces.ITareaService>();
-        var clienteService = ServiceLocator.GetService<Services.Interfaces.IClienteService>();
+        var empleadoService = ServiceLocator.GetService<IEmpleadoService>();
+        var proyectoService = ServiceLocator.GetService<IProyectoService>();
+        var tareaService = ServiceLocator.GetService<ITareaService>();
+        var clienteService = ServiceLocator.GetService<IClienteService>();
         
         DataContext = new DashboardViewModel(empleadoService, proyectoService, tareaService, clienteService);
     }

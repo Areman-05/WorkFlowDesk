@@ -1,4 +1,5 @@
 using System.Windows;
+using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.UI.Services;
 using WorkFlowDesk.UI.Views;
 using WorkFlowDesk.ViewModel.ViewModels;
@@ -32,43 +33,43 @@ namespace WorkFlowDesk.UI
             switch (viewName)
             {
                 case "Dashboard":
-                    var empleadoService = ServiceLocator.GetService<Services.Interfaces.IEmpleadoService>();
-                    var proyectoService = ServiceLocator.GetService<Services.Interfaces.IProyectoService>();
-                    var tareaService = ServiceLocator.GetService<Services.Interfaces.ITareaService>();
-                    var clienteService = ServiceLocator.GetService<Services.Interfaces.IClienteService>();
+                    var empleadoService = ServiceLocator.GetService<IEmpleadoService>();
+                    var proyectoService = ServiceLocator.GetService<IProyectoService>();
+                    var tareaService = ServiceLocator.GetService<ITareaService>();
+                    var clienteService = ServiceLocator.GetService<IClienteService>();
                     var dashboardViewModel = new DashboardViewModel(empleadoService, proyectoService, tareaService, clienteService);
                     var dashboardView = new DashboardView();
                     dashboardView.DataContext = dashboardViewModel;
                     _navigationService.NavigateTo(dashboardView);
                     break;
                 case "Empleados":
-                    var empleadosService = ServiceLocator.GetService<Services.Interfaces.IEmpleadoService>();
+                    var empleadosService = ServiceLocator.GetService<IEmpleadoService>();
                     var empleadosViewModel = new EmpleadosViewModel(empleadosService);
                     _navigationService.NavigateTo(new EmpleadosView(empleadosViewModel));
                     break;
                 case "Proyectos":
-                    var proyectosService = ServiceLocator.GetService<Services.Interfaces.IProyectoService>();
+                    var proyectosService = ServiceLocator.GetService<IProyectoService>();
                     var proyectosViewModel = new ProyectosViewModel(proyectosService);
                     _navigationService.NavigateTo(new ProyectosView(proyectosViewModel));
                     break;
                 case "Tareas":
-                    var tareasService = ServiceLocator.GetService<Services.Interfaces.ITareaService>();
+                    var tareasService = ServiceLocator.GetService<ITareaService>();
                     var tareasViewModel = new TareasViewModel(tareasService);
                     _navigationService.NavigateTo(new TareasView(tareasViewModel));
                     break;
                 case "Clientes":
-                    var clientesService = ServiceLocator.GetService<Services.Interfaces.IClienteService>();
+                    var clientesService = ServiceLocator.GetService<IClienteService>();
                     var clientesViewModel = new ClientesViewModel(clientesService);
                     _navigationService.NavigateTo(new ClientesView(clientesViewModel));
                     break;
                 case "Reportes":
-                    var reporteService = ServiceLocator.GetService<Services.Interfaces.IReporteService>();
+                    var reporteService = ServiceLocator.GetService<IReporteService>();
                     var reportesViewModel = new ReportesViewModel(reporteService);
                     _navigationService.NavigateTo(new ReportesView(reportesViewModel));
                     break;
                 case "Configuracion":
-                    var backupSvc = ServiceLocator.GetService<Services.Interfaces.IBackupService>();
-                    var dbInitSvc = ServiceLocator.GetService<Services.Interfaces.IDatabaseInitializationService>();
+                    var backupSvc = ServiceLocator.GetService<IBackupService>();
+                    var dbInitSvc = ServiceLocator.GetService<IDatabaseInitializationService>();
                     var configVm = new ConfiguracionViewModel(backupSvc, dbInitSvc);
                     _navigationService.NavigateTo(new ConfiguracionView(configVm));
                     break;

@@ -1,4 +1,5 @@
 using System.Windows.Controls;
+using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.UI.Services;
 using WorkFlowDesk.ViewModel.ViewModels;
 
@@ -20,9 +21,9 @@ public partial class ProyectosView : UserControl
 
     private void OnProyectoCreado(object? sender, Domain.Entities.Proyecto _)
     {
-        var proyectoService = ServiceLocator.GetService<Services.Interfaces.IProyectoService>();
-        var clienteService = ServiceLocator.GetService<Services.Interfaces.IClienteService>();
-        var empleadoService = ServiceLocator.GetService<Services.Interfaces.IEmpleadoService>();
+        var proyectoService = ServiceLocator.GetService<IProyectoService>();
+        var clienteService = ServiceLocator.GetService<IClienteService>();
+        var empleadoService = ServiceLocator.GetService<IEmpleadoService>();
         var formViewModel = new ProyectoFormViewModel(proyectoService, clienteService, empleadoService, proyecto: null);
 
         if (DialogService.ShowProyectoForm(formViewModel) == true)
@@ -33,9 +34,9 @@ public partial class ProyectosView : UserControl
 
     private void OnProyectoEditado(object? sender, Domain.Entities.Proyecto proyecto)
     {
-        var proyectoService = ServiceLocator.GetService<Services.Interfaces.IProyectoService>();
-        var clienteService = ServiceLocator.GetService<Services.Interfaces.IClienteService>();
-        var empleadoService = ServiceLocator.GetService<Services.Interfaces.IEmpleadoService>();
+        var proyectoService = ServiceLocator.GetService<IProyectoService>();
+        var clienteService = ServiceLocator.GetService<IClienteService>();
+        var empleadoService = ServiceLocator.GetService<IEmpleadoService>();
         var formViewModel = new ProyectoFormViewModel(proyectoService, clienteService, empleadoService, proyecto);
 
         if (DialogService.ShowProyectoForm(formViewModel) == true)

@@ -4,14 +4,156 @@
     "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.ViewModel\\WorkFlowDesk.ViewModel.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.ViewModel\\WorkFlowDesk.ViewModel.csproj": {
+    "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Common\\WorkFlowDesk.Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.ViewModel\\WorkFlowDesk.ViewModel.csproj",
-        "projectName": "WorkFlowDesk.ViewModel",
-        "projectPath": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.ViewModel\\WorkFlowDesk.ViewModel.csproj",
+        "projectUniqueName": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Common\\WorkFlowDesk.Common.csproj",
+        "projectName": "WorkFlowDesk.Common",
+        "projectPath": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Common\\WorkFlowDesk.Common.csproj",
         "packagesPath": "C:\\Users\\Pablo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.ViewModel\\obj\\",
+        "outputPath": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Common\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Pablo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Domain\\WorkFlowDesk.Domain.csproj": {
+                "projectPath": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Domain\\WorkFlowDesk.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Data\\WorkFlowDesk.Data.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Data\\WorkFlowDesk.Data.csproj",
+        "projectName": "WorkFlowDesk.Data",
+        "projectPath": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Data\\WorkFlowDesk.Data.csproj",
+        "packagesPath": "C:\\Users\\Pablo\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Data\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Pablo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Domain\\WorkFlowDesk.Domain.csproj": {
+                "projectPath": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Domain\\WorkFlowDesk.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Domain\\WorkFlowDesk.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Domain\\WorkFlowDesk.Domain.csproj",
+        "projectName": "WorkFlowDesk.Domain",
+        "projectPath": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Domain\\WorkFlowDesk.Domain.csproj",
+        "packagesPath": "C:\\Users\\Pablo\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Pablo\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -45,6 +187,151 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Services\\WorkFlowDesk.Services.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Services\\WorkFlowDesk.Services.csproj",
+        "projectName": "WorkFlowDesk.Services",
+        "projectPath": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Services\\WorkFlowDesk.Services.csproj",
+        "packagesPath": "C:\\Users\\Pablo\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Services\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Pablo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Data\\WorkFlowDesk.Data.csproj": {
+                "projectPath": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Data\\WorkFlowDesk.Data.csproj"
+              },
+              "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Domain\\WorkFlowDesk.Domain.csproj": {
+                "projectPath": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Domain\\WorkFlowDesk.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.ViewModel\\WorkFlowDesk.ViewModel.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.ViewModel\\WorkFlowDesk.ViewModel.csproj",
+        "projectName": "WorkFlowDesk.ViewModel",
+        "projectPath": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.ViewModel\\WorkFlowDesk.ViewModel.csproj",
+        "packagesPath": "C:\\Users\\Pablo\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.ViewModel\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Pablo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0-windows"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0-windows7.0": {
+            "targetAlias": "net8.0-windows",
+            "projectReferences": {
+              "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Common\\WorkFlowDesk.Common.csproj": {
+                "projectPath": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Common\\WorkFlowDesk.Common.csproj"
+              },
+              "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Domain\\WorkFlowDesk.Domain.csproj": {
+                "projectPath": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Domain\\WorkFlowDesk.Domain.csproj"
+              },
+              "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Services\\WorkFlowDesk.Services.csproj": {
+                "projectPath": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Services\\WorkFlowDesk.Services.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net8.0-windows7.0": {
+          "targetAlias": "net8.0-windows",
           "dependencies": {
             "CommunityToolkit.Mvvm": {
               "target": "Package",
@@ -65,6 +352,9 @@
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
+            },
+            "Microsoft.WindowsDesktop.App.WPF": {
+              "privateAssets": "none"
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.308/PortableRuntimeIdentifierGraph.json"

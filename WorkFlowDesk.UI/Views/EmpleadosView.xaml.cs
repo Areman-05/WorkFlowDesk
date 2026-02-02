@@ -1,4 +1,5 @@
 using System.Windows.Controls;
+using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.UI.Services;
 using WorkFlowDesk.ViewModel.ViewModels;
 
@@ -20,7 +21,7 @@ public partial class EmpleadosView : UserControl
 
     private void OnEmpleadoCreado(object? sender, Domain.Entities.Empleado empleado)
     {
-        var empleadoService = ServiceLocator.GetService<Services.Interfaces.IEmpleadoService>();
+        var empleadoService = ServiceLocator.GetService<IEmpleadoService>();
         var formViewModel = new EmpleadoFormViewModel(empleadoService, empleado);
         
         if (DialogService.ShowEmpleadoForm(formViewModel) == true)
@@ -31,7 +32,7 @@ public partial class EmpleadosView : UserControl
 
     private void OnEmpleadoEditado(object? sender, Domain.Entities.Empleado empleado)
     {
-        var empleadoService = ServiceLocator.GetService<Services.Interfaces.IEmpleadoService>();
+        var empleadoService = ServiceLocator.GetService<IEmpleadoService>();
         var formViewModel = new EmpleadoFormViewModel(empleadoService, empleado);
         
         if (DialogService.ShowEmpleadoForm(formViewModel) == true)

@@ -1,11 +1,30 @@
 {
   "version": 3,
   "targets": {
-    "net8.0": {}
+    "net8.0": {
+      "WorkFlowDesk.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "compile": {
+          "bin/placeholder/WorkFlowDesk.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/WorkFlowDesk.Domain.dll": {}
+        }
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "WorkFlowDesk.Domain/1.0.0": {
+      "type": "project",
+      "path": "../WorkFlowDesk.Domain/WorkFlowDesk.Domain.csproj",
+      "msbuildProject": "../WorkFlowDesk.Domain/WorkFlowDesk.Domain.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net8.0": []
+    "net8.0": [
+      "WorkFlowDesk.Domain >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\Pablo\\.nuget\\packages\\": {}
@@ -33,7 +52,11 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Domain\\WorkFlowDesk.Domain.csproj": {
+              "projectPath": "C:\\Users\\Pablo\\Documents\\Repositorios de GitHub\\WorkFlowDesk\\WorkFlowDesk.Domain\\WorkFlowDesk.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

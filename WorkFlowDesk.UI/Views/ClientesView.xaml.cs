@@ -1,4 +1,5 @@
 using System.Windows.Controls;
+using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.UI.Services;
 using WorkFlowDesk.ViewModel.ViewModels;
 
@@ -20,7 +21,7 @@ public partial class ClientesView : UserControl
 
     private void OnClienteCreado(object? sender, Domain.Entities.Cliente cliente)
     {
-        var clienteService = ServiceLocator.GetService<Services.Interfaces.IClienteService>();
+        var clienteService = ServiceLocator.GetService<IClienteService>();
         var formViewModel = new ClienteFormViewModel(clienteService, cliente);
         
         if (DialogService.ShowClienteForm(formViewModel) == true)
@@ -31,7 +32,7 @@ public partial class ClientesView : UserControl
 
     private void OnClienteEditado(object? sender, Domain.Entities.Cliente cliente)
     {
-        var clienteService = ServiceLocator.GetService<Services.Interfaces.IClienteService>();
+        var clienteService = ServiceLocator.GetService<IClienteService>();
         var formViewModel = new ClienteFormViewModel(clienteService, cliente);
         
         if (DialogService.ShowClienteForm(formViewModel) == true)

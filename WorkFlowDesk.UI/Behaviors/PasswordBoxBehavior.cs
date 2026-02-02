@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace WorkFlowDesk.UI.Behaviors;
 
@@ -27,7 +28,7 @@ public static class PasswordBoxHelper
         if (d is PasswordBox passwordBox)
         {
             passwordBox.PasswordChanged -= PasswordBox_PasswordChanged;
-            passwordBox.Password = (string)e.NewValue;
+            passwordBox.Password = (string?)e.NewValue ?? string.Empty;
             passwordBox.PasswordChanged += PasswordBox_PasswordChanged;
         }
     }
@@ -37,6 +38,9 @@ public static class PasswordBoxHelper
         if (sender is PasswordBox passwordBox)
         {
             SetPassword(passwordBox, passwordBox.Password);
+            // Forzar que el binding actualice el ViewModel (TwoWay)
+            BindingExpression? binding = BindingOperations.GetBindingExpression(passwordBox, PasswordProperty);
+            binding?.UpdateSource();
         }
     }
 }

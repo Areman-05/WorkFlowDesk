@@ -1,9 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WorkFlowDesk.Domain\WorkFlowDesk.Domain.csproj" />
     <ProjectReference Include="..\WorkFlowDesk.Services\WorkFlowDesk.Services.csproj" />
     <ProjectReference Include="..\WorkFlowDesk.Common\WorkFlowDesk.Common.csproj" />
   </ItemGroup>

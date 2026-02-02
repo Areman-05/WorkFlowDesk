@@ -1,0 +1,6 @@
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.ViewModel\obj\Debug\net8.0\WorkFlowDesk.ViewModel.csproj.AssemblyReference.cache
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.ViewModel\obj\Debug\net8.0\WorkFlowDesk.ViewModel.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.ViewModel\obj\Debug\net8.0\WorkFlowDesk.ViewModel.AssemblyInfoInputs.cache
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.ViewModel\obj\Debug\net8.0\WorkFlowDesk.ViewModel.AssemblyInfo.cs
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.ViewModel\obj\Debug\net8.0\WorkFlowDesk.ViewModel.csproj.CoreCompileInputs.cache
+C:\Users\Pablo\Documents\Repositorios de GitHub\WorkFlowDesk\WorkFlowDesk.ViewModel\obj\Debug\net8.0\WorkFlowDesk.ViewModel.sourcelink.json
