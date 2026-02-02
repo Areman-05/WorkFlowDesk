@@ -3,6 +3,7 @@ using WorkFlowDesk.Domain.Entities;
 
 namespace WorkFlowDesk.Data;
 
+/// <summary>Contexto de Entity Framework para la base de datos de la aplicación.</summary>
 public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
