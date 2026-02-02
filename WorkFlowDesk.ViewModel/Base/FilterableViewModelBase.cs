@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace WorkFlowDesk.ViewModel.Base;
 
+/// <summary>Base para ViewModels con filtrado por texto.</summary>
 public abstract class FilterableViewModelBase<T> : ViewModelBase
 {
     private string _filtroTexto = string.Empty;

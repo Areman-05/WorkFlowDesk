@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace WorkFlowDesk.ViewModel.Base;
 
+/// <summary>Base para ViewModels con validación y INotifyDataErrorInfo.</summary>
 public abstract class ValidatableViewModelBase : ViewModelBase, INotifyDataErrorInfo
 {
     private readonly Dictionary<string, List<string>> _errors = new();

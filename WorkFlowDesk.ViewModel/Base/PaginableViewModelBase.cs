@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 
 namespace WorkFlowDesk.ViewModel.Base;
 
+/// <summary>Base para ViewModels con paginación.</summary>
 public abstract class PaginableViewModelBase<T> : ViewModelBase
 {
     private int _paginaActual = 1;
