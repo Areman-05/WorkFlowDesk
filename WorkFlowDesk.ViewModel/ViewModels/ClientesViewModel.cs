@@ -7,6 +7,7 @@ using WorkFlowDesk.ViewModel.Base;
 
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
+/// <summary>ViewModel de listado y gestión de clientes.</summary>
 public class ClientesViewModel : ViewModelBase
 {
     private readonly IClienteService _clienteService;
