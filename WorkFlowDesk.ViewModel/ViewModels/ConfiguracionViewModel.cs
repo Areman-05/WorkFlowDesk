@@ -6,6 +6,7 @@ using WorkFlowDesk.ViewModel.Base;
 
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
+/// <summary>ViewModel de configuración del sistema.</summary>
 public class ConfiguracionViewModel : ViewModelBase
 {
     private readonly IBackupService _backupService;
