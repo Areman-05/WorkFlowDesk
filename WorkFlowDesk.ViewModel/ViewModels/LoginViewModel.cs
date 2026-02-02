@@ -5,6 +5,7 @@ using WorkFlowDesk.ViewModel.Base;
 
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
+/// <summary>ViewModel de la pantalla de inicio de sesión.</summary>
 public class LoginViewModel : ViewModelBase
 {
     private readonly IAuthenticationService _authenticationService;
