@@ -6,6 +6,7 @@ using WorkFlowDesk.ViewModel.Base;
 
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
+/// <summary>ViewModel del formulario de empleado (alta/edición).</summary>
 public class EmpleadoFormViewModel : ViewModelBase
 {
     private readonly IEmpleadoService _empleadoService;
