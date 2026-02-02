@@ -3,6 +3,7 @@ using System.Windows.Data;
 
 namespace WorkFlowDesk.UI;
 
+/// <summary>Invierte un valor booleano para binding (ej. IsEnabled vs IsBusy).</summary>
 public class InverseBooleanConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
