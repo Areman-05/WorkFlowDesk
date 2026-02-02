@@ -7,6 +7,7 @@ using WorkFlowDesk.ViewModel.Base;
 
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
+/// <summary>ViewModel del formulario de proyecto (alta/edición).</summary>
 public class ProyectoFormViewModel : ViewModelBase
 {
     private readonly IProyectoService _proyectoService;
