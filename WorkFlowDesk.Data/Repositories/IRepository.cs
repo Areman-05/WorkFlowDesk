@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 
 namespace WorkFlowDesk.Data.Repositories;
 
+/// <summary>Contrato del repositorio genérico CRUD.</summary>
 public interface IRepository<T> where T : class
 {
     Task<T?> GetByIdAsync(int id);
