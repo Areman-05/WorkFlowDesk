@@ -2,8 +2,9 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace WorkFlowDesk.UI;
+namespace WorkFlowDesk.UI.Converters;
 
+/// <summary>Convierte null a Collapsed y no null a Visible para mostrar/ocultar controles.</summary>
 public class NullToVisibilityConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
