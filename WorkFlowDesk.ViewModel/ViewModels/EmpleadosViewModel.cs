@@ -8,6 +8,7 @@ using WorkFlowDesk.ViewModel.Base;
 
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
+/// <summary>ViewModel de listado y gestión de empleados.</summary>
 public class EmpleadosViewModel : ViewModelBase
 {
     private readonly IEmpleadoService _empleadoService;
