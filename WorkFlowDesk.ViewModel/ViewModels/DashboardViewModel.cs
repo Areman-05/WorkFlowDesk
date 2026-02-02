@@ -3,6 +3,7 @@ using WorkFlowDesk.ViewModel.Base;
 
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
+/// <summary>ViewModel del panel principal con estadísticas.</summary>
 public class DashboardViewModel : ViewModelBase
 {
     private readonly IEmpleadoService _empleadoService;
