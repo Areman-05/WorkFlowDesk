@@ -16,16 +16,17 @@ namespace WorkFlowDesk.UI
         protected override void OnStartup(StartupEventArgs e)
         {
             ServiceLocator.ConfigureServices();
-            InitializeDatabase();
             base.OnStartup(e);
+            // Inicializar BD en segundo plano para no bloquear la ventana de login
+            _ = InitializeDatabaseAsync();
         }
 
-        private void InitializeDatabase()
+        private async Task InitializeDatabaseAsync()
         {
             try
             {
                 var dbInitService = ServiceLocator.GetService<IDatabaseInitializationService>();
-                dbInitService.InitializeAsync().GetAwaiter().GetResult();
+                await dbInitService.InitializeAsync();
             }
             catch (Exception ex)
             {
