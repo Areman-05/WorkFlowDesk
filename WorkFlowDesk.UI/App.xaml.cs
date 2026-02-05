@@ -15,6 +15,7 @@ namespace WorkFlowDesk.UI
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            // Configurar DI antes de base.OnStartup para que Application_Startup tenga servicios disponibles
             ServiceLocator.ConfigureServices();
             base.OnStartup(e);
             // Inicializar BD en segundo plano para no bloquear la ventana de login
