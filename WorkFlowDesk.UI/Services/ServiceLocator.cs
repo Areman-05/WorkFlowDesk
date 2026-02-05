@@ -45,6 +45,7 @@ public static class ServiceLocator
         _serviceProvider = services.BuildServiceProvider();
     }
 
+    /// <summary>Obtiene un servicio registrado. Requiere haber llamado antes a <see cref="ConfigureServices"/>.</summary>
     public static T GetService<T>() where T : class
     {
         return _serviceProvider?.GetRequiredService<T>() 
