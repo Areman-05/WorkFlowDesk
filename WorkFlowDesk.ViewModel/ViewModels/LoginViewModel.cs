@@ -38,6 +38,12 @@ public class LoginViewModel : ViewModelBase
         }
     }
 
+    /// <summary>Asigna la contraseña desde la vista (PasswordBox no permite binding directo).</summary>
+    public void SetPasswordFromView(string password)
+    {
+        Password = password ?? string.Empty;
+    }
+
     public IAsyncRelayCommand LoginCommand { get; }
 
     public event EventHandler<Usuario>? LoginExitoso;

@@ -29,12 +29,25 @@
 - **Usuario:** `admin`  
 - **Contraseña:** `Admin123`
 
+La primera vez que abras la app, la base de datos se crea en segundo plano. Si pulsas **Iniciar sesión** y sale "Usuario o contraseña incorrectos", espera 2–3 segundos y vuelve a pulsar **Iniciar sesión**.
+
 Tras iniciar sesión se abrirá la ventana principal con el menú lateral (Dashboard, Empleados, Proyectos, Tareas, Clientes, Reportes, Configuración).
 
 ## 6. Si algo falla
 
+- **“Unable to locate a Local Database Runtime installation” / “The server was not found or was not accessible”**  
+  La aplicación no encuentra **SQL Server LocalDB**. Hay que instalarlo:
+  1. Cierra Visual Studio.
+  2. Abre **Instalador de Visual Studio** (busca “Visual Studio Installer” en el menú Inicio).
+  3. En la lista de instalaciones, pulsa **Modificar** en tu edición de Visual Studio 2022.
+  4. Ve a la pestaña **Componentes individuales**.
+  5. En el buscador escribe **LocalDB**.
+  6. Marca **SQL Server Express 2019 LocalDB** (o la versión que aparezca).
+  7. Pulsa **Modificar** y espera a que termine la instalación.
+  8. Vuelve a abrir la solución y ejecuta la aplicación de nuevo (F5).
+
 - **“No se puede conectar a la base de datos”**  
-  Asegúrate de tener SQL Server LocalDB instalado. En el **Instalador de Visual Studio** → Modificar → pestaña **Componentes individuales** → busca **SQL Server Express LocalDB** y márcalo si no está.
+  Si ya tienes LocalDB instalado y sigue fallando, en el Instalador de Visual Studio → Modificar → **Componentes individuales** → busca **SQL Server Express LocalDB** y asegúrate de que esté marcado.
 
 - **“Usuario o contraseña incorrectos”**  
   Comprueba que escribes exactamente: usuario `admin` y contraseña `Admin123` (A mayúscula, el resto minúsculas y el número 123).

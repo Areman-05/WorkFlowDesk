@@ -17,4 +17,14 @@ public partial class LoginView : Window
             Close();
         };
     }
+
+    /// <summary>Pasa la contraseña del PasswordBox al ViewModel y ejecuta el login (el binding no siempre actualiza a tiempo).</summary>
+    private void OnLoginClick(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is LoginViewModel vm)
+        {
+            vm.SetPasswordFromView(PasswordBox.Password);
+            vm.LoginCommand.Execute(null);
+        }
+    }
 }

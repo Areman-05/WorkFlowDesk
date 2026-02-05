@@ -25,7 +25,8 @@
             
             <TextBlock Text="Contraseña" 
                        Margin="0,0,0,5"/>
-            <PasswordBox local:PasswordBoxHelper.Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}" 
+            <PasswordBox x:Name="PasswordBox"
+                         local:PasswordBoxHelper.Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}" 
                          Margin="0,0,0,15"/>
             
             <TextBlock Text="{Binding ErrorMessage}"
@@ -34,7 +35,7 @@
                        Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
             
             <Button Content="Iniciar Sesión" 
-                    Command="{Binding LoginCommand}" 
+                    Click="OnLoginClick"
                     IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}"
                     Height="35" 
                     Margin="0,10,0,0"/>

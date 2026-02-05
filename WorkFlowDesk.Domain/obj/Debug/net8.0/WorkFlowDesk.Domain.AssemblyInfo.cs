@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WorkFlowDesk.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+78ce96245a4c2e8a6fa242df7221c1ac3c04d28e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+828e80a5879976666ac70cfdb9df2937b8dae500")]
 [assembly: System.Reflection.AssemblyProductAttribute("WorkFlowDesk.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WorkFlowDesk.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
