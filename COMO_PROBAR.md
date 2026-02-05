@@ -69,3 +69,7 @@ La conexión está en **WorkFlowDesk.UI → appsettings.json**:
 ```
 
 Solo necesitas cambiarla si usas otra instancia de SQL Server o otra base de datos.
+
+---
+
+**Ver también:** Requisitos (sección 1) para instalar LocalDB si aún no lo tienes.
