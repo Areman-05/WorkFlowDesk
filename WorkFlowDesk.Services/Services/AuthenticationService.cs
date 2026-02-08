@@ -17,6 +17,7 @@ public class AuthenticationService : IAuthenticationService
         _passwordHasher = passwordHasher;
     }
 
+    /// <summary>Valida credenciales y devuelve el usuario si son correctas; si no, null.</summary>
     public async Task<Usuario?> AutenticarAsync(string nombreUsuario, string password)
     {
         var usuario = await _context.Usuarios
