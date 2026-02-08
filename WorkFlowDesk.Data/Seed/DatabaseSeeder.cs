@@ -11,6 +11,7 @@ public static class DatabaseSeeder
     public const string DefaultAdminUserName = "admin";
     public const string DefaultAdminPassword = "Admin123";
 
+    /// <summary>Ejecuta el seed de roles y usuario administrador por defecto.</summary>
     public static async Task SeedAsync(ApplicationDbContext context)
     {
         await SeedRolesAsync(context);
