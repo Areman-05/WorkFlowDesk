@@ -3,8 +3,10 @@ using WorkFlowDesk.Data;
 
 namespace WorkFlowDesk.Data.Configuration;
 
+/// <summary>Utilidades para crear, migrar y preparar la base de datos.</summary>
 public static class DatabaseConfiguration
 {
+    /// <summary>Crea la base de datos si no existe.</summary>
     public static async Task EnsureDatabaseCreatedAsync(ApplicationDbContext context)
     {
         await context.Database.EnsureCreatedAsync();
