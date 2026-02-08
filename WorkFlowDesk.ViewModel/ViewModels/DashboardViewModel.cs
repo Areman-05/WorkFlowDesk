@@ -71,6 +71,7 @@ public class DashboardViewModel : ViewModelBase
 
     public CommunityToolkit.Mvvm.Input.IAsyncRelayCommand CargarEstadisticasCommand { get; }
 
+    /// <summary>Carga los totales de empleados, proyectos, tareas y clientes para el panel.</summary>
     private async Task CargarEstadisticasAsync()
     {
         IsLoading = true;
