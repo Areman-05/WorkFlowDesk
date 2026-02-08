@@ -11,6 +11,7 @@ public class NavigationService
     private readonly Stack<UserControl> _navigationHistory = new();
     private UserControl? _currentView;
 
+    /// <summary>Asigna el área de contenido donde se mostrarán las vistas.</summary>
     public void Initialize(ContentControl contentArea)
     {
         _contentArea = contentArea;
