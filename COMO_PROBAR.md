@@ -13,7 +13,7 @@ Guía rápida para abrir la solución, ejecutar la aplicación e iniciar sesión
 1. Abre Visual Studio 2022.
 2. **Archivo → Abrir → Proyecto o solución**.
 3. Ve a la carpeta del repositorio y selecciona **`WorkFlowDesk.sln`**.
-4. Acepta y espera a que se restauren los paquetes NuGet.
+4. Acepta y, si aparece, restaura los paquetes NuGet.
 
 ## 3. Proyecto de inicio
 
