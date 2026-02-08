@@ -4,6 +4,7 @@ using WorkFlowDesk.ViewModel.ViewModels;
 
 namespace WorkFlowDesk.UI.Views;
 
+/// <summary>Ventana de inicio de sesión (usuario y contraseña).</summary>
 public partial class LoginView : Window
 {
     public LoginView(LoginViewModel viewModel)
