@@ -17,6 +17,7 @@ public class MainViewModel : ViewModelBase
 
     public event EventHandler<string>? NavigateRequested;
 
+    /// <summary>Registra los comandos de navegación del menú lateral.</summary>
     public MainViewModel()
     {
         NavigateToDashboardCommand = new RelayCommand(() => NavigateRequested?.Invoke(this, "Dashboard"));
