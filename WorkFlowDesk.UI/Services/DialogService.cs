@@ -7,6 +7,7 @@ namespace WorkFlowDesk.UI.Services;
 /// <summary>Muestra formularios modales (Empleado, Cliente, Proyecto, Tarea).</summary>
 public static class DialogService
 {
+    /// <summary>Muestra el formulario de empleado (alta/edición) en un diálogo modal.</summary>
     public static bool? ShowEmpleadoForm(EmpleadoFormViewModel viewModel)
     {
         var window = new Window
