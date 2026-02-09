@@ -9,6 +9,7 @@ public static class NotificationService
 {
     public static event EventHandler<string>? NotificationShown;
 
+    /// <summary>Muestra un mensaje de éxito (icono de información).</summary>
     public static void ShowSuccess(string message, string title = "Éxito")
     {
         ShowNotification(message, title, MessageBoxImage.Information);
