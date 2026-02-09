@@ -16,6 +16,7 @@ public class ClientesViewModel : ViewModelBase
     private Cliente? _clienteSeleccionado;
     private string _textoBusqueda = string.Empty;
 
+    /// <summary>Construye el ViewModel e inicia la carga de clientes.</summary>
     public ClientesViewModel(IClienteService clienteService)
     {
         _clienteService = clienteService;
