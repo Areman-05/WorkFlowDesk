@@ -12,6 +12,7 @@ public static class DatabaseConfiguration
         await context.Database.EnsureCreatedAsync();
     }
 
+    /// <summary>Aplica las migraciones pendientes a la base de datos.</summary>
     public static async Task MigrateDatabaseAsync(ApplicationDbContext context)
     {
         var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
@@ -21,6 +22,7 @@ public static class DatabaseConfiguration
         }
     }
 
+    /// <summary>Ejecuta el seed de datos iniciales (roles, usuario admin).</summary>
     public static async Task SeedDatabaseAsync(ApplicationDbContext context)
     {
         await Seed.DatabaseSeeder.SeedAsync(context);
