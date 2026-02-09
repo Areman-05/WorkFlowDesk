@@ -17,6 +17,7 @@ public class NavigationService
         _contentArea = contentArea;
     }
 
+    /// <summary>Navega a la vista indicada y la muestra en el área de contenido.</summary>
     public void NavigateTo(UserControl view)
     {
         if (_currentView != null && _currentView != view)
