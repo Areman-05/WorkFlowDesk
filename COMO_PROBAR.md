@@ -17,7 +17,7 @@ Guía rápida para abrir la solución, ejecutar la aplicación e iniciar sesión
 
 ## 3. Proyecto de inicio
 
-1. En el **Explorador de soluciones**, clic derecho en el proyecto **WorkFlowDesk.UI**.
+1. En el **Explorador de soluciones**, clic derecho en el proyecto **WorkFlowDesk.UI** (el de la interfaz).
 2. Elige **Establecer como proyecto de inicio**.
 3. Comprueba que en la barra de herramientas aparezca **WorkFlowDesk.UI** como proyecto de inicio.
 
