@@ -17,6 +17,7 @@ public class EmpleadosViewModel : ViewModelBase
     private Empleado? _empleadoSeleccionado;
     private string _textoBusqueda = string.Empty;
 
+    /// <summary>Construye el ViewModel e inicia la carga de empleados.</summary>
     public EmpleadosViewModel(IEmpleadoService empleadoService)
     {
         _empleadoService = empleadoService;
