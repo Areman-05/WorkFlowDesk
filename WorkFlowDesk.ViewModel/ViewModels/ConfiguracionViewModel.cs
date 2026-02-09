@@ -16,6 +16,7 @@ public class ConfiguracionViewModel : ViewModelBase
     private string _logLevel = string.Empty;
     private int _cacheExpirationMinutes;
 
+    /// <summary>Construye el ViewModel e inicia la carga de configuración.</summary>
     public ConfiguracionViewModel(
         IBackupService backupService,
         IDatabaseInitializationService databaseInitializationService)
