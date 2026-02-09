@@ -30,6 +30,7 @@ public static class DialogService
         return window.ShowDialog();
     }
 
+    /// <summary>Muestra el formulario de proyecto (alta/edición) en un diálogo modal.</summary>
     public static bool? ShowProyectoForm(ProyectoFormViewModel viewModel)
     {
         var window = new Window
@@ -52,6 +53,7 @@ public static class DialogService
         return window.ShowDialog();
     }
 
+    /// <summary>Muestra el formulario de tarea (alta/edición) en un diálogo modal.</summary>
     public static bool? ShowTareaForm(TareaFormViewModel viewModel)
     {
         var window = new Window
@@ -74,6 +76,7 @@ public static class DialogService
         return window.ShowDialog();
     }
 
+    /// <summary>Muestra el formulario de cliente (alta/edición) en un diálogo modal.</summary>
     public static bool? ShowClienteForm(ClienteFormViewModel viewModel)
     {
         var window = new Window
