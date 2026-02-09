@@ -12,6 +12,7 @@ public class ReportesViewModel : ViewModelBase
     private Dictionary<string, int> _estadisticasTareas = new();
     private Dictionary<string, int> _estadisticasClientes = new();
 
+    /// <summary>Construye el ViewModel e inicia la carga de reportes.</summary>
     public ReportesViewModel(IReporteService reporteService)
     {
         _reporteService = reporteService;
