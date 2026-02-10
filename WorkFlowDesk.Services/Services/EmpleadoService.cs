@@ -16,6 +16,7 @@ public class EmpleadoService : IEmpleadoService
         _context = context;
     }
 
+    /// <summary>Obtiene un empleado por ID con su usuario asociado.</summary>
     public async Task<Empleado?> GetByIdAsync(int id)
     {
         return await _context.Empleados
