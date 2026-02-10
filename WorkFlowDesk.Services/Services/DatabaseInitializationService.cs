@@ -16,6 +16,7 @@ public class DatabaseInitializationService : IDatabaseInitializationService
         _context = context;
     }
 
+    /// <summary>Crea la base de datos si no existe y ejecuta el seed inicial.</summary>
     public async Task InitializeAsync()
     {
         try
@@ -29,6 +30,7 @@ public class DatabaseInitializationService : IDatabaseInitializationService
         }
     }
 
+    /// <summary>Ejecuta solo el seed de datos (roles, admin); no crea la BD.</summary>
     public async Task SeedDataAsync()
     {
         try
