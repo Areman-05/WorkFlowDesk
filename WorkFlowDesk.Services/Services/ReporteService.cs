@@ -15,6 +15,7 @@ public class ReporteService : IReporteService
         _context = context;
     }
 
+    /// <summary>Obtiene conteos de empleados por estado (Total, Activos, Inactivos, etc.).</summary>
     public async Task<Dictionary<string, int>> ObtenerEstadisticasEmpleadosAsync()
     {
         var empleados = await _context.Empleados.ToListAsync();
