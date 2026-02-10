@@ -24,7 +24,7 @@ Guía rápida para abrir la solución, ejecutar la aplicación e iniciar sesión
 ## 4. Ejecutar la aplicación
 
 1. Pulsa **F5** (con depuración) o **Ctrl+F5** (sin depuración; más rápido para probar).
-2. La primera vez se creará la base de datos en LocalDB y se ejecutará el seed (roles + usuario administrador).
+2. La primera vez se creará la base de datos en LocalDB y se ejecutará el seed (roles + usuario administrador). La ventana de login aparecerá de inmediato.
 
 ## 5. Iniciar sesión
 
