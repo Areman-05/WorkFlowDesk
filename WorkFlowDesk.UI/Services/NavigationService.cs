@@ -29,16 +29,19 @@ public class NavigationService
         _contentArea?.SetCurrentValue(ContentControl.ContentProperty, view);
     }
 
+    /// <summary>Navega a una nueva instancia de la vista indicada por tipo.</summary>
     public void NavigateTo<T>() where T : UserControl, new()
     {
         NavigateTo(new T());
     }
 
+    /// <summary>Indica si hay una vista anterior en el historial.</summary>
     public bool CanGoBack()
     {
         return _navigationHistory.Count > 0;
     }
 
+    /// <summary>Vuelve a la vista anterior en el historial.</summary>
     public void GoBack()
     {
         if (CanGoBack())
@@ -49,6 +52,7 @@ public class NavigationService
         }
     }
 
+    /// <summary>Limpia el historial de navegación.</summary>
     public void ClearHistory()
     {
         _navigationHistory.Clear();
