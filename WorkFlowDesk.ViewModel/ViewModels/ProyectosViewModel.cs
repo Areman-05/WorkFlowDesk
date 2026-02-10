@@ -13,6 +13,7 @@ public class ProyectosViewModel : ViewModelBase
     private IEnumerable<Proyecto> _proyectos = new List<Proyecto>();
     private Proyecto? _proyectoSeleccionado;
 
+    /// <summary>Construye el ViewModel e inicia la carga de proyectos.</summary>
     public ProyectosViewModel(IProyectoService proyectoService)
     {
         _proyectoService = proyectoService;
