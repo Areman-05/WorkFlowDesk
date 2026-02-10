@@ -16,12 +16,14 @@ public static class NotificationService
         NotificationShown?.Invoke(null, message);
     }
 
+    /// <summary>Muestra un mensaje de error (icono de error).</summary>
     public static void ShowError(string message, string title = "Error")
     {
         ShowNotification(message, title, MessageBoxImage.Error);
         NotificationShown?.Invoke(null, message);
     }
 
+    /// <summary>Muestra un mensaje de advertencia.</summary>
     public static void ShowWarning(string message, string title = "Advertencia")
     {
         ShowNotification(message, title, MessageBoxImage.Warning);
