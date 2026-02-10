@@ -15,6 +15,7 @@ public static class MessageBoxService
             MessageBoxImage.Question);
     }
 
+    /// <summary>Muestra un mensaje de error (icono de error).</summary>
     public static void ShowError(string message, string title = "Error")
     {
         MessageBox.Show(
@@ -24,6 +25,7 @@ public static class MessageBoxService
             MessageBoxImage.Error);
     }
 
+    /// <summary>Muestra un mensaje informativo.</summary>
     public static void ShowInfo(string message, string title = "Información")
     {
         MessageBox.Show(
@@ -33,6 +35,7 @@ public static class MessageBoxService
             MessageBoxImage.Information);
     }
 
+    /// <summary>Muestra un mensaje de advertencia.</summary>
     public static void ShowWarning(string message, string title = "Advertencia")
     {
         MessageBox.Show(
