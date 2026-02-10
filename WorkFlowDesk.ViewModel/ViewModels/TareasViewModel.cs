@@ -14,6 +14,7 @@ public class TareasViewModel : ViewModelBase
     private Tarea? _tareaSeleccionada;
     private EstadoTarea? _filtroEstado;
 
+    /// <summary>Construye el ViewModel e inicia la carga de tareas.</summary>
     public TareasViewModel(ITareaService tareaService)
     {
         _tareaService = tareaService;
