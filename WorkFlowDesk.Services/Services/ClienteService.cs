@@ -15,6 +15,7 @@ public class ClienteService : IClienteService
         _context = context;
     }
 
+    /// <summary>Obtiene un cliente por ID con sus proyectos cargados.</summary>
     public async Task<Cliente?> GetByIdAsync(int id)
     {
         return await _context.Clientes
