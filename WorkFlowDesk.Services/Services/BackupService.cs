@@ -18,6 +18,7 @@ public class BackupService : IBackupService
         _context = context;
     }
 
+    /// <summary>Crea un backup (metadatos) en la ruta indicada o en la carpeta Backups.</summary>
     public async Task<string> CreateBackupAsync(string? backupPath = null)
     {
         var directory = backupPath ?? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Backups");
