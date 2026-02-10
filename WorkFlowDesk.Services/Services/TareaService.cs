@@ -15,6 +15,7 @@ public class TareaService : ITareaService
         _context = context;
     }
 
+    /// <summary>Obtiene una tarea por ID con asignado, proyecto y comentarios.</summary>
     public async Task<Tarea?> GetByIdAsync(int id)
     {
         return await _context.Tareas
