@@ -30,6 +30,7 @@ public static class NotificationService
         NotificationShown?.Invoke(null, message);
     }
 
+    /// <summary>Muestra un mensaje informativo.</summary>
     public static void ShowInfo(string message, string title = "Información")
     {
         ShowNotification(message, title, MessageBoxImage.Information);
