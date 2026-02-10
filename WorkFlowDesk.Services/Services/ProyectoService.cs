@@ -15,6 +15,7 @@ public class ProyectoService : IProyectoService
         _context = context;
     }
 
+    /// <summary>Obtiene un proyecto por ID con cliente y responsable cargados.</summary>
     public async Task<Proyecto?> GetByIdAsync(int id)
     {
         return await _context.Proyectos
