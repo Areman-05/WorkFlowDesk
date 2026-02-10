@@ -36,6 +36,7 @@ public class AuthenticationService : IAuthenticationService
         return usuario;
     }
 
+    /// <summary>Cambia la contraseña del usuario si la actual es correcta.</summary>
     public async Task<bool> CambiarPasswordAsync(int usuarioId, string passwordActual, string passwordNuevo)
     {
         var usuario = await _context.Usuarios.FindAsync(usuarioId);
