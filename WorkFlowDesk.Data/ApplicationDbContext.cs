@@ -6,6 +6,7 @@ namespace WorkFlowDesk.Data;
 /// <summary>Contexto de Entity Framework para la base de datos de la aplicación.</summary>
 public class ApplicationDbContext : DbContext
 {
+    /// <summary>Construye el contexto con las opciones de conexión inyectadas.</summary>
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
