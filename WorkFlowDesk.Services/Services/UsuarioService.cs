@@ -11,12 +11,14 @@ public class UsuarioService : IUsuarioService
     private readonly ApplicationDbContext _context;
     private readonly IPasswordHasherService _passwordHasher;
 
+    /// <summary>Inicializa el servicio con el contexto y el hasher de contraseñas.</summary>
     public UsuarioService(ApplicationDbContext context, IPasswordHasherService passwordHasher)
     {
         _context = context;
         _passwordHasher = passwordHasher;
     }
 
+    /// <summary>Obtiene un usuario por ID con su rol cargado.</summary>
     public async Task<Usuario?> GetByIdAsync(int id)
     {
         return await _context.Usuarios
@@ -31,6 +33,7 @@ public class UsuarioService : IUsuarioService
             .ToListAsync();
     }
 
+    /// <summary>Crea un usuario con la contraseña hasheada.</summary>
     public async Task<Usuario> CreateAsync(Usuario usuario, string password)
     {
         usuario.PasswordHash = _passwordHasher.HashPassword(password);
