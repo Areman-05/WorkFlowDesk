@@ -6,6 +6,7 @@ namespace WorkFlowDesk.Services.Services;
 /// <summary>Servicio de exportación a CSV y texto.</summary>
 public class ExportService : IExportService
 {
+    /// <summary>Exporta una colección a un archivo CSV en la carpeta Exports.</summary>
     public async Task<string> ExportToCsvAsync<T>(IEnumerable<T> data, string fileName)
     {
         var directory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Exports");
@@ -37,6 +38,7 @@ public class ExportService : IExportService
         return filePath;
     }
 
+    /// <summary>Exporta una colección a un archivo de texto usando el formateador indicado.</summary>
     public async Task<string> ExportToTextAsync<T>(IEnumerable<T> data, string fileName, Func<T, string> formatter)
     {
         var directory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Exports");
