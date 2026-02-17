@@ -10,6 +10,7 @@ public class ReporteService : IReporteService
 {
     private readonly ApplicationDbContext _context;
 
+    /// <summary>Inicializa el servicio con el contexto de base de datos.</summary>
     public ReporteService(ApplicationDbContext context)
     {
         _context = context;
