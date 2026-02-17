@@ -39,6 +39,7 @@ public class ClienteService : IClienteService
             .ToListAsync();
     }
 
+    /// <summary>Crea un nuevo cliente en la base de datos.</summary>
     public async Task<Cliente> CreateAsync(Cliente cliente)
     {
         cliente.FechaCreacion = DateTime.Now;
