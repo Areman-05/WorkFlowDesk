@@ -24,6 +24,7 @@ public class ProyectoService : IProyectoService
             .FirstOrDefaultAsync(p => p.Id == id);
     }
 
+    /// <summary>Obtiene todos los proyectos con cliente y responsable.</summary>
     public async Task<IEnumerable<Proyecto>> GetAllAsync()
     {
         return await _context.Proyectos
