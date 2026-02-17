@@ -30,6 +30,7 @@ public class ReporteService : IReporteService
         };
     }
 
+    /// <summary>Obtiene conteos de proyectos por estado.</summary>
     public async Task<Dictionary<string, int>> ObtenerEstadisticasProyectosAsync()
     {
         var proyectos = await _context.Proyectos.ToListAsync();
@@ -44,6 +45,7 @@ public class ReporteService : IReporteService
         };
     }
 
+    /// <summary>Obtiene conteos de tareas por estado y prioridad.</summary>
     public async Task<Dictionary<string, int>> ObtenerEstadisticasTareasAsync()
     {
         var tareas = await _context.Tareas.ToListAsync();
@@ -58,6 +60,7 @@ public class ReporteService : IReporteService
         };
     }
 
+    /// <summary>Obtiene total de clientes y clientes activos.</summary>
     public async Task<Dictionary<string, int>> ObtenerEstadisticasClientesAsync()
     {
         var clientes = await _context.Clientes.ToListAsync();
