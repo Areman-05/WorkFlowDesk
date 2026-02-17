@@ -24,6 +24,7 @@ public class EmpleadoService : IEmpleadoService
             .FirstOrDefaultAsync(e => e.Id == id);
     }
 
+    /// <summary>Obtiene todos los empleados con su usuario asociado.</summary>
     public async Task<IEnumerable<Empleado>> GetAllAsync()
     {
         return await _context.Empleados
