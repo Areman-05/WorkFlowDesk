@@ -23,6 +23,7 @@ public class ClienteService : IClienteService
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 
+    /// <summary>Obtiene todos los clientes ordenados por nombre.</summary>
     public async Task<IEnumerable<Cliente>> GetAllAsync()
     {
         return await _context.Clientes
