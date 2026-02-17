@@ -44,6 +44,7 @@ public class EmpleadoService : IEmpleadoService
             .ToListAsync();
     }
 
+    /// <summary>Crea un nuevo empleado y opcionalmente su usuario asociado.</summary>
     public async Task<Empleado> CreateAsync(Empleado empleado)
     {
         // Validaciones de negocio
