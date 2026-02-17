@@ -45,12 +45,14 @@ public class UsuarioService : IUsuarioService
         return usuario;
     }
 
+    /// <summary>Actualiza los datos del usuario en la base de datos.</summary>
     public async Task UpdateAsync(Usuario usuario)
     {
         _context.Usuarios.Update(usuario);
         await _context.SaveChangesAsync();
     }
 
+    /// <summary>Desactiva el usuario (borrado lógico) por ID.</summary>
     public async Task DeleteAsync(int id)
     {
         var usuario = await _context.Usuarios.FindAsync(id);
@@ -61,6 +63,7 @@ public class UsuarioService : IUsuarioService
         }
     }
 
+    /// <summary>Comprueba si existe un usuario con el nombre indicado.</summary>
     public async Task<bool> ExistsAsync(string nombreUsuario)
     {
         return await _context.Usuarios.AnyAsync(u => u.NombreUsuario == nombreUsuario);
