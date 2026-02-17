@@ -27,6 +27,7 @@ public class TareaService : ITareaService
             .FirstOrDefaultAsync(t => t.Id == id);
     }
 
+    /// <summary>Obtiene todas las tareas con asignado y proyecto cargados.</summary>
     public async Task<IEnumerable<Tarea>> GetAllAsync()
     {
         return await _context.Tareas
