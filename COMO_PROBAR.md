@@ -68,7 +68,7 @@ La conexión está en **WorkFlowDesk.UI → appsettings.json**:
 "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=WorkFlowDeskDb;Trusted_Connection=True;MultipleActiveResultSets=true"
 ```
 
-Solo necesitas cambiarla si usas otra instancia de SQL Server o otra base de datos.
+Solo necesitas cambiarla si usas otra instancia de SQL Server o otra base de datos. La base de datos se crea en **LocalDB** con nombre `WorkFlowDeskDb`.
 
 ---
 
