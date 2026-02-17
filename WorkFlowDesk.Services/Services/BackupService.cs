@@ -13,6 +13,7 @@ public class BackupService : IBackupService
 {
     private readonly ApplicationDbContext _context;
 
+    /// <summary>Inicializa el servicio con el contexto de base de datos.</summary>
     public BackupService(ApplicationDbContext context)
     {
         _context = context;
