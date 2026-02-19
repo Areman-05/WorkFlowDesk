@@ -12,6 +12,7 @@ public static class ServiceLocator
 {
     private static ServiceProvider? _serviceProvider;
 
+    /// <summary>Registra todos los servicios y construye el proveedor de dependencias.</summary>
     public static void ConfigureServices()
     {
         var services = new ServiceCollection();
