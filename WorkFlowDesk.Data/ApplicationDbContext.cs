@@ -20,6 +20,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<Tarea> Tareas { get; set; }
     public DbSet<ComentarioTarea> ComentariosTareas { get; set; }
 
+    /// <summary>Configura el modelo de entidades (claves, índices, relaciones).</summary>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
