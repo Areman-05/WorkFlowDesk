@@ -10,6 +10,7 @@ public class TareaService : ITareaService
 {
     private readonly ApplicationDbContext _context;
 
+    /// <summary>Inicializa el servicio con el contexto de base de datos.</summary>
     public TareaService(ApplicationDbContext context)
     {
         _context = context;
@@ -37,6 +38,7 @@ public class TareaService : ITareaService
             .ToListAsync();
     }
 
+    /// <summary>Obtiene las tareas filtradas por estado.</summary>
     public async Task<IEnumerable<Tarea>> GetByEstadoAsync(EstadoTarea estado)
     {
         return await _context.Tareas
@@ -47,6 +49,7 @@ public class TareaService : ITareaService
             .ToListAsync();
     }
 
+    /// <summary>Obtiene las tareas de un proyecto por ID de proyecto.</summary>
     public async Task<IEnumerable<Tarea>> GetByProyectoAsync(int proyectoId)
     {
         return await _context.Tareas
@@ -56,6 +59,7 @@ public class TareaService : ITareaService
             .ToListAsync();
     }
 
+    /// <summary>Obtiene las tareas asignadas a un empleado por ID.</summary>
     public async Task<IEnumerable<Tarea>> GetByAsignadoAsync(int empleadoId)
     {
         return await _context.Tareas
