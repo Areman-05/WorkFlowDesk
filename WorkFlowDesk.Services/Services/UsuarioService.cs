@@ -26,6 +26,7 @@ public class UsuarioService : IUsuarioService
             .FirstOrDefaultAsync(u => u.Id == id);
     }
 
+    /// <summary>Obtiene todos los usuarios con su rol cargado.</summary>
     public async Task<IEnumerable<Usuario>> GetAllAsync()
     {
         return await _context.Usuarios

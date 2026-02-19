@@ -65,6 +65,7 @@ public class TareaService : ITareaService
             .ToListAsync();
     }
 
+    /// <summary>Crea una nueva tarea en la base de datos.</summary>
     public async Task<Tarea> CreateAsync(Tarea tarea)
     {
         tarea.FechaCreacion = DateTime.Now;
@@ -73,12 +74,14 @@ public class TareaService : ITareaService
         return tarea;
     }
 
+    /// <summary>Actualiza los datos de la tarea.</summary>
     public async Task UpdateAsync(Tarea tarea)
     {
         _context.Tareas.Update(tarea);
         await _context.SaveChangesAsync();
     }
 
+    /// <summary>Cancela la tarea (estado Cancelada) por ID.</summary>
     public async Task DeleteAsync(int id)
     {
         var tarea = await _context.Tareas.FindAsync(id);
@@ -89,6 +92,7 @@ public class TareaService : ITareaService
         }
     }
 
+    /// <summary>Añade un comentario a una tarea.</summary>
     public async Task AgregarComentarioAsync(int tareaId, ComentarioTarea comentario)
     {
         comentario.TareaId = tareaId;
