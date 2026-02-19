@@ -69,6 +69,7 @@ public class EmpleadoService : IEmpleadoService
         return empleado;
     }
 
+    /// <summary>Actualiza los datos del empleado; valida email único.</summary>
     public async Task UpdateAsync(Empleado empleado)
     {
         var existing = await GetByIdAsync(empleado.Id);
@@ -87,6 +88,7 @@ public class EmpleadoService : IEmpleadoService
         await _context.SaveChangesAsync();
     }
 
+    /// <summary>Da de baja al empleado (estado Baja y fecha) por ID.</summary>
     public async Task DeleteAsync(int id)
     {
         var empleado = await _context.Empleados.FindAsync(id);
@@ -98,6 +100,7 @@ public class EmpleadoService : IEmpleadoService
         }
     }
 
+    /// <summary>Comprueba si existe un empleado con el email indicado.</summary>
     public async Task<bool> ExistsAsync(string email)
     {
         return await _context.Empleados.AnyAsync(e => e.Email == email);
