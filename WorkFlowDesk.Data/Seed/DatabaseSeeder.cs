@@ -50,6 +50,7 @@ public static class DatabaseSeeder
         return Convert.ToBase64String(hashedBytes);
     }
 
+    /// <summary>Inserta los roles por defecto (Admin, Supervisor, Empleado) si no existen.</summary>
     private static async Task SeedRolesAsync(ApplicationDbContext context)
     {
         if (await context.Roles.AnyAsync())
