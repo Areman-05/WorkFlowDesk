@@ -11,6 +11,7 @@ public class EmpleadoService : IEmpleadoService
 {
     private readonly ApplicationDbContext _context;
 
+    /// <summary>Inicializa el servicio con el contexto de base de datos.</summary>
     public EmpleadoService(ApplicationDbContext context)
     {
         _context = context;
@@ -34,6 +35,7 @@ public class EmpleadoService : IEmpleadoService
             .ToListAsync();
     }
 
+    /// <summary>Obtiene solo los empleados en estado Activo.</summary>
     public async Task<IEnumerable<Empleado>> GetActivosAsync()
     {
         return await _context.Empleados
