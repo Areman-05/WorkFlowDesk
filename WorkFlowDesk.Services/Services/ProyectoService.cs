@@ -10,6 +10,7 @@ public class ProyectoService : IProyectoService
 {
     private readonly ApplicationDbContext _context;
 
+    /// <summary>Inicializa el servicio con el contexto de base de datos.</summary>
     public ProyectoService(ApplicationDbContext context)
     {
         _context = context;
@@ -34,6 +35,7 @@ public class ProyectoService : IProyectoService
             .ToListAsync();
     }
 
+    /// <summary>Obtiene los proyectos filtrados por estado.</summary>
     public async Task<IEnumerable<Proyecto>> GetByEstadoAsync(EstadoProyecto estado)
     {
         return await _context.Proyectos
