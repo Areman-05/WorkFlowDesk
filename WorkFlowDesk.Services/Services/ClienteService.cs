@@ -10,6 +10,7 @@ public class ClienteService : IClienteService
 {
     private readonly ApplicationDbContext _context;
 
+    /// <summary>Inicializa el servicio con el contexto de base de datos.</summary>
     public ClienteService(ApplicationDbContext context)
     {
         _context = context;
