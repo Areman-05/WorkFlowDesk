@@ -31,6 +31,7 @@ public class ClienteService : IClienteService
             .ToListAsync();
     }
 
+    /// <summary>Obtiene solo los clientes activos ordenados por nombre.</summary>
     public async Task<IEnumerable<Cliente>> GetActivosAsync()
     {
         return await _context.Clientes
@@ -48,12 +49,14 @@ public class ClienteService : IClienteService
         return cliente;
     }
 
+    /// <summary>Actualiza los datos del cliente en la base de datos.</summary>
     public async Task UpdateAsync(Cliente cliente)
     {
         _context.Clientes.Update(cliente);
         await _context.SaveChangesAsync();
     }
 
+    /// <summary>Desactiva el cliente (borrado lógico) por ID.</summary>
     public async Task DeleteAsync(int id)
     {
         var cliente = await _context.Clientes.FindAsync(id);
@@ -64,6 +67,7 @@ public class ClienteService : IClienteService
         }
     }
 
+    /// <summary>Comprueba si existe un cliente con el email indicado.</summary>
     public async Task<bool> ExistsAsync(string email)
     {
         return await _context.Clientes.AnyAsync(c => c.Email == email);
