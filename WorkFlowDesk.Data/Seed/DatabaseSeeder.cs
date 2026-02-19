@@ -19,6 +19,7 @@ public static class DatabaseSeeder
         await context.SaveChangesAsync();
     }
 
+    /// <summary>Crea el usuario administrador por defecto si no existe.</summary>
     private static async Task SeedAdminUserAsync(ApplicationDbContext context)
     {
         if (await context.Usuarios.AnyAsync(u => u.NombreUsuario == DefaultAdminUserName))
