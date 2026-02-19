@@ -33,7 +33,7 @@ Guía rápida para abrir la solución, ejecutar la aplicación e iniciar sesión
 
 La primera vez que abras la app, la base de datos se crea en segundo plano. Si pulsas **Iniciar sesión** y sale "Usuario o contraseña incorrectos", espera 2–3 segundos y vuelve a pulsar **Iniciar sesión**.
 
-Tras iniciar sesión se abrirá la ventana principal con el menú lateral (Dashboard, Empleados, Proyectos, Tareas, Clientes, Reportes, Configuración).
+Tras iniciar sesión se abrirá la ventana principal con el menú lateral (Dashboard, Empleados, Proyectos, Tareas, Clientes, Reportes, Configuración). Desde el menú puedes navegar a cada sección.
 
 ## 6. Si algo falla
 
