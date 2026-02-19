@@ -11,6 +11,7 @@ public class DatabaseInitializationService : IDatabaseInitializationService
 {
     private readonly ApplicationDbContext _context;
 
+    /// <summary>Inicializa el servicio con el contexto de base de datos.</summary>
     public DatabaseInitializationService(ApplicationDbContext context)
     {
         _context = context;
