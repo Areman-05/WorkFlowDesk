@@ -44,6 +44,7 @@ public class ProyectoService : IProyectoService
             .ToListAsync();
     }
 
+    /// <summary>Crea un nuevo proyecto en la base de datos.</summary>
     public async Task<Proyecto> CreateAsync(Proyecto proyecto)
     {
         proyecto.FechaCreacion = DateTime.Now;
@@ -52,12 +53,14 @@ public class ProyectoService : IProyectoService
         return proyecto;
     }
 
+    /// <summary>Actualiza los datos del proyecto.</summary>
     public async Task UpdateAsync(Proyecto proyecto)
     {
         _context.Proyectos.Update(proyecto);
         await _context.SaveChangesAsync();
     }
 
+    /// <summary>Cancela el proyecto (estado Cancelado) por ID.</summary>
     public async Task DeleteAsync(int id)
     {
         var proyecto = await _context.Proyectos.FindAsync(id);
