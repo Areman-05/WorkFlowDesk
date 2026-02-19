@@ -11,6 +11,7 @@ public class AuthenticationService : IAuthenticationService
     private readonly ApplicationDbContext _context;
     private readonly IPasswordHasherService _passwordHasher;
 
+    /// <summary>Inicializa el servicio con el contexto y el hasher de contraseñas.</summary>
     public AuthenticationService(ApplicationDbContext context, IPasswordHasherService passwordHasher)
     {
         _context = context;
