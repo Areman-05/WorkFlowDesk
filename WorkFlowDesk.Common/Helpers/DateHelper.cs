@@ -9,6 +9,7 @@ public static class DateHelper
         return date?.ToString("dd/MM/yyyy") ?? string.Empty;
     }
 
+    /// <summary>Formatea la fecha con hora como dd/MM/yyyy HH:mm.</summary>
     public static string ToLongDateString(DateTime? date)
     {
         return date?.ToString("dd/MM/yyyy HH:mm") ?? string.Empty;
