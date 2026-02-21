@@ -1,5 +1,6 @@
 namespace WorkFlowDesk.Domain.Entities;
 
+/// <summary>Entidad de usuario del sistema (login, rol, perfil).</summary>
 public class Usuario
 {
     public int Id { get; set; }
