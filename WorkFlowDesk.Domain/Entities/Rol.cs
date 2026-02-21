@@ -7,6 +7,7 @@ public enum TipoRol
     Empleado = 3
 }
 
+/// <summary>Entidad de rol de usuario (Admin, Supervisor, Empleado).</summary>
 public class Rol
 {
     public int Id { get; set; }
