@@ -26,6 +26,7 @@ public static class SessionService
     public static event EventHandler? SessionStarted;
     public static event EventHandler? SessionEnded;
 
+    /// <summary>Establece el usuario actual y marca el inicio de sesión.</summary>
     public static void SetCurrentUser(Usuario usuario)
     {
         CurrentUser = usuario;
