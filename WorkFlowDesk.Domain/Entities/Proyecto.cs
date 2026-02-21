@@ -9,6 +9,7 @@ public enum EstadoProyecto
     Cancelado = 5
 }
 
+/// <summary>Entidad de proyecto (trabajo para un cliente con estado y fechas).</summary>
 public class Proyecto
 {
     public int Id { get; set; }
