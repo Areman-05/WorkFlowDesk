@@ -17,6 +17,7 @@ public enum EstadoTarea
     Cancelada = 5
 }
 
+/// <summary>Entidad de tarea (trabajo asignable con prioridad y estado).</summary>
 public class Tarea
 {
     public int Id { get; set; }
