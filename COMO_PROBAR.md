@@ -72,4 +72,4 @@ Solo necesitas cambiarla si usas otra instancia de SQL Server o otra base de dat
 
 ---
 
-**Ver también:** Requisitos (sección 1) para instalar LocalDB si aún no lo tienes.
+**Ver también:** Requisitos (sección 1) para instalar LocalDB si aún no lo tienes. Para más ayuda, revisa la sección 6 (Si algo falla).
