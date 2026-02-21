@@ -1,5 +1,6 @@
 namespace WorkFlowDesk.Domain.Entities;
 
+/// <summary>Entidad de cliente (empresa o persona que encarga proyectos).</summary>
 public class Cliente
 {
     public int Id { get; set; }
