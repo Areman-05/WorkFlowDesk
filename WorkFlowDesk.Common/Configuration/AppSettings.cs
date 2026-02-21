@@ -30,6 +30,7 @@ public static class AppConfig
         set => _settings = value;
     }
 
+    /// <summary>Carga la configuración desde un archivo (por defecto usa valores por defecto).</summary>
     public static void LoadFromFile(string filePath)
     {
         // Por ahora retornamos configuración por defecto
