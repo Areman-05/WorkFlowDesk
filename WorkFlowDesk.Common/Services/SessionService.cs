@@ -18,8 +18,10 @@ public static class SessionService
     /// <summary>Indica si hay un usuario autenticado.</summary>
     public static bool IsAuthenticated => CurrentUser != null;
 
+    /// <summary>Fecha y hora de inicio de la sesión actual.</summary>
     public static DateTime? SessionStartTime => _sessionStartTime;
 
+    /// <summary>Tiempo transcurrido desde el inicio de sesión.</summary>
     public static TimeSpan? SessionDuration => _sessionStartTime.HasValue 
         ? DateTime.Now - _sessionStartTime.Value 
         : null;
