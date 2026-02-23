@@ -7,6 +7,7 @@ public static class CurrencyHelper
 {
     private static readonly CultureInfo DefaultCulture = new("es-ES");
 
+    /// <summary>Formatea un importe como moneda con símbolo (p. ej. 1.234,56 €).</summary>
     public static string FormatCurrency(decimal amount, string currencySymbol = "€")
     {
         return $"{amount:N2} {currencySymbol}";
