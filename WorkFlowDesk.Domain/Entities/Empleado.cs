@@ -8,6 +8,7 @@ public enum EstadoEmpleado
     Baja = 4
 }
 
+/// <summary>Entidad de empleado (datos laborales y vínculo con usuario).</summary>
 public class Empleado
 {
     public int Id { get; set; }
