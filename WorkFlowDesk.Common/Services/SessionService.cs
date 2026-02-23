@@ -15,6 +15,7 @@ public static class SessionService
         private set => _currentUser = value;
     }
 
+    /// <summary>Indica si hay un usuario autenticado.</summary>
     public static bool IsAuthenticated => CurrentUser != null;
 
     public static DateTime? SessionStartTime => _sessionStartTime;
