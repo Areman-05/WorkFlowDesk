@@ -29,7 +29,9 @@ Guía rápida para abrir la solución, ejecutar la aplicación e iniciar sesión
 ## 5. Iniciar sesión
 
 - **Usuario:** `admin`  
-- **Contraseña:** `Admin123`
+- **Contraseña:** `Admin123`  
+
+Escribe exactamente así (A mayúscula en Admin123).
 
 La primera vez que abras la app, la base de datos se crea en segundo plano. Si pulsas **Iniciar sesión** y sale "Usuario o contraseña incorrectos", espera 2–3 segundos y vuelve a pulsar **Iniciar sesión**.
 
