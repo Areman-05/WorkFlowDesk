@@ -7,6 +7,7 @@ namespace WorkFlowDesk.Common.Helpers;
 /// <summary>Formateo de texto (mayúsculas, título, truncar, etc.).</summary>
 public static class TextFormatter
 {
+    /// <summary>Pone la primera letra en mayúscula y el resto en minúsculas.</summary>
     public static string CapitalizeFirstLetter(string text)
     {
         if (string.IsNullOrWhiteSpace(text))
