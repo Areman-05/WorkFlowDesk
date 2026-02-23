@@ -40,6 +40,7 @@ public class Tarea
     public ICollection<ComentarioTarea> Comentarios { get; set; } = new List<ComentarioTarea>();
 }
 
+/// <summary>Comentario asociado a una tarea (autor y contenido).</summary>
 public class ComentarioTarea
 {
     public int Id { get; set; }
