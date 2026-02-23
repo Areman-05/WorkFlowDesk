@@ -5,6 +5,7 @@ namespace WorkFlowDesk.Common.Helpers;
 /// <summary>Filtrado de colecciones por texto o propiedad.</summary>
 public static class SearchHelper
 {
+    /// <summary>Filtra una colección por texto en alguna de las propiedades indicadas.</summary>
     public static IEnumerable<T> FilterByText<T>(IEnumerable<T> items, string searchText, params Func<T, string>[] propertySelectors)
     {
         if (string.IsNullOrWhiteSpace(searchText))
@@ -21,6 +22,7 @@ public static class SearchHelper
         );
     }
 
+    /// <summary>Filtra por igualdad en una propiedad (p. ej. estado o prioridad).</summary>
     public static IEnumerable<T> FilterByProperty<T, TProperty>(
         IEnumerable<T> items,
         Expression<Func<T, TProperty>> propertySelector,
