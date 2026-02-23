@@ -15,11 +15,13 @@ public static class DateHelper
         return date?.ToString("dd/MM/yyyy HH:mm") ?? string.Empty;
     }
 
+    /// <summary>Comprueba si una fecha está dentro del rango [startDate, endDate].</summary>
     public static bool IsDateInRange(DateTime date, DateTime startDate, DateTime endDate)
     {
         return date >= startDate && date <= endDate;
     }
 
+    /// <summary>Calcula el número de días entre dos fechas.</summary>
     public static int DaysBetween(DateTime startDate, DateTime endDate)
     {
         return (endDate - startDate).Days;
