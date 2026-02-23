@@ -2,6 +2,7 @@ using WorkFlowDesk.Domain.Entities;
 
 namespace WorkFlowDesk.Data.Repositories;
 
+/// <summary>Repositorio de usuarios con búsqueda por nombre y email.</summary>
 public interface IUsuarioRepository : IRepository<Usuario>
 {
     Task<Usuario?> GetByNombreUsuarioAsync(string nombreUsuario);
