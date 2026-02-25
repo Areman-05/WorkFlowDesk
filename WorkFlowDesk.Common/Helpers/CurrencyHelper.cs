@@ -13,6 +13,7 @@ public static class CurrencyHelper
         return $"{amount:N2} {currencySymbol}";
     }
 
+    /// <summary>Formatea un importe nullable; devuelve cadena vacía si es null.</summary>
     public static string FormatCurrency(decimal? amount, string currencySymbol = "€")
     {
         if (!amount.HasValue)
@@ -34,6 +35,7 @@ public static class CurrencyHelper
         return FormatCurrency(amount.Value, currencySymbol);
     }
 
+    /// <summary>Intenta parsear una cadena como importe (acepta €, $, espacios).</summary>
     public static decimal? ParseCurrency(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
@@ -55,11 +57,13 @@ public static class CurrencyHelper
         return null;
     }
 
+    /// <summary>Formatea un valor como porcentaje (p. ej. 12,50%).</summary>
     public static string FormatPercentage(decimal value, int decimals = 2)
     {
         return $"{value.ToString($"F{decimals}", DefaultCulture)}%";
     }
 
+    /// <summary>Formatea un porcentaje nullable; cadena vacía si es null.</summary>
     public static string FormatPercentage(decimal? value, int decimals = 2)
     {
         if (!value.HasValue)
