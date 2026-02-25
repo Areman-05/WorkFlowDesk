@@ -3,8 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WorkFlowDesk.Data.Extensions;
 
+/// <summary>Extensiones para IQueryable (Include múltiple, WhereIf, Paginate).</summary>
 public static class QueryableExtensions
 {
+    /// <summary>Aplica varios Include a la consulta.</summary>
     public static IQueryable<T> IncludeMultiple<T>(this IQueryable<T> query, params Expression<Func<T, object>>[] includes) where T : class
     {
         return includes.Aggregate(query, (current, include) => current.Include(include));
