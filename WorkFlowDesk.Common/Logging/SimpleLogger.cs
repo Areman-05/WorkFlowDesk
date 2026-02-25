@@ -2,6 +2,7 @@ using System.IO;
 
 namespace WorkFlowDesk.Common.Logging;
 
+/// <summary>Registro de mensajes en archivo por día (INFO, WARNING, ERROR).</summary>
 public static class SimpleLogger
 {
     private static readonly string LogFilePath = Path.Combine(
