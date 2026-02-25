@@ -16,6 +16,7 @@ public static class TextFormatter
         return char.ToUpper(text[0]) + text.Substring(1).ToLower();
     }
 
+    /// <summary>Convierte el texto a formato título (primera letra de cada palabra en mayúscula).</summary>
     public static string ToTitleCase(string text)
     {
         if (string.IsNullOrWhiteSpace(text))
@@ -25,6 +26,7 @@ public static class TextFormatter
         return textInfo.ToTitleCase(text.ToLower());
     }
 
+    /// <summary>Elimina acentos y diacríticos del texto.</summary>
     public static string RemoveAccents(string text)
     {
         if (string.IsNullOrWhiteSpace(text))
@@ -45,6 +47,7 @@ public static class TextFormatter
         return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
     }
 
+    /// <summary>Trunca el texto al máximo de caracteres y añade sufijo si aplica.</summary>
     public static string Truncate(string text, int maxLength, string suffix = "...")
     {
         if (string.IsNullOrWhiteSpace(text) || text.Length <= maxLength)
@@ -53,6 +56,7 @@ public static class TextFormatter
         return text.Substring(0, maxLength - suffix.Length) + suffix;
     }
 
+    /// <summary>Elimina caracteres que no sean letras, números o espacios.</summary>
     public static string RemoveSpecialCharacters(string text)
     {
         if (string.IsNullOrWhiteSpace(text))
@@ -61,6 +65,7 @@ public static class TextFormatter
         return Regex.Replace(text, @"[^a-zA-Z0-9\s]", string.Empty);
     }
 
+    /// <summary>Formatea un número de 9 dígitos como XXX XXX XXX.</summary>
     public static string FormatPhoneNumber(string phone)
     {
         if (string.IsNullOrWhiteSpace(phone))
