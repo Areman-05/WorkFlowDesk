@@ -1,5 +1,6 @@
 namespace WorkFlowDesk.UI.Helpers;
 
+/// <summary>Textos de tooltip para controles de formularios.</summary>
 public static class FormTooltips
 {
     public const string Nombre = "Ingrese el nombre completo";
