@@ -16,11 +16,13 @@ public static class EnumHelper
         return attribute?.Description ?? value.ToString();
     }
 
+    /// <summary>Devuelve todos los valores del enum.</summary>
     public static IEnumerable<T> GetAllValues<T>() where T : Enum
     {
         return Enum.GetValues(typeof(T)).Cast<T>();
     }
 
+    /// <summary>Intenta parsear una cadena al enum (insensible a mayúsculas).</summary>
     public static T? ParseEnum<T>(string value) where T : struct, Enum
     {
         if (Enum.TryParse<T>(value, true, out var result))
@@ -30,6 +32,7 @@ public static class EnumHelper
         return null;
     }
 
+    /// <summary>Convierte el nombre del enum a texto legible (reemplaza _ por espacio).</summary>
     public static string ToDisplayString(Enum value)
     {
         return value.ToString().Replace("_", " ");
