@@ -1,6 +1,6 @@
 # Cómo probar WorkFlowDesk en Visual Studio 2022
 
-Guía rápida para abrir la solución, ejecutar la aplicación e iniciar sesión con el usuario por defecto.
+Guía rápida para abrir la solución, ejecutar la aplicación e iniciar sesión con el usuario por defecto. Ver también el README principal del repositorio.
 
 ## 1. Requisitos
 
