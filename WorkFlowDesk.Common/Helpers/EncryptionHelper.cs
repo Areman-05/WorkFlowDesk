@@ -6,6 +6,7 @@ namespace WorkFlowDesk.Common.Helpers;
 /// <summary>Encriptación AES y generación de claves.</summary>
 public static class EncryptionHelper
 {
+    /// <summary>Cifra el texto con AES usando la clave indicada.</summary>
     public static string Encrypt(string plainText, string key)
     {
         if (string.IsNullOrEmpty(plainText))
