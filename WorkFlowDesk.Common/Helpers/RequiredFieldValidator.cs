@@ -5,6 +5,7 @@ namespace WorkFlowDesk.Common.Helpers;
 /// <summary>Validador de campos requeridos.</summary>
 public static class RequiredFieldValidator
 {
+    /// <summary>Comprueba que el valor no sea null ni blanco.</summary>
     public static ValidationResult? ValidateRequired(string? value, string fieldName)
     {
         if (string.IsNullOrWhiteSpace(value))
