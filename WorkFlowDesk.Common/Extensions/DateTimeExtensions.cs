@@ -1,7 +1,9 @@
 namespace WorkFlowDesk.Common.Extensions;
 
+/// <summary>Extensiones de DateTime (inicio/fin de día, semana, mes).</summary>
 public static class DateTimeExtensions
 {
+    /// <summary>Devuelve la fecha a las 00:00:00 del mismo día.</summary>
     public static DateTime StartOfDay(this DateTime date)
     {
         return date.Date;
