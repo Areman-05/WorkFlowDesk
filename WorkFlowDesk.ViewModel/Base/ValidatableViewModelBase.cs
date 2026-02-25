@@ -13,6 +13,7 @@ public abstract class ValidatableViewModelBase : ViewModelBase, INotifyDataError
 
     public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 
+    /// <summary>Devuelve los errores de validación de una propiedad o de todas.</summary>
     public System.Collections.IEnumerable GetErrors(string? propertyName)
     {
         if (string.IsNullOrEmpty(propertyName))
