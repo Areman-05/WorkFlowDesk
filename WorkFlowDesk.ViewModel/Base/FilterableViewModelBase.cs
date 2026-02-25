@@ -36,6 +36,7 @@ public abstract class FilterableViewModelBase<T> : ViewModelBase
         }
     }
 
+    /// <summary>Aplica el filtro de texto y actualiza ItemsFiltrados.</summary>
     protected virtual void AplicarFiltros()
     {
         var items = ItemsOriginales.AsEnumerable();
