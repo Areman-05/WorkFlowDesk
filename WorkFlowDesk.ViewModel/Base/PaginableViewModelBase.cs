@@ -48,6 +48,7 @@ public abstract class PaginableViewModelBase<T> : ViewModelBase
     public bool TienePaginaAnterior => PaginaActual > 1;
     public bool TienePaginaSiguiente => PaginaActual < TotalPaginas;
 
+    /// <summary>Carga los ítems de la página actual (implementación en derivadas).</summary>
     protected abstract void CargarPagina();
 
     public void IrAPaginaAnterior()
