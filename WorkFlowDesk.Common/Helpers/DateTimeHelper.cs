@@ -3,6 +3,7 @@ namespace WorkFlowDesk.Common.Helpers;
 /// <summary>Utilidades para formatear y parsear fechas.</summary>
 public static class DateTimeHelper
 {
+    /// <summary>Formatea una fecha nullable; cadena vacía si es null.</summary>
     public static string ToDisplayString(DateTime? date, string format = "dd/MM/yyyy")
     {
         return date?.ToString(format) ?? string.Empty;
