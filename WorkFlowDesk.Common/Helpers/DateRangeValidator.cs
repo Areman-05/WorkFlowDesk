@@ -5,6 +5,7 @@ namespace WorkFlowDesk.Common.Helpers;
 /// <summary>Validador de rangos de fechas y fechas en el pasado/futuro.</summary>
 public static class DateRangeValidator
 {
+    /// <summary>Comprueba que la fecha de fin no sea anterior a la de inicio.</summary>
     public static ValidationResult? ValidateDateRange(DateTime startDate, DateTime endDate, string fieldName = "Rango de fechas")
     {
         if (endDate < startDate)
