@@ -3,6 +3,7 @@ namespace WorkFlowDesk.Common.Helpers;
 /// <summary>Utilidades para comparar fechas (hoy, esta semana, este mes, etc.).</summary>
 public static class DateComparisonHelper
 {
+    /// <summary>Indica si la fecha corresponde al día actual.</summary>
     public static bool IsToday(DateTime date)
     {
         return date.Date == DateTime.Today;
