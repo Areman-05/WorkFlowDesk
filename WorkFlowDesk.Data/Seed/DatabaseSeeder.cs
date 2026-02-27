@@ -5,6 +5,7 @@ using WorkFlowDesk.Domain.Entities;
 
 namespace WorkFlowDesk.Data.Seed;
 
+/// <summary>Seed de datos iniciales: roles y usuario administrador.</summary>
 public static class DatabaseSeeder
 {
     /// <summary>Usuario por defecto: admin / Contraseña: Admin123</summary>
