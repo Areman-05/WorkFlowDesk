@@ -15,6 +15,7 @@ public static class DateRangeValidator
         return ValidationResult.Success;
     }
 
+    /// <summary>Valida rango con fechas nullable; éxito si alguna es null.</summary>
     public static ValidationResult? ValidateDateRange(DateTime? startDate, DateTime? endDate, string fieldName = "Rango de fechas")
     {
         if (!startDate.HasValue || !endDate.HasValue)
@@ -23,6 +24,7 @@ public static class DateRangeValidator
         return ValidateDateRange(startDate.Value, endDate.Value, fieldName);
     }
 
+    /// <summary>Comprueba que la fecha no sea anterior a hoy.</summary>
     public static ValidationResult? ValidateDateNotInPast(DateTime date, string fieldName)
     {
         if (date < DateTime.Today)
