@@ -49,5 +49,6 @@ public abstract class FilterableViewModelBase<T> : ViewModelBase
         ItemsFiltrados = new ObservableCollection<T>(items);
     }
 
+    /// <summary>Filtra los ítems por el texto (implementación en derivadas).</summary>
     protected abstract IEnumerable<T> AplicarFiltroTexto(IEnumerable<T> items, string texto);
 }
