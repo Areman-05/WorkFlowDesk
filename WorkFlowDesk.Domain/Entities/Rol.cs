@@ -1,5 +1,6 @@
 namespace WorkFlowDesk.Domain.Entities;
 
+/// <summary>Tipos de rol del sistema (Admin, Supervisor, Empleado).</summary>
 public enum TipoRol
 {
     Admin = 1,
