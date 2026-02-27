@@ -60,6 +60,7 @@ public abstract class PaginableViewModelBase<T> : ViewModelBase
         }
     }
 
+    /// <summary>Pasa a la página siguiente si hay.</summary>
     public void IrAPaginaSiguiente()
     {
         if (TienePaginaSiguiente)
@@ -68,11 +69,13 @@ public abstract class PaginableViewModelBase<T> : ViewModelBase
         }
     }
 
+    /// <summary>Va a la primera página.</summary>
     public void IrAPrimeraPagina()
     {
         PaginaActual = 1;
     }
 
+    /// <summary>Va a la última página.</summary>
     public void IrAUltimaPagina()
     {
         PaginaActual = TotalPaginas;
