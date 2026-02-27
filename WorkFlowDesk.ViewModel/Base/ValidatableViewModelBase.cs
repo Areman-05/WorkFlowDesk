@@ -22,6 +22,7 @@ public abstract class ValidatableViewModelBase : ViewModelBase, INotifyDataError
         return _errors.ContainsKey(propertyName) ? _errors[propertyName] : Enumerable.Empty<string>();
     }
 
+    /// <summary>Añade un error de validación a la propiedad indicada.</summary>
     protected void AddError(string propertyName, string error)
     {
         if (!_errors.ContainsKey(propertyName))
@@ -34,6 +35,7 @@ public abstract class ValidatableViewModelBase : ViewModelBase, INotifyDataError
         }
     }
 
+    /// <summary>Quita un error de validación de la propiedad indicada.</summary>
     protected void RemoveError(string propertyName, string error)
     {
         if (_errors.ContainsKey(propertyName) && _errors[propertyName].Contains(error))
