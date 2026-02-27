@@ -1,5 +1,6 @@
 namespace WorkFlowDesk.Domain.Entities;
 
+/// <summary>Nivel de prioridad de una tarea.</summary>
 public enum PrioridadTarea
 {
     Baja = 1,
@@ -8,6 +9,7 @@ public enum PrioridadTarea
     Critica = 4
 }
 
+/// <summary>Estado del flujo de una tarea.</summary>
 public enum EstadoTarea
 {
     Pendiente = 1,
