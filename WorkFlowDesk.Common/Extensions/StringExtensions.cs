@@ -2,8 +2,10 @@ using System.Text.RegularExpressions;
 
 namespace WorkFlowDesk.Common.Extensions;
 
+/// <summary>Extensiones para string (null/empty, truncar, mayúsculas, etc.).</summary>
 public static class StringExtensions
 {
+    /// <summary>Indica si la cadena es null o vacía.</summary>
     public static bool IsNullOrEmpty(this string? value)
     {
         return string.IsNullOrEmpty(value);
@@ -14,6 +16,7 @@ public static class StringExtensions
         return string.IsNullOrWhiteSpace(value);
     }
 
+    /// <summary>Devuelve el valor o el valor por defecto si es null.</summary>
     public static string ToSafeString(this string? value, string defaultValue = "")
     {
         return value ?? defaultValue;
