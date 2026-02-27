@@ -10,16 +10,19 @@ public static class SimpleLogger
         "logs",
         $"log_{DateTime.Now:yyyyMMdd}.txt");
 
+    /// <summary>Escribe un mensaje de nivel INFO en el log.</summary>
     public static void LogInfo(string message)
     {
         Log("INFO", message);
     }
 
+    /// <summary>Escribe un mensaje de nivel WARNING en el log.</summary>
     public static void LogWarning(string message)
     {
         Log("WARNING", message);
     }
 
+    /// <summary>Escribe un mensaje de nivel ERROR y opcionalmente la excepción.</summary>
     public static void LogError(string message, Exception? exception = null)
     {
         var errorMessage = message;
