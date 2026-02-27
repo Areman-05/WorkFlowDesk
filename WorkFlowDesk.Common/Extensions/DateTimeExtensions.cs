@@ -9,6 +9,7 @@ public static class DateTimeExtensions
         return date.Date;
     }
 
+    /// <summary>Devuelve la fecha al final del mismo día (23:59:59.9999999).</summary>
     public static DateTime EndOfDay(this DateTime date)
     {
         return date.Date.AddDays(1).AddTicks(-1);
