@@ -22,6 +22,7 @@ namespace WorkFlowDesk.UI
             _ = InitializeDatabaseAsync();
         }
 
+        /// <summary>Inicializa la base de datos y el seed en segundo plano.</summary>
         private async Task InitializeDatabaseAsync()
         {
             try
