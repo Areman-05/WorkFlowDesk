@@ -15,6 +15,7 @@ public static class RequiredFieldValidator
         return ValidationResult.Success;
     }
 
+    /// <summary>Comprueba que un valor nullable (struct) tenga valor.</summary>
     public static ValidationResult? ValidateRequired<T>(T? value, string fieldName) where T : struct
     {
         if (!value.HasValue)
