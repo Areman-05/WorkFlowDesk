@@ -39,6 +39,7 @@ public static class EncryptionHelper
         return Convert.ToBase64String(array);
     }
 
+    /// <summary>Descifra texto cifrado con AES usando la clave indicada.</summary>
     public static string Decrypt(string cipherText, string key)
     {
         if (string.IsNullOrEmpty(cipherText))
@@ -66,6 +67,7 @@ public static class EncryptionHelper
         }
     }
 
+    /// <summary>Genera una clave aleatoria alfanumérica del tamaño indicado.</summary>
     public static string GenerateRandomKey(int length = 32)
     {
         const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -74,6 +76,7 @@ public static class EncryptionHelper
             .Select(s => s[random.Next(s.Length)]).ToArray());
     }
 
+    /// <summary>Calcula el hash SHA256 en Base64 del texto indicado.</summary>
     public static string HashString(string input)
     {
         using var sha256 = SHA256.Create();
