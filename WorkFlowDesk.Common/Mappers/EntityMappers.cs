@@ -3,8 +3,10 @@ using WorkFlowDesk.Domain.Entities;
 
 namespace WorkFlowDesk.Common.Mappers;
 
+/// <summary>Mapeo de entidades de dominio a DTOs.</summary>
 public static class EntityMappers
 {
+    /// <summary>Convierte un Empleado a EmpleadoDto.</summary>
     public static EmpleadoDto ToDto(this Empleado empleado)
     {
         return new EmpleadoDto
