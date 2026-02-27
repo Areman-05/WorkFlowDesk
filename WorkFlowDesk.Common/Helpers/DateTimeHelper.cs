@@ -14,6 +14,7 @@ public static class DateTimeHelper
         return date.ToString(format);
     }
 
+    /// <summary>Formatea la fecha con hora (dd/MM/yyyy HH:mm) o cadena vacía si es null.</summary>
     public static string ToLongDisplayString(DateTime? date)
     {
         return date?.ToString("dd/MM/yyyy HH:mm") ?? string.Empty;
