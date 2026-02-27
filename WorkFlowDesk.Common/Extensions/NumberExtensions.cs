@@ -1,5 +1,6 @@
 namespace WorkFlowDesk.Common.Extensions;
 
+/// <summary>Extensiones para números (Clamp, IsBetween).</summary>
 public static class NumberExtensions
 {
     /// <summary>Devuelve el valor limitado al rango [min, max].</summary>
