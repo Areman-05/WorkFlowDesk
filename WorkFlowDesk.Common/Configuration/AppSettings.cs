@@ -13,6 +13,7 @@ public class AppSettings
     public bool EnableNotifications { get; set; } = true;
 }
 
+/// <summary>Punto de acceso global a la configuración de la aplicación.</summary>
 public static class AppConfig
 {
     private static AppSettings? _settings;
