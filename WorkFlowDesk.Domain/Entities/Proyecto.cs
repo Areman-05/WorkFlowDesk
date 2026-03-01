@@ -1,5 +1,6 @@
 namespace WorkFlowDesk.Domain.Entities;
 
+/// <summary>Estado del ciclo de vida de un proyecto.</summary>
 public enum EstadoProyecto
 {
     Planificacion = 1,
