@@ -15,6 +15,7 @@ public static class DateTimeExtensions
         return date.Date.AddDays(1).AddTicks(-1);
     }
 
+    /// <summary>Devuelve el lunes de la semana a la que pertenece la fecha.</summary>
     public static DateTime StartOfWeek(this DateTime date)
     {
         var diff = (7 + (date.DayOfWeek - DayOfWeek.Monday)) % 7;
@@ -26,6 +27,7 @@ public static class DateTimeExtensions
         return date.StartOfWeek().AddDays(6).EndOfDay();
     }
 
+    /// <summary>Devuelve el primer día del mes de la fecha.</summary>
     public static DateTime StartOfMonth(this DateTime date)
     {
         return new DateTime(date.Year, date.Month, 1);
