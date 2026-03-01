@@ -48,6 +48,7 @@ public abstract class ValidatableViewModelBase : ViewModelBase, INotifyDataError
         }
     }
 
+    /// <summary>Elimina todos los errores de validación de la propiedad indicada.</summary>
     protected void ClearErrors(string propertyName)
     {
         if (_errors.ContainsKey(propertyName))
