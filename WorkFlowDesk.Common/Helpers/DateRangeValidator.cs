@@ -34,6 +34,7 @@ public static class DateRangeValidator
         return ValidationResult.Success;
     }
 
+    /// <summary>Comprueba que la fecha no sea posterior a hoy.</summary>
     public static ValidationResult? ValidateDateNotInFuture(DateTime date, string fieldName)
     {
         if (date > DateTime.Today)
@@ -43,6 +44,7 @@ public static class DateRangeValidator
         return ValidationResult.Success;
     }
 
+    /// <summary>Comprueba que la fecha esté dentro del rango [minDate, maxDate].</summary>
     public static ValidationResult? ValidateDateWithinRange(DateTime date, DateTime minDate, DateTime maxDate, string fieldName)
     {
         if (date < minDate || date > maxDate)
