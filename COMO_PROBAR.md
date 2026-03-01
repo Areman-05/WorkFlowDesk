@@ -39,6 +39,8 @@ Tras iniciar sesión se abrirá la ventana principal con el menú lateral (Dashb
 
 ## 6. Si algo falla
 
+Si tras seguir los pasos anteriores algo no funciona, revisa los puntos siguientes.
+
 - **“Unable to locate a Local Database Runtime installation” / “The server was not found or was not accessible”**  
   La aplicación no encuentra **SQL Server LocalDB**. Hay que instalarlo:
   1. Cierra Visual Studio.
