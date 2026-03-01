@@ -25,6 +25,7 @@ public static class RequiredFieldValidator
         return ValidationResult.Success;
     }
 
+    /// <summary>Comprueba que el objeto no sea null.</summary>
     public static ValidationResult? ValidateRequired(object? value, string fieldName)
     {
         if (value == null)
