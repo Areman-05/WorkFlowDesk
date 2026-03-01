@@ -1,5 +1,6 @@
 namespace WorkFlowDesk.Common.Models;
 
+/// <summary>DTO de proyecto para listados y exportación.</summary>
 public class ProyectoDto
 {
     public int Id { get; set; }
