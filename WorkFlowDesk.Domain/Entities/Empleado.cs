@@ -1,5 +1,6 @@
 namespace WorkFlowDesk.Domain.Entities;
 
+/// <summary>Estado laboral del empleado.</summary>
 public enum EstadoEmpleado
 {
     Activo = 1,
