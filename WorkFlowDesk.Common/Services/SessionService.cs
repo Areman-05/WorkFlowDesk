@@ -50,6 +50,7 @@ public static class SessionService
         }
     }
 
+    /// <summary>Indica si el usuario actual tiene el rol indicado.</summary>
     public static bool HasRole(TipoRol rol)
     {
         return CurrentUser?.Rol?.TipoRol == rol;
