@@ -11,6 +11,7 @@ public static class StringExtensions
         return string.IsNullOrEmpty(value);
     }
 
+    /// <summary>Indica si la cadena es null, vacía o solo espacios en blanco.</summary>
     public static bool IsNullOrWhiteSpace(this string? value)
     {
         return string.IsNullOrWhiteSpace(value);
@@ -22,6 +23,7 @@ public static class StringExtensions
         return value ?? defaultValue;
     }
 
+    /// <summary>Trunca la cadena al máximo de caracteres y añade sufijo si aplica.</summary>
     public static string Truncate(this string value, int maxLength, string suffix = "...")
     {
         if (string.IsNullOrEmpty(value) || value.Length <= maxLength)
