@@ -4,6 +4,7 @@ using System.Windows.Data;
 
 namespace WorkFlowDesk.UI.Behaviors;
 
+/// <summary>Helper para binding de PasswordBox (propiedad adjunta Password).</summary>
 public static class PasswordBoxHelper
 {
     public static readonly DependencyProperty PasswordProperty =
