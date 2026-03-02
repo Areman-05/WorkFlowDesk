@@ -1,5 +1,6 @@
 namespace WorkFlowDesk.Common.Models;
 
+/// <summary>DTO de tarea para listados y exportación.</summary>
 public class TareaDto
 {
     public int Id { get; set; }
