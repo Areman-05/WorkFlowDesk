@@ -9,7 +9,9 @@ public interface IRepository<T> where T : class
     Task<T?> GetByIdAsync(int id);
     /// <summary>Obtiene todas las entidades del conjunto.</summary>
     Task<IEnumerable<T>> GetAllAsync();
+    /// <summary>Busca entidades que cumplan el predicado.</summary>
     Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
+    /// <summary>Añade la entidad y persiste los cambios.</summary>
     Task<T> AddAsync(T entity);
     Task UpdateAsync(T entity);
     Task DeleteAsync(T entity);
