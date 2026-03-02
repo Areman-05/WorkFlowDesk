@@ -1,5 +1,6 @@
 namespace WorkFlowDesk.Common.Models;
 
+/// <summary>DTO de empleado para listados y exportación.</summary>
 public class EmpleadoDto
 {
     public int Id { get; set; }
