@@ -54,11 +54,13 @@ public static class DateRangeValidator
         return ValidationResult.Success;
     }
 
+    /// <summary>Indica si el rango es válido (fin >= inicio).</summary>
     public static bool IsValidDateRange(DateTime startDate, DateTime endDate)
     {
         return endDate >= startDate;
     }
 
+    /// <summary>Indica si el rango nullable es válido; true si alguna fecha es null.</summary>
     public static bool IsValidDateRange(DateTime? startDate, DateTime? endDate)
     {
         if (!startDate.HasValue || !endDate.HasValue)
