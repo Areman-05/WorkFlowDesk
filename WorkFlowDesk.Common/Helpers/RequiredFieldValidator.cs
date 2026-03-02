@@ -35,6 +35,7 @@ public static class RequiredFieldValidator
         return ValidationResult.Success;
     }
 
+    /// <summary>Indica si el valor no es null ni blanco.</summary>
     public static bool IsValidRequired(string? value)
     {
         return !string.IsNullOrWhiteSpace(value);
