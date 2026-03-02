@@ -1,5 +1,6 @@
 namespace WorkFlowDesk.Services.Interfaces;
 
+/// <summary>Servicio de reportes y estadísticas (empleados, proyectos, tareas, clientes).</summary>
 public interface IReporteService
 {
     Task<Dictionary<string, int>> ObtenerEstadisticasEmpleadosAsync();
