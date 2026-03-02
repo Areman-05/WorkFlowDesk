@@ -4,7 +4,7 @@ Guía rápida para abrir la solución, ejecutar la aplicación e iniciar sesión
 
 ## 1. Requisitos
 
-- **Visual Studio 2022** (cualquier edición: Community, Professional o Enterprise).
+- **Visual Studio 2022** (recomendada la última actualización). (cualquier edición: Community, Professional o Enterprise).
 - **.NET 8 SDK** (incluido con VS 2022 si instalaste la carga de trabajo “Desarrollo de escritorio .NET”).
 - **SQL Server LocalDB** (viene con Visual Studio al instalar “Desarrollo de almacenamiento y procesamiento de datos” o “Desarrollo de escritorio .NET”).
 
