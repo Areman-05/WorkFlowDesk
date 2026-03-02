@@ -2,6 +2,7 @@ using WorkFlowDesk.Domain.Entities;
 
 namespace WorkFlowDesk.Services.Interfaces;
 
+/// <summary>Servicio de gestión de tareas (CRUD, por estado, proyecto, asignado y comentarios).</summary>
 public interface ITareaService
 {
     Task<Tarea?> GetByIdAsync(int id);
