@@ -22,7 +22,7 @@ public class DatabaseInitializationService : IDatabaseInitializationService
     {
         try
         {
-            await DatabaseConfiguration.EnsureDatabaseCreatedAsync(_context);
+            await DatabaseConfiguration.MigrateDatabaseAsync(_context);
             await DatabaseConfiguration.SeedDatabaseAsync(_context);
         }
         catch (Exception ex)
