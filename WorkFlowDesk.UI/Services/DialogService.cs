@@ -59,8 +59,8 @@ public static class DialogService
         var window = new Window
         {
             Title = viewModel.Titulo,
-            Width = 700,
-            Height = 600,
+            Width = 720,
+            Height = 720,
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
             Owner = Application.Current.MainWindow,
             ResizeMode = ResizeMode.CanResize

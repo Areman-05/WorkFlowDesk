@@ -1,5 +1,8 @@
+using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.Input;
+using WorkFlowDesk.Common.Models;
+using WorkFlowDesk.Common.Services;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.ViewModel.Base;
@@ -16,6 +19,8 @@ public class TareaFormViewModel : ViewModelBase
     private bool _esNuevo;
     private IEnumerable<Proyecto> _proyectos = new List<Proyecto>();
     private IEnumerable<Empleado> _empleados = new List<Empleado>();
+    private ObservableCollection<ComentarioTareaItem> _comentarios = new();
+    private string _nuevoComentario = string.Empty;
 
     public TareaFormViewModel(
         ITareaService tareaService,
@@ -37,11 +42,14 @@ public class TareaFormViewModel : ViewModelBase
         GuardarCommand = new AsyncRelayCommand(GuardarAsync, CanGuardar);
         CancelarCommand = new RelayCommand(Cancelar);
         CargarDatosCommand = new AsyncRelayCommand(CargarDatosAsync);
+        AgregarComentarioCommand = new AsyncRelayCommand(AgregarComentarioAsync, CanAgregarComentario);
         
         CargarDatosCommand.ExecuteAsync(null);
     }
 
     public string Titulo => _esNuevo ? "Nueva Tarea" : "Editar Tarea";
+    public bool EsNuevo => _esNuevo;
+    public bool MuestraComentarios => !_esNuevo;
 
     public string TituloTarea
     {
@@ -132,9 +140,26 @@ public class TareaFormViewModel : ViewModelBase
     public IEnumerable<EstadoTarea> EstadosTarea { get; } =
         Enum.GetValues(typeof(EstadoTarea)).Cast<EstadoTarea>();
 
+    public ObservableCollection<ComentarioTareaItem> Comentarios
+    {
+        get => _comentarios;
+        set => SetProperty(ref _comentarios, value);
+    }
+
+    public string NuevoComentario
+    {
+        get => _nuevoComentario;
+        set
+        {
+            SetProperty(ref _nuevoComentario, value);
+            AgregarComentarioCommand.NotifyCanExecuteChanged();
+        }
+    }
+
     public IAsyncRelayCommand GuardarCommand { get; }
     public IRelayCommand CancelarCommand { get; }
     public IAsyncRelayCommand CargarDatosCommand { get; }
+    public IAsyncRelayCommand AgregarComentarioCommand { get; }
 
     public event EventHandler? Guardado;
     public event EventHandler? Cancelado;
@@ -145,12 +170,84 @@ public class TareaFormViewModel : ViewModelBase
         {
             Proyectos = await _proyectoService.GetAllAsync();
             Empleados = await _empleadoService.GetActivosAsync();
+
+            if (!_esNuevo && _tarea.Id > 0)
+            {
+                var tareaCompleta = await _tareaService.GetByIdAsync(_tarea.Id);
+                if (tareaCompleta != null)
+                {
+                    Comentarios = new ObservableCollection<ComentarioTareaItem>(
+                        tareaCompleta.Comentarios
+                            .OrderByDescending(c => c.FechaCreacion)
+                            .Select(c => new ComentarioTareaItem
+                            {
+                                Contenido = c.Contenido,
+                                Autor = c.Empleado != null
+                                    ? $"{c.Empleado.Nombre} {c.Empleado.Apellidos}"
+                                    : SessionService.GetUserName(),
+                                FechaCreacion = c.FechaCreacion
+                            }));
+                }
+            }
         }
         catch (Exception ex)
         {
             ExceptionHandler.LogException(ex);
             ErrorMessage = ExceptionHandler.HandleException(ex);
         }
+    }
+
+    private bool CanAgregarComentario() =>
+        !_esNuevo && !string.IsNullOrWhiteSpace(NuevoComentario);
+
+    private async Task AgregarComentarioAsync()
+    {
+        if (_esNuevo || _tarea.Id <= 0) return;
+
+        IsLoading = true;
+        ErrorMessage = null;
+
+        try
+        {
+            var empleadoId = await ObtenerEmpleadoIdActualAsync();
+            var comentario = new ComentarioTarea
+            {
+                Contenido = NuevoComentario.Trim(),
+                EmpleadoId = empleadoId
+            };
+
+            await _tareaService.AgregarComentarioAsync(_tarea.Id, comentario);
+            NuevoComentario = string.Empty;
+
+            Comentarios.Insert(0, new ComentarioTareaItem
+            {
+                Contenido = comentario.Contenido,
+                Autor = SessionService.GetUserName(),
+                FechaCreacion = DateTime.Now
+            });
+        }
+        catch (Exception ex)
+        {
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private async Task<int?> ObtenerEmpleadoIdActualAsync()
+    {
+        var usuario = SessionService.CurrentUser;
+        if (usuario == null) return null;
+
+        var empleados = await _empleadoService.GetAllAsync();
+        var empleado = empleados.FirstOrDefault(e => e.UsuarioId == usuario.Id)
+            ?? empleados.FirstOrDefault(e =>
+                e.Email.Equals(usuario.Email, StringComparison.OrdinalIgnoreCase));
+
+        return empleado?.Id;
     }
 
     private bool CanGuardar()
