@@ -14,8 +14,10 @@ public class MainViewModel : ViewModelBase
     public IRelayCommand NavigateToClientesCommand { get; }
     public IRelayCommand NavigateToReportesCommand { get; }
     public IRelayCommand NavigateToConfiguracionCommand { get; }
+    public IRelayCommand LogoutCommand { get; }
 
     public event EventHandler<string>? NavigateRequested;
+    public event EventHandler? LogoutRequested;
 
     /// <summary>Registra los comandos de navegación del menú lateral.</summary>
     public MainViewModel()
@@ -27,5 +29,6 @@ public class MainViewModel : ViewModelBase
         NavigateToClientesCommand = new RelayCommand(() => NavigateRequested?.Invoke(this, "Clientes"));
         NavigateToReportesCommand = new RelayCommand(() => NavigateRequested?.Invoke(this, "Reportes"));
         NavigateToConfiguracionCommand = new RelayCommand(() => NavigateRequested?.Invoke(this, "Configuracion"));
+        LogoutCommand = new RelayCommand(() => LogoutRequested?.Invoke(this, EventArgs.Empty));
     }
 }

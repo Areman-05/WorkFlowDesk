@@ -22,10 +22,23 @@ namespace WorkFlowDesk.UI
             
             _mainViewModel = new MainViewModel();
             _mainViewModel.NavigateRequested += OnNavigateRequested;
+            _mainViewModel.LogoutRequested += OnLogoutRequested;
             DataContext = _mainViewModel;
             
             // Navegar a Dashboard por defecto
             _navigationService.NavigateTo<DashboardView>();
+        }
+
+        private void OnLogoutRequested(object? sender, EventArgs e)
+        {
+            if (NotificationService.ShowConfirmation(
+                    "¿Desea cerrar la sesión actual?",
+                    "Cerrar sesión") != System.Windows.MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            AuthFlowService.LogoutAndShowLogin(this);
         }
 
         private void OnNavigateRequested(object? sender, string viewName)
