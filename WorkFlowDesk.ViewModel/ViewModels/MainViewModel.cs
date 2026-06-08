@@ -1,5 +1,5 @@
 using CommunityToolkit.Mvvm.Input;
-using WorkFlowDesk.Services.Interfaces;
+using WorkFlowDesk.Common.Services;
 using WorkFlowDesk.ViewModel.Base;
 
 namespace WorkFlowDesk.ViewModel.ViewModels;
@@ -7,6 +7,21 @@ namespace WorkFlowDesk.ViewModel.ViewModels;
 /// <summary>ViewModel principal con comandos de navegación al sidebar.</summary>
 public class MainViewModel : ViewModelBase
 {
+    private string _userName = SessionService.GetUserName();
+    private string _userRole = SessionService.GetUserRole();
+
+    public string UserName
+    {
+        get => _userName;
+        set => SetProperty(ref _userName, value);
+    }
+
+    public string UserRole
+    {
+        get => _userRole;
+        set => SetProperty(ref _userRole, value);
+    }
+
     public IRelayCommand NavigateToDashboardCommand { get; }
     public IRelayCommand NavigateToEmpleadosCommand { get; }
     public IRelayCommand NavigateToProyectosCommand { get; }

@@ -15,7 +15,25 @@
 
         <!-- Sidebar -->
         <Border Grid.Column="0" Background="#2C3E50">
-            <StackPanel>
+            <DockPanel LastChildFill="True">
+                <Border DockPanel.Dock="Bottom"
+                        Background="#243342"
+                        Padding="12"
+                        Margin="8,0,8,8">
+                    <StackPanel>
+                        <TextBlock Text="{Binding UserName}"
+                                   Foreground="White"
+                                   FontWeight="SemiBold"
+                                   FontSize="13"
+                                   TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Text="{Binding UserRole}"
+                                   Foreground="#BDC3C7"
+                                   FontSize="11"
+                                   Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <StackPanel Margin="0,0,0,0">
                 <TextBlock Text="WorkFlowDesk" 
                            Foreground="White" 
                            FontSize="20" 
@@ -56,7 +74,8 @@
                         Style="{StaticResource SidebarButtonStyle}"
                         Command="{Binding LogoutCommand}"
                         Margin="10,20,10,10"/>
-            </StackPanel>
+                </StackPanel>
+            </DockPanel>
         </Border>
 
         <!-- Content Area -->
