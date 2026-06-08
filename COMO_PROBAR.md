@@ -64,6 +64,9 @@ Si tras seguir los pasos anteriores algo no funciona, revisa los puntos siguient
 - **La base de datos está vacía o da error**  
   Entra en **Configuración** desde el menú, y usa el botón **Inicializar base de datos** para volver a crear tablas y datos de prueba (incluido el usuario `admin`).
 
+- **Error al aplicar migraciones tras actualizar el código**  
+  Si la BD se creó con una versión antigua (`EnsureCreated`), puede haber conflicto con las migraciones EF. Solución: en SQL Server Management Studio o `sqllocaldb`, elimina la base `WorkFlowDeskDb` y vuelve a ejecutar la app, o usa **Inicializar base de datos** en Configuración.
+
 ## 7. Cadena de conexión
 
 La conexión está en **WorkFlowDesk.UI → appsettings.json**:
