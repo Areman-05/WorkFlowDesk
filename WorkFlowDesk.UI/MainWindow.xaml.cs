@@ -64,27 +64,32 @@ namespace WorkFlowDesk.UI
                     break;
                 case "Empleados":
                     var empleadosService = ServiceLocator.GetService<IEmpleadoService>();
-                    var empleadosViewModel = new EmpleadosViewModel(empleadosService);
+                    var exportService = ServiceLocator.GetService<IExportService>();
+                    var empleadosViewModel = new EmpleadosViewModel(empleadosService, exportService);
                     _navigationService.NavigateTo(new EmpleadosView(empleadosViewModel));
                     break;
                 case "Proyectos":
                     var proyectosService = ServiceLocator.GetService<IProyectoService>();
-                    var proyectosViewModel = new ProyectosViewModel(proyectosService);
+                    var exportProyectos = ServiceLocator.GetService<IExportService>();
+                    var proyectosViewModel = new ProyectosViewModel(proyectosService, exportProyectos);
                     _navigationService.NavigateTo(new ProyectosView(proyectosViewModel));
                     break;
                 case "Tareas":
                     var tareasService = ServiceLocator.GetService<ITareaService>();
-                    var tareasViewModel = new TareasViewModel(tareasService);
+                    var exportTareas = ServiceLocator.GetService<IExportService>();
+                    var tareasViewModel = new TareasViewModel(tareasService, exportTareas);
                     _navigationService.NavigateTo(new TareasView(tareasViewModel));
                     break;
                 case "Clientes":
                     var clientesService = ServiceLocator.GetService<IClienteService>();
-                    var clientesViewModel = new ClientesViewModel(clientesService);
+                    var exportClientes = ServiceLocator.GetService<IExportService>();
+                    var clientesViewModel = new ClientesViewModel(clientesService, exportClientes);
                     _navigationService.NavigateTo(new ClientesView(clientesViewModel));
                     break;
                 case "Reportes":
                     var reporteService = ServiceLocator.GetService<IReporteService>();
-                    var reportesViewModel = new ReportesViewModel(reporteService);
+                    var exportReportes = ServiceLocator.GetService<IExportService>();
+                    var reportesViewModel = new ReportesViewModel(reporteService, exportReportes);
                     _navigationService.NavigateTo(new ReportesView(reportesViewModel));
                     break;
                 case "Configuracion":

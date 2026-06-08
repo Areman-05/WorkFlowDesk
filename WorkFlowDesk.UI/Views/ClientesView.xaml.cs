@@ -17,6 +17,12 @@ public partial class ClientesView : UserControl
 
         _viewModel.ClienteCreado += OnClienteCreado;
         _viewModel.ClienteEditado += OnClienteEditado;
+        _viewModel.ExportacionCompletada += OnExportacionCompletada;
+    }
+
+    private void OnExportacionCompletada(object? sender, string path)
+    {
+        NotificationService.ShowSuccess($"Datos exportados correctamente.\n{path}");
     }
 
     private void OnClienteCreado(object? sender, Domain.Entities.Cliente cliente)

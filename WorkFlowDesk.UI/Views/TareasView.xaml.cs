@@ -17,6 +17,12 @@ public partial class TareasView : UserControl
 
         _viewModel.TareaCreada += OnTareaCreada;
         _viewModel.TareaEditada += OnTareaEditada;
+        _viewModel.ExportacionCompletada += OnExportacionCompletada;
+    }
+
+    private void OnExportacionCompletada(object? sender, string path)
+    {
+        NotificationService.ShowSuccess($"Datos exportados correctamente.\n{path}");
     }
 
     private void OnTareaCreada(object? sender, Domain.Entities.Tarea _)

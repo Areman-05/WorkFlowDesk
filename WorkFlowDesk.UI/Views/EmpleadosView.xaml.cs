@@ -17,6 +17,12 @@ public partial class EmpleadosView : UserControl
 
         _viewModel.EmpleadoCreado += OnEmpleadoCreado;
         _viewModel.EmpleadoEditado += OnEmpleadoEditado;
+        _viewModel.ExportacionCompletada += OnExportacionCompletada;
+    }
+
+    private void OnExportacionCompletada(object? sender, string path)
+    {
+        NotificationService.ShowSuccess($"Datos exportados correctamente.\n{path}");
     }
 
     private void OnEmpleadoCreado(object? sender, Domain.Entities.Empleado empleado)

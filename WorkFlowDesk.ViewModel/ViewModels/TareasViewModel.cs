@@ -11,24 +11,28 @@ namespace WorkFlowDesk.ViewModel.ViewModels;
 public class TareasViewModel : ViewModelBase
 {
     private readonly ITareaService _tareaService;
+    private readonly IExportService _exportService;
     private IEnumerable<Tarea> _tareas = new List<Tarea>();
     private Tarea? _tareaSeleccionada;
     private EstadoTarea? _filtroEstado;
 
     /// <summary>Construye el ViewModel e inicia la carga de tareas.</summary>
-    public TareasViewModel(ITareaService tareaService)
+    public TareasViewModel(ITareaService tareaService, IExportService exportService)
     {
         _tareaService = tareaService;
+        _exportService = exportService;
         CargarTareasCommand = new AsyncRelayCommand(CargarTareasAsync);
         CrearTareaCommand = new RelayCommand(CrearTarea);
         EditarTareaCommand = new RelayCommand<Tarea>(EditarTarea, CanEditarTarea);
         EliminarTareaCommand = new AsyncRelayCommand<Tarea>(EliminarTareaAsync, CanEliminarTarea);
         FiltrarPorEstadoCommand = new RelayCommand<EstadoTarea?>(FiltrarPorEstado);
+        ExportarCommand = new AsyncRelayCommand(ExportarAsync);
         
         CargarTareasCommand.ExecuteAsync(null);
     }
 
     public bool CanManage => RolePermissions.CanManageTareas;
+    public bool CanExport => RolePermissions.CanExportData;
 
     public IEnumerable<Tarea> Tareas
     {
@@ -62,8 +66,10 @@ public class TareasViewModel : ViewModelBase
     public IRelayCommand<Tarea> EditarTareaCommand { get; }
     public IAsyncRelayCommand<Tarea> EliminarTareaCommand { get; }
     public IRelayCommand<EstadoTarea?> FiltrarPorEstadoCommand { get; }
+    public IAsyncRelayCommand ExportarCommand { get; }
 
     public event EventHandler<Tarea>? TareaCreada;
+    public event EventHandler<string>? ExportacionCompletada;
     public event EventHandler<Tarea>? TareaEditada;
 
     private async Task CargarTareasAsync()
@@ -147,5 +153,24 @@ public class TareasViewModel : ViewModelBase
     private void FiltrarPorEstado(EstadoTarea? estado)
     {
         FiltroEstado = estado;
+    }
+
+    private async Task ExportarAsync()
+    {
+        IsLoading = true;
+        try
+        {
+            var path = await _exportService.ExportToCsvAsync(_tareas, "tareas");
+            ExportacionCompletada?.Invoke(this, path);
+        }
+        catch (Exception ex)
+        {
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 }

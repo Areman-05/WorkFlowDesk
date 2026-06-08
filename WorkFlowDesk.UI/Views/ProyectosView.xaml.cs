@@ -17,6 +17,12 @@ public partial class ProyectosView : UserControl
 
         _viewModel.ProyectoCreado += OnProyectoCreado;
         _viewModel.ProyectoEditado += OnProyectoEditado;
+        _viewModel.ExportacionCompletada += OnExportacionCompletada;
+    }
+
+    private void OnExportacionCompletada(object? sender, string path)
+    {
+        NotificationService.ShowSuccess($"Datos exportados correctamente.\n{path}");
     }
 
     private void OnProyectoCreado(object? sender, Domain.Entities.Proyecto _)

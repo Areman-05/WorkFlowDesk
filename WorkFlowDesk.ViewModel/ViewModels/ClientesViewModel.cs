@@ -12,24 +12,28 @@ namespace WorkFlowDesk.ViewModel.ViewModels;
 public class ClientesViewModel : ViewModelBase
 {
     private readonly IClienteService _clienteService;
+    private readonly IExportService _exportService;
     private IEnumerable<Cliente> _clientes = new List<Cliente>();
     private IEnumerable<Cliente> _clientesFiltrados = new List<Cliente>();
     private Cliente? _clienteSeleccionado;
     private string _textoBusqueda = string.Empty;
 
     /// <summary>Construye el ViewModel e inicia la carga de clientes.</summary>
-    public ClientesViewModel(IClienteService clienteService)
+    public ClientesViewModel(IClienteService clienteService, IExportService exportService)
     {
         _clienteService = clienteService;
+        _exportService = exportService;
         CargarClientesCommand = new AsyncRelayCommand(CargarClientesAsync);
         CrearClienteCommand = new RelayCommand(CrearCliente);
         EditarClienteCommand = new RelayCommand<Cliente>(EditarCliente, CanEditarCliente);
         EliminarClienteCommand = new AsyncRelayCommand<Cliente>(EliminarClienteAsync, CanEliminarCliente);
+        ExportarCommand = new AsyncRelayCommand(ExportarAsync);
         
         CargarClientesCommand.ExecuteAsync(null);
     }
 
     public bool CanManage => RolePermissions.CanManageClientes;
+    public bool CanExport => RolePermissions.CanExportData;
 
     public IEnumerable<Cliente> Clientes
     {
@@ -62,9 +66,11 @@ public class ClientesViewModel : ViewModelBase
     public IRelayCommand CrearClienteCommand { get; }
     public IRelayCommand<Cliente> EditarClienteCommand { get; }
     public IAsyncRelayCommand<Cliente> EliminarClienteCommand { get; }
+    public IAsyncRelayCommand ExportarCommand { get; }
 
     public event EventHandler<Cliente>? ClienteCreado;
     public event EventHandler<Cliente>? ClienteEditado;
+    public event EventHandler<string>? ExportacionCompletada;
 
     private async Task CargarClientesAsync()
     {
@@ -136,6 +142,25 @@ public class ClientesViewModel : ViewModelBase
     }
 
     private bool CanEliminarCliente(Cliente? cliente) => cliente != null;
+
+    private async Task ExportarAsync()
+    {
+        IsLoading = true;
+        try
+        {
+            var path = await _exportService.ExportToCsvAsync(_clientesFiltrados, "clientes");
+            ExportacionCompletada?.Invoke(this, path);
+        }
+        catch (Exception ex)
+        {
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
 
     private void FiltrarClientes()
     {

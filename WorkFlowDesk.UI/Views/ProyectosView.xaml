@@ -20,6 +20,11 @@
             <Button Content="Nuevo Proyecto" 
                     Command="{Binding CrearProyectoCommand}"
                     Visibility="{Binding CanManage, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Padding="15,8"
+                    Margin="0,0,10,0"/>
+            <Button Content="Exportar CSV"
+                    Command="{Binding ExportarCommand}"
+                    Visibility="{Binding CanExport, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Padding="15,8"/>
         </StackPanel>
 

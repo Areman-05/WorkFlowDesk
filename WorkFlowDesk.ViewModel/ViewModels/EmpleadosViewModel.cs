@@ -13,24 +13,28 @@ namespace WorkFlowDesk.ViewModel.ViewModels;
 public class EmpleadosViewModel : ViewModelBase
 {
     private readonly IEmpleadoService _empleadoService;
+    private readonly IExportService _exportService;
     private IEnumerable<Empleado> _empleados = new List<Empleado>();
     private IEnumerable<Empleado> _empleadosFiltrados = new List<Empleado>();
     private Empleado? _empleadoSeleccionado;
     private string _textoBusqueda = string.Empty;
 
     /// <summary>Construye el ViewModel e inicia la carga de empleados.</summary>
-    public EmpleadosViewModel(IEmpleadoService empleadoService)
+    public EmpleadosViewModel(IEmpleadoService empleadoService, IExportService exportService)
     {
         _empleadoService = empleadoService;
+        _exportService = exportService;
         CargarEmpleadosCommand = new AsyncRelayCommand(CargarEmpleadosAsync);
         CrearEmpleadoCommand = new RelayCommand(CrearEmpleado);
         EditarEmpleadoCommand = new RelayCommand<Empleado>(EditarEmpleado, CanEditarEmpleado);
         EliminarEmpleadoCommand = new AsyncRelayCommand<Empleado>(EliminarEmpleadoAsync, CanEliminarEmpleado);
+        ExportarCommand = new AsyncRelayCommand(ExportarAsync);
         
         CargarEmpleadosCommand.ExecuteAsync(null);
     }
 
     public bool CanManage => RolePermissions.CanManageEmpleados;
+    public bool CanExport => RolePermissions.CanExportData;
 
     public IEnumerable<Empleado> Empleados
     {
@@ -63,8 +67,10 @@ public class EmpleadosViewModel : ViewModelBase
     public IRelayCommand CrearEmpleadoCommand { get; }
     public IRelayCommand<Empleado> EditarEmpleadoCommand { get; }
     public IAsyncRelayCommand<Empleado> EliminarEmpleadoCommand { get; }
+    public IAsyncRelayCommand ExportarCommand { get; }
 
     public event EventHandler<Empleado>? EmpleadoCreado;
+    public event EventHandler<string>? ExportacionCompletada;
     public event EventHandler<Empleado>? EmpleadoEditado;
 
     private async Task CargarEmpleadosAsync()
@@ -139,6 +145,25 @@ public class EmpleadosViewModel : ViewModelBase
     }
 
     private bool CanEliminarEmpleado(Empleado? empleado) => empleado != null;
+
+    private async Task ExportarAsync()
+    {
+        IsLoading = true;
+        try
+        {
+            var path = await _exportService.ExportToCsvAsync(_empleadosFiltrados, "empleados");
+            ExportacionCompletada?.Invoke(this, path);
+        }
+        catch (Exception ex)
+        {
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
 
     private void FiltrarEmpleados()
     {

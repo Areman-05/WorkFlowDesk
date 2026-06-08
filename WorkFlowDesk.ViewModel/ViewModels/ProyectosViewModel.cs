@@ -11,22 +11,26 @@ namespace WorkFlowDesk.ViewModel.ViewModels;
 public class ProyectosViewModel : ViewModelBase
 {
     private readonly IProyectoService _proyectoService;
+    private readonly IExportService _exportService;
     private IEnumerable<Proyecto> _proyectos = new List<Proyecto>();
     private Proyecto? _proyectoSeleccionado;
 
     /// <summary>Construye el ViewModel e inicia la carga de proyectos.</summary>
-    public ProyectosViewModel(IProyectoService proyectoService)
+    public ProyectosViewModel(IProyectoService proyectoService, IExportService exportService)
     {
         _proyectoService = proyectoService;
+        _exportService = exportService;
         CargarProyectosCommand = new AsyncRelayCommand(CargarProyectosAsync);
         CrearProyectoCommand = new RelayCommand(CrearProyecto);
         EditarProyectoCommand = new RelayCommand<Proyecto>(EditarProyecto, CanEditarProyecto);
         EliminarProyectoCommand = new AsyncRelayCommand<Proyecto>(EliminarProyectoAsync, CanEliminarProyecto);
+        ExportarCommand = new AsyncRelayCommand(ExportarAsync);
         
         CargarProyectosCommand.ExecuteAsync(null);
     }
 
     public bool CanManage => RolePermissions.CanManageProyectos;
+    public bool CanExport => RolePermissions.CanExportData;
 
     public IEnumerable<Proyecto> Proyectos
     {
@@ -49,9 +53,11 @@ public class ProyectosViewModel : ViewModelBase
     public IRelayCommand CrearProyectoCommand { get; }
     public IRelayCommand<Proyecto> EditarProyectoCommand { get; }
     public IAsyncRelayCommand<Proyecto> EliminarProyectoCommand { get; }
+    public IAsyncRelayCommand ExportarCommand { get; }
 
     public event EventHandler<Proyecto>? ProyectoCreado;
     public event EventHandler<Proyecto>? ProyectoEditado;
+    public event EventHandler<string>? ExportacionCompletada;
 
     private async Task CargarProyectosAsync()
     {
@@ -122,4 +128,23 @@ public class ProyectosViewModel : ViewModelBase
     }
 
     private bool CanEliminarProyecto(Proyecto? proyecto) => proyecto != null;
+
+    private async Task ExportarAsync()
+    {
+        IsLoading = true;
+        try
+        {
+            var path = await _exportService.ExportToCsvAsync(_proyectos, "proyectos");
+            ExportacionCompletada?.Invoke(this, path);
+        }
+        catch (Exception ex)
+        {
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
 }
