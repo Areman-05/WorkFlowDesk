@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.Input;
 using System.Windows;
+using WorkFlowDesk.Common.Authorization;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.ViewModel.Base;
@@ -26,6 +27,8 @@ public class TareasViewModel : ViewModelBase
         
         CargarTareasCommand.ExecuteAsync(null);
     }
+
+    public bool CanManage => RolePermissions.CanManageTareas;
 
     public IEnumerable<Tarea> Tareas
     {

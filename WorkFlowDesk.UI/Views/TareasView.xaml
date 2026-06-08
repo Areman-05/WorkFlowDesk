@@ -19,6 +19,7 @@
                        Margin="0,0,20,0"/>
             <Button Content="Nueva Tarea" 
                     Command="{Binding CrearTareaCommand}"
+                    Visibility="{Binding CanManage, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Padding="15,8"
                     Margin="0,0,10,0"/>
             <ComboBox SelectedItem="{Binding FiltroEstado}" 
@@ -71,11 +72,13 @@
                                 <Button Content="Editar" 
                                         Command="{Binding DataContext.EditarTareaCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                         CommandParameter="{Binding}"
+                                        Visibility="{Binding DataContext.CanManage, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}"
                                         Margin="5,0"
                                         Padding="10,5"/>
                                 <Button Content="Eliminar" 
                                         Command="{Binding DataContext.EliminarTareaCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                         CommandParameter="{Binding}"
+                                        Visibility="{Binding DataContext.CanManage, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}"
                                         Margin="5,0"
                                         Padding="10,5"/>
                             </StackPanel>

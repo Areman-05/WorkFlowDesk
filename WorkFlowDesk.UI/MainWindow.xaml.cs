@@ -1,4 +1,5 @@
 using System.Windows;
+using WorkFlowDesk.Common.Authorization;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.UI.Services;
 using WorkFlowDesk.UI.Views;
@@ -43,6 +44,12 @@ namespace WorkFlowDesk.UI
 
         private void OnNavigateRequested(object? sender, string viewName)
         {
+            if (!CanNavigateTo(viewName))
+            {
+                NotificationService.ShowWarning("No tiene permisos para acceder a esta sección.");
+                return;
+            }
+
             switch (viewName)
             {
                 case "Dashboard":
@@ -88,5 +95,17 @@ namespace WorkFlowDesk.UI
                     break;
             }
         }
+
+        private static bool CanNavigateTo(string viewName) => viewName switch
+        {
+            "Dashboard" => RolePermissions.CanAccessDashboard,
+            "Empleados" => RolePermissions.CanAccessEmpleados,
+            "Proyectos" => RolePermissions.CanAccessProyectos,
+            "Tareas" => RolePermissions.CanAccessTareas,
+            "Clientes" => RolePermissions.CanAccessClientes,
+            "Reportes" => RolePermissions.CanAccessReportes,
+            "Configuracion" => RolePermissions.CanAccessConfiguracion,
+            _ => false
+        };
     }
 }

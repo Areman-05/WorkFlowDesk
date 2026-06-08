@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.Input;
 using System.Windows;
+using WorkFlowDesk.Common.Authorization;
 using WorkFlowDesk.Common.Helpers;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
@@ -27,6 +28,8 @@ public class ClientesViewModel : ViewModelBase
         
         CargarClientesCommand.ExecuteAsync(null);
     }
+
+    public bool CanManage => RolePermissions.CanManageClientes;
 
     public IEnumerable<Cliente> Clientes
     {

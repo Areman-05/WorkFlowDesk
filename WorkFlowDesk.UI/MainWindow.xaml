@@ -48,10 +48,12 @@
                 <Button Content="Empleados" 
                         Style="{StaticResource SidebarButtonStyle}"
                         Command="{Binding NavigateToEmpleadosCommand}"
+                        Visibility="{Binding ShowEmpleados, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Margin="10,5"/>
                 <Button Content="Proyectos" 
                         Style="{StaticResource SidebarButtonStyle}"
                         Command="{Binding NavigateToProyectosCommand}"
+                        Visibility="{Binding ShowProyectos, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Margin="10,5"/>
                 <Button Content="Tareas" 
                         Style="{StaticResource SidebarButtonStyle}"
@@ -60,14 +62,17 @@
                 <Button Content="Clientes" 
                         Style="{StaticResource SidebarButtonStyle}"
                         Command="{Binding NavigateToClientesCommand}"
+                        Visibility="{Binding ShowClientes, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Margin="10,5"/>
                 <Button Content="Reportes" 
                         Style="{StaticResource SidebarButtonStyle}"
                         Command="{Binding NavigateToReportesCommand}"
+                        Visibility="{Binding ShowReportes, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Margin="10,5"/>
                 <Button Content="Configuración" 
                         Style="{StaticResource SidebarButtonStyle}"
                         Command="{Binding NavigateToConfiguracionCommand}"
+                        Visibility="{Binding ShowConfiguracion, Converter={StaticResource BooleanToVisibilityConverter}}"
                         Margin="10,5"/>
 
                 <Button Content="Cerrar sesión"

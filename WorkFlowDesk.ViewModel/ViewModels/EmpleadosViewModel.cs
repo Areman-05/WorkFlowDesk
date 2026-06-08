@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.Input;
 using System.Windows;
+using WorkFlowDesk.Common.Authorization;
 using WorkFlowDesk.Common.Helpers;
 using WorkFlowDesk.Common.Logging;
 using WorkFlowDesk.Domain.Entities;
@@ -28,6 +29,8 @@ public class EmpleadosViewModel : ViewModelBase
         
         CargarEmpleadosCommand.ExecuteAsync(null);
     }
+
+    public bool CanManage => RolePermissions.CanManageEmpleados;
 
     public IEnumerable<Empleado> Empleados
     {

@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.Input;
+using WorkFlowDesk.Common.Authorization;
 using WorkFlowDesk.Common.Services;
 using WorkFlowDesk.ViewModel.Base;
 
@@ -21,6 +22,12 @@ public class MainViewModel : ViewModelBase
         get => _userRole;
         set => SetProperty(ref _userRole, value);
     }
+
+    public bool ShowEmpleados => RolePermissions.CanAccessEmpleados;
+    public bool ShowProyectos => RolePermissions.CanAccessProyectos;
+    public bool ShowClientes => RolePermissions.CanAccessClientes;
+    public bool ShowReportes => RolePermissions.CanAccessReportes;
+    public bool ShowConfiguracion => RolePermissions.CanAccessConfiguracion;
 
     public IRelayCommand NavigateToDashboardCommand { get; }
     public IRelayCommand NavigateToEmpleadosCommand { get; }

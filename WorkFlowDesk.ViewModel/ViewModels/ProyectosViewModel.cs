@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.Input;
 using System.Windows;
+using WorkFlowDesk.Common.Authorization;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.ViewModel.Base;
@@ -24,6 +25,8 @@ public class ProyectosViewModel : ViewModelBase
         
         CargarProyectosCommand.ExecuteAsync(null);
     }
+
+    public bool CanManage => RolePermissions.CanManageProyectos;
 
     public IEnumerable<Proyecto> Proyectos
     {
