@@ -1,11 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\WorkFlowDesk.Common\WorkFlowDesk.Common.csproj" />
     <ProjectReference Include="..\WorkFlowDesk.Domain\WorkFlowDesk.Domain.csproj" />
     <ProjectReference Include="..\WorkFlowDesk.Data\WorkFlowDesk.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
   </ItemGroup>
 
