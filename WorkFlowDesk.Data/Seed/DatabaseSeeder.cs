@@ -1,6 +1,5 @@
-using System.Security.Cryptography;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
+using WorkFlowDesk.Common.Security;
 using WorkFlowDesk.Domain.Entities;
 
 namespace WorkFlowDesk.Data.Seed;
@@ -30,7 +29,7 @@ public static class DatabaseSeeder
         if (rolAdmin == null)
             return;
 
-        var passwordHash = HashPassword(DefaultAdminPassword);
+        var passwordHash = PasswordHashHelper.HashPassword(DefaultAdminPassword);
         var adminUsuario = new Usuario
         {
             NombreUsuario = DefaultAdminUserName,
@@ -43,13 +42,6 @@ public static class DatabaseSeeder
         };
 
         await context.Usuarios.AddAsync(adminUsuario);
-    }
-
-    private static string HashPassword(string password)
-    {
-        using var sha256 = SHA256.Create();
-        var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-        return Convert.ToBase64String(hashedBytes);
     }
 
     /// <summary>Inserta los roles por defecto (Admin, Supervisor, Empleado) si no existen.</summary>

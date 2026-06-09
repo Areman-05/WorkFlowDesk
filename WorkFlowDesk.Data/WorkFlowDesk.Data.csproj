@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\WorkFlowDesk.Common\WorkFlowDesk.Common.csproj" />
     <ProjectReference Include="..\WorkFlowDesk.Domain\WorkFlowDesk.Domain.csproj" />
   </ItemGroup>
 

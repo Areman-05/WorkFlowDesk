@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using WorkFlowDesk.Common.Security;
 using WorkFlowDesk.Data;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
@@ -30,6 +31,11 @@ public class AuthenticationService : IAuthenticationService
 
         if (!_passwordHasher.VerifyPassword(password, usuario.PasswordHash))
             return null;
+
+        if (PasswordHashHelper.IsLegacyHash(usuario.PasswordHash))
+        {
+            usuario.PasswordHash = _passwordHasher.HashPassword(password);
+        }
 
         usuario.UltimoAcceso = DateTime.Now;
         await _context.SaveChangesAsync();
