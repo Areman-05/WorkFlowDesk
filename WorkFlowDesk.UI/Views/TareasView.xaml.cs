@@ -1,5 +1,5 @@
 using System.Windows.Controls;
-using WorkFlowDesk.Services.Interfaces;
+using WorkFlowDesk.UI.Helpers;
 using WorkFlowDesk.UI.Services;
 using WorkFlowDesk.ViewModel.ViewModels;
 
@@ -14,6 +14,7 @@ public partial class TareasView : UserControl
         InitializeComponent();
         DataContext = viewModel;
         _viewModel = viewModel;
+        ViewConfirmationHelper.BindConfirmaciones(viewModel);
 
         _viewModel.TareaCreada += OnTareaCreada;
         _viewModel.TareaEditada += OnTareaEditada;

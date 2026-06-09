@@ -1,5 +1,4 @@
 using CommunityToolkit.Mvvm.Input;
-using System.Windows;
 using WorkFlowDesk.Common.Authorization;
 using WorkFlowDesk.Common.Helpers;
 using WorkFlowDesk.Common.Logging;
@@ -117,13 +116,9 @@ public class EmpleadosViewModel : ViewModelBase
     {
         if (empleado == null) return;
 
-        var resultado = MessageBox.Show(
-            $"¿Está seguro de que desea eliminar al empleado {empleado.Nombre} {empleado.Apellidos}?",
-            "Confirmar eliminación",
-            MessageBoxButton.YesNo,
-            MessageBoxImage.Question);
-
-        if (resultado != MessageBoxResult.Yes)
+        if (!SolicitarConfirmacion(
+                $"¿Está seguro de que desea eliminar al empleado {empleado.Nombre} {empleado.Apellidos}?",
+                "Confirmar eliminación"))
             return;
 
         IsLoading = true;

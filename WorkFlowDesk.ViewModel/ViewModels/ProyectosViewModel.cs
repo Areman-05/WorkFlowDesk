@@ -1,5 +1,4 @@
 using CommunityToolkit.Mvvm.Input;
-using System.Windows;
 using WorkFlowDesk.Common.Authorization;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
@@ -101,13 +100,9 @@ public class ProyectosViewModel : ViewModelBase
     {
         if (proyecto == null) return;
 
-        var resultado = MessageBox.Show(
-            $"¿Está seguro de que desea eliminar el proyecto '{proyecto.Nombre}'?",
-            "Confirmar eliminación",
-            MessageBoxButton.YesNo,
-            MessageBoxImage.Question);
-
-        if (resultado != MessageBoxResult.Yes)
+        if (!SolicitarConfirmacion(
+                $"¿Está seguro de que desea eliminar el proyecto '{proyecto.Nombre}'?",
+                "Confirmar eliminación"))
             return;
 
         IsLoading = true;

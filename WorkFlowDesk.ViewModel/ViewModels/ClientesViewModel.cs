@@ -1,5 +1,4 @@
 using CommunityToolkit.Mvvm.Input;
-using System.Windows;
 using WorkFlowDesk.Common.Authorization;
 using WorkFlowDesk.Common.Helpers;
 using WorkFlowDesk.Domain.Entities;
@@ -115,13 +114,9 @@ public class ClientesViewModel : ViewModelBase
     {
         if (cliente == null) return;
 
-        var resultado = MessageBox.Show(
-            $"¿Está seguro de que desea eliminar al cliente '{cliente.Nombre}'?",
-            "Confirmar eliminación",
-            MessageBoxButton.YesNo,
-            MessageBoxImage.Question);
-
-        if (resultado != MessageBoxResult.Yes)
+        if (!SolicitarConfirmacion(
+                $"¿Está seguro de que desea eliminar al cliente '{cliente.Nombre}'?",
+                "Confirmar eliminación"))
             return;
 
         IsLoading = true;
