@@ -11,23 +11,30 @@ public class ConfiguracionViewModel : ViewModelBase
 {
     private readonly IBackupService _backupService;
     private readonly IDatabaseInitializationService _databaseInitializationService;
+    private readonly IAuthenticationService _authenticationService;
     private int _defaultPageSize;
     private bool _enableLogging;
     private string _logLevel = string.Empty;
     private int _cacheExpirationMinutes;
+    private string _passwordActual = string.Empty;
+    private string _passwordNuevo = string.Empty;
+    private string _passwordConfirmacion = string.Empty;
 
     /// <summary>Construye el ViewModel e inicia la carga de configuración.</summary>
     public ConfiguracionViewModel(
         IBackupService backupService,
-        IDatabaseInitializationService databaseInitializationService)
+        IDatabaseInitializationService databaseInitializationService,
+        IAuthenticationService authenticationService)
     {
         _backupService = backupService;
         _databaseInitializationService = databaseInitializationService;
+        _authenticationService = authenticationService;
 
         CargarConfiguracionCommand = new CommunityToolkit.Mvvm.Input.AsyncRelayCommand(CargarConfiguracionAsync);
         GuardarConfiguracionCommand = new RelayCommand(GuardarConfiguracion);
         CrearBackupCommand = new CommunityToolkit.Mvvm.Input.AsyncRelayCommand(CrearBackupAsync);
         InicializarBaseDatosCommand = new CommunityToolkit.Mvvm.Input.AsyncRelayCommand(InicializarBaseDatosAsync);
+        CambiarPasswordCommand = new CommunityToolkit.Mvvm.Input.AsyncRelayCommand(CambiarPasswordAsync, CanCambiarPassword);
 
         CargarConfiguracionCommand.ExecuteAsync(null);
     }
@@ -56,10 +63,41 @@ public class ConfiguracionViewModel : ViewModelBase
         set => SetProperty(ref _cacheExpirationMinutes, value);
     }
 
+    public string PasswordActual
+    {
+        get => _passwordActual;
+        set
+        {
+            SetProperty(ref _passwordActual, value);
+            CambiarPasswordCommand.NotifyCanExecuteChanged();
+        }
+    }
+
+    public string PasswordNuevo
+    {
+        get => _passwordNuevo;
+        set
+        {
+            SetProperty(ref _passwordNuevo, value);
+            CambiarPasswordCommand.NotifyCanExecuteChanged();
+        }
+    }
+
+    public string PasswordConfirmacion
+    {
+        get => _passwordConfirmacion;
+        set
+        {
+            SetProperty(ref _passwordConfirmacion, value);
+            CambiarPasswordCommand.NotifyCanExecuteChanged();
+        }
+    }
+
     public CommunityToolkit.Mvvm.Input.IAsyncRelayCommand CargarConfiguracionCommand { get; }
     public IRelayCommand GuardarConfiguracionCommand { get; }
     public CommunityToolkit.Mvvm.Input.IAsyncRelayCommand CrearBackupCommand { get; }
     public CommunityToolkit.Mvvm.Input.IAsyncRelayCommand InicializarBaseDatosCommand { get; }
+    public CommunityToolkit.Mvvm.Input.IAsyncRelayCommand CambiarPasswordCommand { get; }
 
     public event EventHandler<string>? OperacionCompletada;
 
@@ -133,6 +171,57 @@ public class ConfiguracionViewModel : ViewModelBase
             await _databaseInitializationService.InitializeAsync();
             ErrorMessage = null;
             OperacionCompletada?.Invoke(this, "Base de datos inicializada correctamente.");
+        }
+        catch (Exception ex)
+        {
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private bool CanCambiarPassword() =>
+        !string.IsNullOrWhiteSpace(PasswordActual) &&
+        !string.IsNullOrWhiteSpace(PasswordNuevo) &&
+        !string.IsNullOrWhiteSpace(PasswordConfirmacion) &&
+        PasswordNuevo.Length >= 6;
+
+    private async Task CambiarPasswordAsync()
+    {
+        if (PasswordNuevo != PasswordConfirmacion)
+        {
+            ErrorMessage = "Las contraseñas nuevas no coinciden.";
+            return;
+        }
+
+        var usuario = SessionService.CurrentUser;
+        if (usuario == null)
+        {
+            ErrorMessage = "No hay sesión activa.";
+            return;
+        }
+
+        IsLoading = true;
+        ErrorMessage = null;
+
+        try
+        {
+            var cambiado = await _authenticationService.CambiarPasswordAsync(
+                usuario.Id, PasswordActual, PasswordNuevo);
+
+            if (!cambiado)
+            {
+                ErrorMessage = "La contraseña actual es incorrecta.";
+                return;
+            }
+
+            PasswordActual = string.Empty;
+            PasswordNuevo = string.Empty;
+            PasswordConfirmacion = string.Empty;
+            OperacionCompletada?.Invoke(this, "Contraseña actualizada correctamente.");
         }
         catch (Exception ex)
         {

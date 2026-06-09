@@ -95,7 +95,8 @@ namespace WorkFlowDesk.UI
                 case "Configuracion":
                     var backupSvc = ServiceLocator.GetService<IBackupService>();
                     var dbInitSvc = ServiceLocator.GetService<IDatabaseInitializationService>();
-                    var configVm = new ConfiguracionViewModel(backupSvc, dbInitSvc);
+                    var authSvc = ServiceLocator.GetService<IAuthenticationService>();
+                    var configVm = new ConfiguracionViewModel(backupSvc, dbInitSvc, authSvc);
                     _navigationService.NavigateTo(new ConfiguracionView(configVm));
                     break;
             }

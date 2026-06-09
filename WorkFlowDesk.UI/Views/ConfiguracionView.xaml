@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:WorkFlowDesk.UI.Behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="20">
@@ -53,6 +54,30 @@
                                 Style="{StaticResource PrimaryButtonStyle}"
                                 HorizontalAlignment="Left"
                                 Margin="0,10,0,0"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="Seguridad" Margin="0,0,0,20">
+                    <StackPanel Margin="20">
+                        <TextBlock Text="Contraseña actual"
+                                   Style="{StaticResource FormLabelStyle}"/>
+                        <PasswordBox local:PasswordBoxHelper.Password="{Binding PasswordActual, UpdateSourceTrigger=PropertyChanged}"
+                                     Margin="0,0,0,15"/>
+
+                        <TextBlock Text="Nueva contraseña (mín. 6 caracteres)"
+                                   Style="{StaticResource FormLabelStyle}"/>
+                        <PasswordBox local:PasswordBoxHelper.Password="{Binding PasswordNuevo, UpdateSourceTrigger=PropertyChanged}"
+                                     Margin="0,0,0,15"/>
+
+                        <TextBlock Text="Confirmar nueva contraseña"
+                                   Style="{StaticResource FormLabelStyle}"/>
+                        <PasswordBox local:PasswordBoxHelper.Password="{Binding PasswordConfirmacion, UpdateSourceTrigger=PropertyChanged}"
+                                     Margin="0,0,0,15"/>
+
+                        <Button Content="Cambiar contraseña"
+                                Command="{Binding CambiarPasswordCommand}"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                HorizontalAlignment="Left"/>
                     </StackPanel>
                 </GroupBox>
 
