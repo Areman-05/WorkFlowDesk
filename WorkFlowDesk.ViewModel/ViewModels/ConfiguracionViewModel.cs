@@ -61,6 +61,8 @@ public class ConfiguracionViewModel : ViewModelBase
     public CommunityToolkit.Mvvm.Input.IAsyncRelayCommand CrearBackupCommand { get; }
     public CommunityToolkit.Mvvm.Input.IAsyncRelayCommand InicializarBaseDatosCommand { get; }
 
+    public event EventHandler<string>? OperacionCompletada;
+
     private async Task CargarConfiguracionAsync()
     {
         IsLoading = true;
@@ -92,6 +94,9 @@ public class ConfiguracionViewModel : ViewModelBase
             settings.EnableLogging = EnableLogging;
             settings.LogLevel = LogLevel;
             settings.CacheExpirationMinutes = CacheExpirationMinutes;
+            AppConfig.SaveToFile();
+            ErrorMessage = null;
+            OperacionCompletada?.Invoke(this, "Configuración guardada correctamente.");
         }
         catch (Exception ex)
         {
@@ -107,7 +112,7 @@ public class ConfiguracionViewModel : ViewModelBase
         {
             var backupPath = await _backupService.CreateBackupAsync();
             ErrorMessage = null;
-            // Aquí se podría mostrar un mensaje de éxito
+            OperacionCompletada?.Invoke(this, $"Backup creado correctamente.\n{backupPath}");
         }
         catch (Exception ex)
         {
@@ -127,6 +132,7 @@ public class ConfiguracionViewModel : ViewModelBase
         {
             await _databaseInitializationService.InitializeAsync();
             ErrorMessage = null;
+            OperacionCompletada?.Invoke(this, "Base de datos inicializada correctamente.");
         }
         catch (Exception ex)
         {

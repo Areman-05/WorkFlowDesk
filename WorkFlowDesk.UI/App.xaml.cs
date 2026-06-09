@@ -1,4 +1,5 @@
 using System.Windows;
+using WorkFlowDesk.Common.Configuration;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.UI.Services;
 
@@ -11,6 +12,7 @@ namespace WorkFlowDesk.UI
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            AppConfig.LoadFromFile();
             ServiceLocator.ConfigureServices();
             base.OnStartup(e);
             _ = InitializeDatabaseAsync();
