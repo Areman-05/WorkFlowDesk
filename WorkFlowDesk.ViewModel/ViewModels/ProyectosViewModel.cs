@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.Input;
 using WorkFlowDesk.Common.Authorization;
+using WorkFlowDesk.Common.Helpers;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.ViewModel.Base;
@@ -12,7 +13,9 @@ public class ProyectosViewModel : ViewModelBase
     private readonly IProyectoService _proyectoService;
     private readonly IExportService _exportService;
     private IEnumerable<Proyecto> _proyectos = new List<Proyecto>();
+    private IEnumerable<Proyecto> _proyectosFiltrados = new List<Proyecto>();
     private Proyecto? _proyectoSeleccionado;
+    private string _textoBusqueda = string.Empty;
 
     /// <summary>Construye el ViewModel e inicia la carga de proyectos.</summary>
     public ProyectosViewModel(IProyectoService proyectoService, IExportService exportService)
@@ -33,8 +36,18 @@ public class ProyectosViewModel : ViewModelBase
 
     public IEnumerable<Proyecto> Proyectos
     {
-        get => _proyectos;
-        set => SetProperty(ref _proyectos, value);
+        get => _proyectosFiltrados;
+        set => SetProperty(ref _proyectosFiltrados, value);
+    }
+
+    public string TextoBusqueda
+    {
+        get => _textoBusqueda;
+        set
+        {
+            SetProperty(ref _textoBusqueda, value);
+            FiltrarProyectos();
+        }
     }
 
     public Proyecto? ProyectoSeleccionado
@@ -63,7 +76,8 @@ public class ProyectosViewModel : ViewModelBase
         IsLoading = true;
         try
         {
-            Proyectos = await _proyectoService.GetAllAsync();
+            _proyectos = await _proyectoService.GetAllAsync();
+            FiltrarProyectos();
         }
         catch (Exception ex)
         {
@@ -129,7 +143,7 @@ public class ProyectosViewModel : ViewModelBase
         IsLoading = true;
         try
         {
-            var path = await _exportService.ExportToCsvAsync(_proyectos, "proyectos");
+            var path = await _exportService.ExportToCsvAsync(_proyectosFiltrados, "proyectos");
             ExportacionCompletada?.Invoke(this, path);
         }
         catch (Exception ex)
@@ -141,5 +155,20 @@ public class ProyectosViewModel : ViewModelBase
         {
             IsLoading = false;
         }
+    }
+
+    private void FiltrarProyectos()
+    {
+        if (string.IsNullOrWhiteSpace(TextoBusqueda))
+        {
+            Proyectos = _proyectos;
+            return;
+        }
+
+        Proyectos = SearchHelper.FilterByText(
+            _proyectos,
+            TextoBusqueda,
+            p => p.Nombre,
+            p => p.Descripcion);
     }
 }

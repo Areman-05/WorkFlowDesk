@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.Input;
 using WorkFlowDesk.Common.Authorization;
+using WorkFlowDesk.Common.Helpers;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.ViewModel.Base;
@@ -12,8 +13,10 @@ public class TareasViewModel : ViewModelBase
     private readonly ITareaService _tareaService;
     private readonly IExportService _exportService;
     private IEnumerable<Tarea> _tareas = new List<Tarea>();
+    private IEnumerable<Tarea> _tareasFiltradas = new List<Tarea>();
     private Tarea? _tareaSeleccionada;
     private EstadoTarea? _filtroEstado;
+    private string _textoBusqueda = string.Empty;
 
     /// <summary>Construye el ViewModel e inicia la carga de tareas.</summary>
     public TareasViewModel(ITareaService tareaService, IExportService exportService)
@@ -35,8 +38,18 @@ public class TareasViewModel : ViewModelBase
 
     public IEnumerable<Tarea> Tareas
     {
-        get => _tareas;
-        set => SetProperty(ref _tareas, value);
+        get => _tareasFiltradas;
+        set => SetProperty(ref _tareasFiltradas, value);
+    }
+
+    public string TextoBusqueda
+    {
+        get => _textoBusqueda;
+        set
+        {
+            SetProperty(ref _textoBusqueda, value);
+            FiltrarTareas();
+        }
     }
 
     public Tarea? TareaSeleccionada
@@ -78,12 +91,14 @@ public class TareasViewModel : ViewModelBase
         {
             if (FiltroEstado.HasValue)
             {
-                Tareas = await _tareaService.GetByEstadoAsync(FiltroEstado.Value);
+                _tareas = await _tareaService.GetByEstadoAsync(FiltroEstado.Value);
             }
             else
             {
-                Tareas = await _tareaService.GetAllAsync();
+                _tareas = await _tareaService.GetAllAsync();
             }
+
+            FiltrarTareas();
         }
         catch (Exception ex)
         {
@@ -150,12 +165,27 @@ public class TareasViewModel : ViewModelBase
         FiltroEstado = estado;
     }
 
+    private void FiltrarTareas()
+    {
+        if (string.IsNullOrWhiteSpace(TextoBusqueda))
+        {
+            Tareas = _tareas;
+            return;
+        }
+
+        Tareas = SearchHelper.FilterByText(
+            _tareas,
+            TextoBusqueda,
+            t => t.Titulo,
+            t => t.Descripcion);
+    }
+
     private async Task ExportarAsync()
     {
         IsLoading = true;
         try
         {
-            var path = await _exportService.ExportToCsvAsync(_tareas, "tareas");
+            var path = await _exportService.ExportToCsvAsync(_tareasFiltradas, "tareas");
             ExportacionCompletada?.Invoke(this, path);
         }
         catch (Exception ex)

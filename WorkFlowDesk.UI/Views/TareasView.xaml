@@ -27,6 +27,11 @@
                     Visibility="{Binding CanExport, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Padding="15,8"
                     Margin="0,0,10,0"/>
+            <TextBox Text="{Binding TextoBusqueda, UpdateSourceTrigger=PropertyChanged}"
+                     Width="180"
+                     Margin="0,0,10,0"
+                     Padding="5"
+                     ToolTip="Buscar por título o descripción"/>
             <ComboBox SelectedItem="{Binding FiltroEstado}" 
                       Width="150"
                       Margin="10,0,0,0">

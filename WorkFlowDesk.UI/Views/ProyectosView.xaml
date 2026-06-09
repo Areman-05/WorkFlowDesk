@@ -26,6 +26,11 @@
                     Command="{Binding ExportarCommand}"
                     Visibility="{Binding CanExport, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Padding="15,8"/>
+            <TextBox Text="{Binding TextoBusqueda, UpdateSourceTrigger=PropertyChanged}"
+                     Width="200"
+                     Margin="10,0,0,0"
+                     Padding="5"
+                     ToolTip="Buscar por nombre o descripción"/>
         </StackPanel>
 
         <DataGrid Grid.Row="1"
