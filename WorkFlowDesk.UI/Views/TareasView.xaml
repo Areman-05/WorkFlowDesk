@@ -99,6 +99,7 @@
         <controls:EmptyStateView Title="Sin tareas"
                                  Message="No hay tareas registradas o ninguna coincide con los filtros aplicados."
                                  Visibility="{Binding MostrarEstadoVacio, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <controls:LoadingIndicator Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         </Grid>
     </Grid>
 </UserControl>

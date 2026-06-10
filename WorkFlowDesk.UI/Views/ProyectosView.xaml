@@ -83,6 +83,7 @@
         <controls:EmptyStateView Title="Sin proyectos"
                                  Message="No hay proyectos registrados o ninguno coincide con la búsqueda."
                                  Visibility="{Binding MostrarEstadoVacio, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <controls:LoadingIndicator Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         </Grid>
     </Grid>
 </UserControl>
