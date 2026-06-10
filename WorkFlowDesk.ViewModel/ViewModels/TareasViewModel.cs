@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.Input;
 using WorkFlowDesk.Common.Authorization;
+using WorkFlowDesk.Common.Configuration;
 using WorkFlowDesk.Common.Helpers;
 using WorkFlowDesk.Common.Models;
 using WorkFlowDesk.Domain.Entities;
@@ -13,8 +14,10 @@ public class TareasViewModel : ListViewModelBase
 {
     private readonly ITareaService _tareaService;
     private readonly IExportService _exportService;
+    private readonly PaginationHelper _paginacion = new();
     private IEnumerable<Tarea> _tareas = new List<Tarea>();
     private IEnumerable<Tarea> _tareasFiltradas = new List<Tarea>();
+    private List<Tarea> _resultadoFiltrado = new();
     private Tarea? _tareaSeleccionada;
     private FiltroOpcion<EstadoTarea?>? _filtroEstadoSeleccionado;
     private string _textoBusqueda = string.Empty;
@@ -40,11 +43,14 @@ public class TareasViewModel : ListViewModelBase
         EditarTareaCommand = new RelayCommand<Tarea>(EditarTarea, CanEditarTarea);
         EliminarTareaCommand = new AsyncRelayCommand<Tarea>(EliminarTareaAsync, CanEliminarTarea);
         ExportarCommand = new AsyncRelayCommand(ExportarAsync);
+        PaginaAnteriorCommand = new RelayCommand(IrPaginaAnterior, () => _paginacion.TienePaginaAnterior);
+        PaginaSiguienteCommand = new RelayCommand(IrPaginaSiguiente, () => _paginacion.TienePaginaSiguiente);
         
         CargarTareasCommand.ExecuteAsync(null);
     }
 
     public bool CanManage => RolePermissions.CanManageTareas;
+    public string InfoPaginacion => _paginacion.Resumen;
     public bool CanExport => RolePermissions.CanExportData;
 
     public IEnumerable<Tarea> Tareas
@@ -97,6 +103,8 @@ public class TareasViewModel : ListViewModelBase
     public IRelayCommand<Tarea> EditarTareaCommand { get; }
     public IAsyncRelayCommand<Tarea> EliminarTareaCommand { get; }
     public IAsyncRelayCommand ExportarCommand { get; }
+    public IRelayCommand PaginaAnteriorCommand { get; }
+    public IRelayCommand PaginaSiguienteCommand { get; }
 
     public event EventHandler<Tarea>? TareaCreada;
     public event EventHandler<string>? ExportacionCompletada;
@@ -183,17 +191,37 @@ public class TareasViewModel : ListViewModelBase
 
     private void FiltrarTareas()
     {
-        if (string.IsNullOrWhiteSpace(TextoBusqueda))
-        {
-            Tareas = _tareas;
-            return;
-        }
+        _resultadoFiltrado = string.IsNullOrWhiteSpace(TextoBusqueda)
+            ? _tareas.ToList()
+            : SearchHelper.FilterByText(
+                _tareas,
+                TextoBusqueda,
+                t => t.Titulo,
+                t => t.Descripcion).ToList();
 
-        Tareas = SearchHelper.FilterByText(
-            _tareas,
-            TextoBusqueda,
-            t => t.Titulo,
-            t => t.Descripcion);
+        _paginacion.Reiniciar();
+        AplicarPaginacion();
+    }
+
+    private void AplicarPaginacion()
+    {
+        _paginacion.TamañoPagina = Math.Max(1, AppConfig.Settings.DefaultPageSize);
+        Tareas = _paginacion.Aplicar(_resultadoFiltrado).ToList();
+        OnPropertyChanged(nameof(InfoPaginacion));
+        PaginaAnteriorCommand.NotifyCanExecuteChanged();
+        PaginaSiguienteCommand.NotifyCanExecuteChanged();
+    }
+
+    private void IrPaginaAnterior()
+    {
+        _paginacion.PaginaAnterior();
+        AplicarPaginacion();
+    }
+
+    private void IrPaginaSiguiente()
+    {
+        _paginacion.PaginaSiguiente();
+        AplicarPaginacion();
     }
 
     private async Task ExportarAsync()
@@ -201,7 +229,7 @@ public class TareasViewModel : ListViewModelBase
         IsLoading = true;
         try
         {
-            var path = await _exportService.ExportToCsvAsync(_tareasFiltradas, "tareas");
+            var path = await _exportService.ExportToCsvAsync(_resultadoFiltrado, "tareas");
             ExportacionCompletada?.Invoke(this, path);
         }
         catch (Exception ex)
