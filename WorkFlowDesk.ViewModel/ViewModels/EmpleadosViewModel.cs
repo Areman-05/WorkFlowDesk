@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.Input;
 using WorkFlowDesk.Common.Authorization;
+using WorkFlowDesk.Common.Configuration;
 using WorkFlowDesk.Common.Helpers;
 using WorkFlowDesk.Common.Logging;
 using WorkFlowDesk.Domain.Entities;
@@ -13,8 +14,10 @@ public class EmpleadosViewModel : ListViewModelBase
 {
     private readonly IEmpleadoService _empleadoService;
     private readonly IExportService _exportService;
+    private readonly PaginationHelper _paginacion = new();
     private IEnumerable<Empleado> _empleados = new List<Empleado>();
     private IEnumerable<Empleado> _empleadosFiltrados = new List<Empleado>();
+    private List<Empleado> _resultadoFiltrado = new();
     private Empleado? _empleadoSeleccionado;
     private string _textoBusqueda = string.Empty;
 
@@ -28,11 +31,14 @@ public class EmpleadosViewModel : ListViewModelBase
         EditarEmpleadoCommand = new RelayCommand<Empleado>(EditarEmpleado, CanEditarEmpleado);
         EliminarEmpleadoCommand = new AsyncRelayCommand<Empleado>(EliminarEmpleadoAsync, CanEliminarEmpleado);
         ExportarCommand = new AsyncRelayCommand(ExportarAsync);
+        PaginaAnteriorCommand = new RelayCommand(IrPaginaAnterior, () => _paginacion.TienePaginaAnterior);
+        PaginaSiguienteCommand = new RelayCommand(IrPaginaSiguiente, () => _paginacion.TienePaginaSiguiente);
         
         CargarEmpleadosCommand.ExecuteAsync(null);
     }
 
     public bool CanManage => RolePermissions.CanManageEmpleados;
+    public string InfoPaginacion => _paginacion.Resumen;
     public bool CanExport => RolePermissions.CanExportData;
 
     public IEnumerable<Empleado> Empleados
@@ -73,6 +79,8 @@ public class EmpleadosViewModel : ListViewModelBase
     public IRelayCommand<Empleado> EditarEmpleadoCommand { get; }
     public IAsyncRelayCommand<Empleado> EliminarEmpleadoCommand { get; }
     public IAsyncRelayCommand ExportarCommand { get; }
+    public IRelayCommand PaginaAnteriorCommand { get; }
+    public IRelayCommand PaginaSiguienteCommand { get; }
 
     public event EventHandler<Empleado>? EmpleadoCreado;
     public event EventHandler<string>? ExportacionCompletada;
@@ -154,7 +162,7 @@ public class EmpleadosViewModel : ListViewModelBase
         IsLoading = true;
         try
         {
-            var path = await _exportService.ExportToCsvAsync(_empleadosFiltrados, "empleados");
+            var path = await _exportService.ExportToCsvAsync(_resultadoFiltrado, "empleados");
             ExportacionCompletada?.Invoke(this, path);
         }
         catch (Exception ex)
@@ -170,20 +178,39 @@ public class EmpleadosViewModel : ListViewModelBase
 
     private void FiltrarEmpleados()
     {
-        if (string.IsNullOrWhiteSpace(TextoBusqueda))
-        {
-            Empleados = _empleados;
-            return;
-        }
+        _resultadoFiltrado = string.IsNullOrWhiteSpace(TextoBusqueda)
+            ? _empleados.ToList()
+            : SearchHelper.FilterByText(
+                _empleados,
+                TextoBusqueda,
+                e => e.Nombre,
+                e => e.Apellidos,
+                e => e.Email,
+                e => e.Departamento,
+                e => e.Cargo).ToList();
 
-        Empleados = SearchHelper.FilterByText(
-            _empleados,
-            TextoBusqueda,
-            e => e.Nombre,
-            e => e.Apellidos,
-            e => e.Email,
-            e => e.Departamento,
-            e => e.Cargo
-        );
+        _paginacion.Reiniciar();
+        AplicarPaginacion();
+    }
+
+    private void AplicarPaginacion()
+    {
+        _paginacion.TamañoPagina = Math.Max(1, AppConfig.Settings.DefaultPageSize);
+        Empleados = _paginacion.Aplicar(_resultadoFiltrado).ToList();
+        OnPropertyChanged(nameof(InfoPaginacion));
+        PaginaAnteriorCommand.NotifyCanExecuteChanged();
+        PaginaSiguienteCommand.NotifyCanExecuteChanged();
+    }
+
+    private void IrPaginaAnterior()
+    {
+        _paginacion.PaginaAnterior();
+        AplicarPaginacion();
+    }
+
+    private void IrPaginaSiguiente()
+    {
+        _paginacion.PaginaSiguiente();
+        AplicarPaginacion();
     }
 }
