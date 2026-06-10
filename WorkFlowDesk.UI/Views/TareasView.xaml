@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:WorkFlowDesk.UI.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="20">
@@ -39,8 +40,9 @@
                       Margin="10,0,0,0"/>
         </StackPanel>
 
-        <DataGrid Grid.Row="1"
-                  ItemsSource="{Binding Tareas}"
+        <Grid Grid.Row="1">
+        <DataGrid ItemsSource="{Binding Tareas}"
+                  Visibility="{Binding HayElementos, Converter={StaticResource BooleanToVisibilityConverter}}"
                   SelectedItem="{Binding TareaSeleccionada}"
                   AutoGenerateColumns="False"
                   IsReadOnly="True"
@@ -94,5 +96,9 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+        <controls:EmptyStateView Title="Sin tareas"
+                                 Message="No hay tareas registradas o ninguna coincide con los filtros aplicados."
+                                 Visibility="{Binding MostrarEstadoVacio, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        </Grid>
     </Grid>
 </UserControl>

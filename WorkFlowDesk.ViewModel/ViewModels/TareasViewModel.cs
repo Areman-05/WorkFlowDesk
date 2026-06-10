@@ -9,7 +9,7 @@ using WorkFlowDesk.ViewModel.Base;
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
 /// <summary>ViewModel de listado y gestión de tareas.</summary>
-public class TareasViewModel : ViewModelBase
+public class TareasViewModel : ListViewModelBase
 {
     private readonly ITareaService _tareaService;
     private readonly IExportService _exportService;
@@ -50,8 +50,14 @@ public class TareasViewModel : ViewModelBase
     public IEnumerable<Tarea> Tareas
     {
         get => _tareasFiltradas;
-        set => SetProperty(ref _tareasFiltradas, value);
+        set
+        {
+            SetProperty(ref _tareasFiltradas, value);
+            NotificarEstadoLista();
+        }
     }
+
+    protected override int ObtenerCantidadElementos() => _tareasFiltradas.Count();
 
     public string TextoBusqueda
     {
@@ -99,6 +105,7 @@ public class TareasViewModel : ViewModelBase
     private async Task CargarTareasAsync()
     {
         IsLoading = true;
+        NotificarEstadoLista();
         try
         {
             var filtro = FiltroEstadoSeleccionado?.Valor;
@@ -121,6 +128,7 @@ public class TareasViewModel : ViewModelBase
         finally
         {
             IsLoading = false;
+            NotificarEstadoLista();
         }
     }
 

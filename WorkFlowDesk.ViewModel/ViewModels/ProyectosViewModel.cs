@@ -8,7 +8,7 @@ using WorkFlowDesk.ViewModel.Base;
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
 /// <summary>ViewModel de listado y gestión de proyectos.</summary>
-public class ProyectosViewModel : ViewModelBase
+public class ProyectosViewModel : ListViewModelBase
 {
     private readonly IProyectoService _proyectoService;
     private readonly IExportService _exportService;
@@ -37,8 +37,14 @@ public class ProyectosViewModel : ViewModelBase
     public IEnumerable<Proyecto> Proyectos
     {
         get => _proyectosFiltrados;
-        set => SetProperty(ref _proyectosFiltrados, value);
+        set
+        {
+            SetProperty(ref _proyectosFiltrados, value);
+            NotificarEstadoLista();
+        }
     }
+
+    protected override int ObtenerCantidadElementos() => _proyectosFiltrados.Count();
 
     public string TextoBusqueda
     {
@@ -74,6 +80,7 @@ public class ProyectosViewModel : ViewModelBase
     private async Task CargarProyectosAsync()
     {
         IsLoading = true;
+        NotificarEstadoLista();
         try
         {
             _proyectos = await _proyectoService.GetAllAsync();
@@ -87,6 +94,7 @@ public class ProyectosViewModel : ViewModelBase
         finally
         {
             IsLoading = false;
+            NotificarEstadoLista();
         }
     }
 

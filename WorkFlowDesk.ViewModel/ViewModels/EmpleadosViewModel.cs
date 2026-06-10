@@ -9,7 +9,7 @@ using WorkFlowDesk.ViewModel.Base;
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
 /// <summary>ViewModel de listado y gestión de empleados.</summary>
-public class EmpleadosViewModel : ViewModelBase
+public class EmpleadosViewModel : ListViewModelBase
 {
     private readonly IEmpleadoService _empleadoService;
     private readonly IExportService _exportService;
@@ -38,8 +38,14 @@ public class EmpleadosViewModel : ViewModelBase
     public IEnumerable<Empleado> Empleados
     {
         get => _empleadosFiltrados;
-        set => SetProperty(ref _empleadosFiltrados, value);
+        set
+        {
+            SetProperty(ref _empleadosFiltrados, value);
+            NotificarEstadoLista();
+        }
     }
+
+    protected override int ObtenerCantidadElementos() => _empleadosFiltrados.Count();
 
     public Empleado? EmpleadoSeleccionado
     {
@@ -75,6 +81,7 @@ public class EmpleadosViewModel : ViewModelBase
     private async Task CargarEmpleadosAsync()
     {
         IsLoading = true;
+        NotificarEstadoLista();
         try
         {
             _empleados = await _empleadoService.GetAllAsync();
@@ -89,6 +96,7 @@ public class EmpleadosViewModel : ViewModelBase
         finally
         {
             IsLoading = false;
+            NotificarEstadoLista();
         }
     }
 

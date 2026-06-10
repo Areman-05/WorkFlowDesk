@@ -8,7 +8,7 @@ using WorkFlowDesk.ViewModel.Base;
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
 /// <summary>ViewModel de listado y gestión de clientes.</summary>
-public class ClientesViewModel : ViewModelBase
+public class ClientesViewModel : ListViewModelBase
 {
     private readonly IClienteService _clienteService;
     private readonly IExportService _exportService;
@@ -37,8 +37,14 @@ public class ClientesViewModel : ViewModelBase
     public IEnumerable<Cliente> Clientes
     {
         get => _clientesFiltrados;
-        set => SetProperty(ref _clientesFiltrados, value);
+        set
+        {
+            SetProperty(ref _clientesFiltrados, value);
+            NotificarEstadoLista();
+        }
     }
+
+    protected override int ObtenerCantidadElementos() => _clientesFiltrados.Count();
 
     public Cliente? ClienteSeleccionado
     {
@@ -74,6 +80,7 @@ public class ClientesViewModel : ViewModelBase
     private async Task CargarClientesAsync()
     {
         IsLoading = true;
+        NotificarEstadoLista();
         try
         {
             _clientes = await _clienteService.GetActivosAsync();
@@ -87,6 +94,7 @@ public class ClientesViewModel : ViewModelBase
         finally
         {
             IsLoading = false;
+            NotificarEstadoLista();
         }
     }
 

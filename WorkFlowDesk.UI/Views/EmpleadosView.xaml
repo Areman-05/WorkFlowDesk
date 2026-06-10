@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:WorkFlowDesk.UI.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="20">
@@ -33,8 +34,9 @@
                      Padding="5"/>
         </StackPanel>
 
-        <DataGrid Grid.Row="1"
-                  ItemsSource="{Binding Empleados}"
+        <Grid Grid.Row="1">
+        <DataGrid ItemsSource="{Binding Empleados}"
+                  Visibility="{Binding HayElementos, Converter={StaticResource BooleanToVisibilityConverter}}"
                   SelectedItem="{Binding EmpleadoSeleccionado}"
                   AutoGenerateColumns="False"
                   IsReadOnly="True"
@@ -69,5 +71,9 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+        <controls:EmptyStateView Title="Sin empleados"
+                                 Message="No hay empleados registrados o ninguno coincide con la búsqueda."
+                                 Visibility="{Binding MostrarEstadoVacio, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        </Grid>
     </Grid>
 </UserControl>
