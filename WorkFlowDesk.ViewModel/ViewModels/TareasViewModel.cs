@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.Input;
 using WorkFlowDesk.Common.Authorization;
 using WorkFlowDesk.Common.Helpers;
+using WorkFlowDesk.Common.Models;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.ViewModel.Base;
@@ -15,19 +16,29 @@ public class TareasViewModel : ViewModelBase
     private IEnumerable<Tarea> _tareas = new List<Tarea>();
     private IEnumerable<Tarea> _tareasFiltradas = new List<Tarea>();
     private Tarea? _tareaSeleccionada;
-    private EstadoTarea? _filtroEstado;
+    private FiltroOpcion<EstadoTarea?>? _filtroEstadoSeleccionado;
     private string _textoBusqueda = string.Empty;
+
+    public IReadOnlyList<FiltroOpcion<EstadoTarea?>> FiltrosEstado { get; } = new List<FiltroOpcion<EstadoTarea?>>
+    {
+        new() { Etiqueta = "Todas", Valor = null },
+        new() { Etiqueta = "Pendiente", Valor = EstadoTarea.Pendiente },
+        new() { Etiqueta = "En progreso", Valor = EstadoTarea.EnProgreso },
+        new() { Etiqueta = "En revisión", Valor = EstadoTarea.EnRevision },
+        new() { Etiqueta = "Completada", Valor = EstadoTarea.Completada },
+        new() { Etiqueta = "Cancelada", Valor = EstadoTarea.Cancelada }
+    };
 
     /// <summary>Construye el ViewModel e inicia la carga de tareas.</summary>
     public TareasViewModel(ITareaService tareaService, IExportService exportService)
     {
         _tareaService = tareaService;
         _exportService = exportService;
+        _filtroEstadoSeleccionado = FiltrosEstado[0];
         CargarTareasCommand = new AsyncRelayCommand(CargarTareasAsync);
         CrearTareaCommand = new RelayCommand(CrearTarea);
         EditarTareaCommand = new RelayCommand<Tarea>(EditarTarea, CanEditarTarea);
         EliminarTareaCommand = new AsyncRelayCommand<Tarea>(EliminarTareaAsync, CanEliminarTarea);
-        FiltrarPorEstadoCommand = new RelayCommand<EstadoTarea?>(FiltrarPorEstado);
         ExportarCommand = new AsyncRelayCommand(ExportarAsync);
         
         CargarTareasCommand.ExecuteAsync(null);
@@ -63,13 +74,15 @@ public class TareasViewModel : ViewModelBase
         }
     }
 
-    public EstadoTarea? FiltroEstado
+    public FiltroOpcion<EstadoTarea?>? FiltroEstadoSeleccionado
     {
-        get => _filtroEstado;
+        get => _filtroEstadoSeleccionado;
         set
         {
-            SetProperty(ref _filtroEstado, value);
-            CargarTareasCommand.ExecuteAsync(null);
+            if (SetProperty(ref _filtroEstadoSeleccionado, value))
+            {
+                CargarTareasCommand.ExecuteAsync(null);
+            }
         }
     }
 
@@ -77,7 +90,6 @@ public class TareasViewModel : ViewModelBase
     public IRelayCommand CrearTareaCommand { get; }
     public IRelayCommand<Tarea> EditarTareaCommand { get; }
     public IAsyncRelayCommand<Tarea> EliminarTareaCommand { get; }
-    public IRelayCommand<EstadoTarea?> FiltrarPorEstadoCommand { get; }
     public IAsyncRelayCommand ExportarCommand { get; }
 
     public event EventHandler<Tarea>? TareaCreada;
@@ -89,9 +101,10 @@ public class TareasViewModel : ViewModelBase
         IsLoading = true;
         try
         {
-            if (FiltroEstado.HasValue)
+            var filtro = FiltroEstadoSeleccionado?.Valor;
+            if (filtro.HasValue)
             {
-                _tareas = await _tareaService.GetByEstadoAsync(FiltroEstado.Value);
+                _tareas = await _tareaService.GetByEstadoAsync(filtro.Value);
             }
             else
             {
@@ -159,11 +172,6 @@ public class TareasViewModel : ViewModelBase
     }
 
     private bool CanEliminarTarea(Tarea? tarea) => tarea != null;
-
-    private void FiltrarPorEstado(EstadoTarea? estado)
-    {
-        FiltroEstado = estado;
-    }
 
     private void FiltrarTareas()
     {
