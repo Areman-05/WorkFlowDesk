@@ -19,6 +19,8 @@ public class ConfiguracionViewModel : ViewModelBase
     private string _passwordActual = string.Empty;
     private string _passwordNuevo = string.Empty;
     private string _passwordConfirmacion = string.Empty;
+    private List<string> _backupsDisponibles = new();
+    private string? _backupSeleccionado;
 
     /// <summary>Construye el ViewModel e inicia la carga de configuración.</summary>
     public ConfiguracionViewModel(
@@ -35,8 +37,11 @@ public class ConfiguracionViewModel : ViewModelBase
         CrearBackupCommand = new CommunityToolkit.Mvvm.Input.AsyncRelayCommand(CrearBackupAsync);
         InicializarBaseDatosCommand = new CommunityToolkit.Mvvm.Input.AsyncRelayCommand(InicializarBaseDatosAsync);
         CambiarPasswordCommand = new CommunityToolkit.Mvvm.Input.AsyncRelayCommand(CambiarPasswordAsync, CanCambiarPassword);
+        CargarBackupsCommand = new CommunityToolkit.Mvvm.Input.AsyncRelayCommand(CargarBackupsAsync);
+        RestaurarBackupCommand = new CommunityToolkit.Mvvm.Input.AsyncRelayCommand(RestaurarBackupAsync, CanRestaurarBackup);
 
         CargarConfiguracionCommand.ExecuteAsync(null);
+        CargarBackupsCommand.ExecuteAsync(null);
     }
 
     public int DefaultPageSize
@@ -98,6 +103,24 @@ public class ConfiguracionViewModel : ViewModelBase
     public CommunityToolkit.Mvvm.Input.IAsyncRelayCommand CrearBackupCommand { get; }
     public CommunityToolkit.Mvvm.Input.IAsyncRelayCommand InicializarBaseDatosCommand { get; }
     public CommunityToolkit.Mvvm.Input.IAsyncRelayCommand CambiarPasswordCommand { get; }
+    public CommunityToolkit.Mvvm.Input.IAsyncRelayCommand CargarBackupsCommand { get; }
+    public CommunityToolkit.Mvvm.Input.IAsyncRelayCommand RestaurarBackupCommand { get; }
+
+    public IEnumerable<string> BackupsDisponibles
+    {
+        get => _backupsDisponibles;
+        set => SetProperty(ref _backupsDisponibles, value.ToList());
+    }
+
+    public string? BackupSeleccionado
+    {
+        get => _backupSeleccionado;
+        set
+        {
+            SetProperty(ref _backupSeleccionado, value);
+            RestaurarBackupCommand.NotifyCanExecuteChanged();
+        }
+    }
 
     public event EventHandler<string>? OperacionCompletada;
 
@@ -151,6 +174,60 @@ public class ConfiguracionViewModel : ViewModelBase
             var backupPath = await _backupService.CreateBackupAsync();
             ErrorMessage = null;
             OperacionCompletada?.Invoke(this, $"Backup creado correctamente.\n{backupPath}");
+            await CargarBackupsAsync();
+        }
+        catch (Exception ex)
+        {
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private async Task CargarBackupsAsync()
+    {
+        try
+        {
+            BackupsDisponibles = await _backupService.GetAvailableBackupsAsync();
+            if (BackupSeleccionado == null || !BackupsDisponibles.Contains(BackupSeleccionado))
+            {
+                BackupSeleccionado = BackupsDisponibles.FirstOrDefault();
+            }
+        }
+        catch (Exception ex)
+        {
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
+        }
+    }
+
+    private bool CanRestaurarBackup() => !string.IsNullOrWhiteSpace(BackupSeleccionado);
+
+    private async Task RestaurarBackupAsync()
+    {
+        if (string.IsNullOrWhiteSpace(BackupSeleccionado))
+            return;
+
+        if (!SolicitarConfirmacion(
+                "¿Restaurar la base de datos desde el backup seleccionado? Se sobrescribirán los datos actuales.",
+                "Confirmar restauración"))
+            return;
+
+        IsLoading = true;
+        try
+        {
+            var restaurado = await _backupService.RestoreBackupAsync(BackupSeleccionado);
+            if (!restaurado)
+            {
+                ErrorMessage = "No se pudo restaurar el backup seleccionado.";
+                return;
+            }
+
+            ErrorMessage = null;
+            OperacionCompletada?.Invoke(this, "Base de datos restaurada correctamente.");
         }
         catch (Exception ex)
         {

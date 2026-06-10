@@ -1,4 +1,5 @@
 using System.Windows.Controls;
+using WorkFlowDesk.UI.Helpers;
 using WorkFlowDesk.UI.Services;
 using WorkFlowDesk.ViewModel.ViewModels;
 
@@ -10,6 +11,7 @@ public partial class ConfiguracionView : UserControl
     {
         InitializeComponent();
         DataContext = viewModel;
+        ViewConfirmationHelper.BindConfirmaciones(viewModel);
         viewModel.OperacionCompletada += (_, mensaje) =>
             NotificationService.ShowSuccess(mensaje);
     }

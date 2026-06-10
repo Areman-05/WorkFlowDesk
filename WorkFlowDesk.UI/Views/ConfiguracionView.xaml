@@ -87,6 +87,21 @@
                                 Command="{Binding CrearBackupCommand}"
                                 Style="{StaticResource PrimaryButtonStyle}"
                                 Margin="0,0,0,10"/>
+                        <TextBlock Text="Restaurar desde backup"
+                                   Style="{StaticResource FormLabelStyle}"/>
+                        <ComboBox ItemsSource="{Binding BackupsDisponibles}"
+                                  SelectedItem="{Binding BackupSeleccionado}"
+                                  Style="{StaticResource ModernComboBoxStyle}"
+                                  Margin="0,0,0,10"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <Button Content="Restaurar Backup"
+                                    Command="{Binding RestaurarBackupCommand}"
+                                    Style="{StaticResource DangerButtonStyle}"
+                                    Margin="0,0,10,0"/>
+                            <Button Content="Actualizar lista"
+                                    Command="{Binding CargarBackupsCommand}"
+                                    Padding="12,8"/>
+                        </StackPanel>
                         <Button Content="Inicializar Base de Datos" 
                                 Command="{Binding InicializarBaseDatosCommand}"
                                 Style="{StaticResource PrimaryButtonStyle}"/>
