@@ -30,14 +30,10 @@
 
                         <TextBlock Text="Nivel de logging" 
                                    Style="{StaticResource FormLabelStyle}"/>
-                        <ComboBox SelectedItem="{Binding LogLevel}" 
+                        <ComboBox ItemsSource="{Binding NivelesLog}"
+                                  SelectedItem="{Binding LogLevel}" 
                                   Style="{StaticResource ModernComboBoxStyle}"
-                                  Margin="0,0,0,15">
-                            <ComboBoxItem Content="Debug"/>
-                            <ComboBoxItem Content="Info"/>
-                            <ComboBoxItem Content="Warning"/>
-                            <ComboBoxItem Content="Error"/>
-                        </ComboBox>
+                                  Margin="0,0,0,15"/>
 
                         <TextBlock Text="Minutos de expiración de caché" 
                                    Style="{StaticResource FormLabelStyle}"/>

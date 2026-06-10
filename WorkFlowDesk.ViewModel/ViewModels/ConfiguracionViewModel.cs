@@ -56,6 +56,8 @@ public class ConfiguracionViewModel : ViewModelBase
         set => SetProperty(ref _enableLogging, value);
     }
 
+    public IReadOnlyList<string> NivelesLog { get; } = new[] { "Debug", "Info", "Warning", "Error" };
+
     public string LogLevel
     {
         get => _logLevel;
