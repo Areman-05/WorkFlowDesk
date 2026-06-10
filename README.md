@@ -10,7 +10,10 @@ Aplicación de escritorio WPF para gestión de tareas, proyectos, empleados y cl
 - Comentarios en tareas
 - Reportes y exportación a CSV
 - Control de acceso por rol en menú y acciones
-- Cerrar sesión y reinicio de base de datos desde Configuración
+- Cerrar sesión, cambio de contraseña y reinicio de base de datos desde Configuración
+- Backup y restauración real de SQL Server (`.bak`)
+- Paginación y estados vacíos en listados
+- Tests unitarios y CI en GitHub Actions
 
 ## Requisitos
 
@@ -24,9 +27,13 @@ Aplicación de escritorio WPF para gestión de tareas, proyectos, empleados y cl
 1. Abre `WorkFlowDesk.sln` en Visual Studio.
 2. Establece **WorkFlowDesk.UI** como proyecto de inicio.
 3. Pulsa **F5**.
-4. Inicia sesión con:
-   - Usuario: `admin`
-   - Contraseña: `Admin123`
+4. Inicia sesión con cualquiera de estos usuarios demo:
+
+| Rol | Usuario | Contraseña |
+|-----|---------|------------|
+| Administrador | `admin` | `Admin123` |
+| Supervisor | `supervisor` | `Supervisor123` |
+| Empleado | `empleado` | `Empleado123` |
 
 Guía detallada de pruebas y resolución de problemas: [COMO_PROBAR.md](COMO_PROBAR.md).
 
@@ -65,6 +72,14 @@ Si migras desde una versión anterior que usaba `EnsureCreated`, entra en **Conf
 ## Exportaciones
 
 Los listados y reportes generan CSV en la carpeta `Exports/` junto al ejecutable de la aplicación.
+
+## Tests y CI
+
+```bash
+dotnet test WorkFlowDesk.Tests/WorkFlowDesk.Tests.csproj
+```
+
+El workflow `.github/workflows/build.yml` compila la solución y ejecuta los tests en cada push a `main`.
 
 ## Licencia
 
