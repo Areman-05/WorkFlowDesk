@@ -264,6 +264,7 @@ public class TareaFormViewModel : ViewModelBase
         {
             if (_esNuevo)
             {
+                _tarea.CreadorId = await ObtenerEmpleadoIdActualAsync();
                 await _tareaService.CreateAsync(_tarea);
             }
             else
