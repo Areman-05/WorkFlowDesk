@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:WorkFlowDesk.UI.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="20">
@@ -17,6 +18,11 @@
                        FontWeight="Bold" 
                        VerticalAlignment="Center"
                        Margin="0,0,20,0"/>
+            <Button Content="Actualizar"
+                    Command="{Binding CargarReportesCommand}"
+                    Padding="15,8"
+                    VerticalAlignment="Center"
+                    Margin="0,0,10,0"/>
             <Button Content="Exportar CSV"
                     Command="{Binding ExportarCommand}"
                     Visibility="{Binding CanExport, Converter={StaticResource BooleanToVisibilityConverter}}"
@@ -24,7 +30,8 @@
                     VerticalAlignment="Center"/>
         </StackPanel>
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+        <Grid Grid.Row="1">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
             <UniformGrid Columns="2" Rows="2">
                 <!-- Estadísticas de Empleados -->
                 <Border Background="#3498DB" 
@@ -147,5 +154,7 @@
                 </Border>
             </UniformGrid>
         </ScrollViewer>
+        <controls:LoadingIndicator Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        </Grid>
     </Grid>
 </UserControl>
