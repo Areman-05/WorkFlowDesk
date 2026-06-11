@@ -26,8 +26,7 @@ namespace WorkFlowDesk.UI
             _mainViewModel.LogoutRequested += OnLogoutRequested;
             DataContext = _mainViewModel;
             
-            // Navegar a Dashboard por defecto
-            _navigationService.NavigateTo<DashboardView>();
+            NavegarADashboard();
         }
 
         private void OnLogoutRequested(object? sender, EventArgs e)
@@ -53,14 +52,7 @@ namespace WorkFlowDesk.UI
             switch (viewName)
             {
                 case "Dashboard":
-                    var empleadoService = ServiceLocator.GetService<IEmpleadoService>();
-                    var proyectoService = ServiceLocator.GetService<IProyectoService>();
-                    var tareaService = ServiceLocator.GetService<ITareaService>();
-                    var clienteService = ServiceLocator.GetService<IClienteService>();
-                    var dashboardViewModel = new DashboardViewModel(empleadoService, proyectoService, tareaService, clienteService);
-                    var dashboardView = new DashboardView();
-                    dashboardView.DataContext = dashboardViewModel;
-                    _navigationService.NavigateTo(dashboardView);
+                    NavegarADashboard();
                     break;
                 case "Empleados":
                     var empleadosService = ServiceLocator.GetService<IEmpleadoService>();
@@ -100,6 +92,16 @@ namespace WorkFlowDesk.UI
                     _navigationService.NavigateTo(new ConfiguracionView(configVm));
                     break;
             }
+        }
+
+        private void NavegarADashboard()
+        {
+            var empleadoService = ServiceLocator.GetService<IEmpleadoService>();
+            var proyectoService = ServiceLocator.GetService<IProyectoService>();
+            var tareaService = ServiceLocator.GetService<ITareaService>();
+            var clienteService = ServiceLocator.GetService<IClienteService>();
+            var dashboardViewModel = new DashboardViewModel(empleadoService, proyectoService, tareaService, clienteService);
+            _navigationService.NavigateTo(new DashboardView(dashboardViewModel));
         }
 
         private static bool CanNavigateTo(string viewName) => viewName switch

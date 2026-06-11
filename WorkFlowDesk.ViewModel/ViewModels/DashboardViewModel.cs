@@ -1,3 +1,4 @@
+using WorkFlowDesk.Common.Services;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.ViewModel.Base;
 
@@ -32,6 +33,9 @@ public class DashboardViewModel : ViewModelBase
         CargarEstadisticasCommand = new CommunityToolkit.Mvvm.Input.AsyncRelayCommand(CargarEstadisticasAsync);
         CargarEstadisticasCommand.ExecuteAsync(null);
     }
+
+    public string MensajeBienvenida =>
+        $"Bienvenido, {SessionService.GetUserName()} ({SessionService.GetUserRole()})";
 
     public int TotalEmpleados
     {
@@ -71,7 +75,6 @@ public class DashboardViewModel : ViewModelBase
 
     public CommunityToolkit.Mvvm.Input.IAsyncRelayCommand CargarEstadisticasCommand { get; }
 
-    /// <summary>Carga los totales de empleados, proyectos, tareas y clientes para el panel.</summary>
     /// <summary>Carga los totales de empleados, proyectos, tareas y clientes.</summary>
     private async Task CargarEstadisticasAsync()
     {
