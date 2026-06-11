@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:WorkFlowDesk.UI.Behaviors"
         mc:Ignorable="d"
         Title="Iniciar Sesión - WorkFlowDesk" 
-        Height="400" 
-        Width="350"
+        Height="480" 
+        Width="380"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
     <Grid Margin="30">
@@ -44,6 +44,32 @@
                          Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" 
                          Height="5" 
                          Margin="0,10,0,0"/>
+
+            <Border Background="#F4F6F7"
+                    CornerRadius="4"
+                    Padding="12"
+                    Margin="0,20,0,0">
+                <StackPanel>
+                    <TextBlock Text="Usuarios demo"
+                               FontWeight="SemiBold"
+                               Margin="0,0,0,6"/>
+                    <TextBlock Text="admin / Admin123 (Administrador)"
+                               FontSize="12"
+                               Foreground="#5D6D7E"/>
+                    <TextBlock Text="supervisor / Supervisor123"
+                               FontSize="12"
+                               Foreground="#5D6D7E"/>
+                    <TextBlock Text="empleado / Empleado123"
+                               FontSize="12"
+                               Foreground="#5D6D7E"/>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Text="{Binding VersionApp}"
+                       FontSize="11"
+                       Foreground="#95A5A6"
+                       HorizontalAlignment="Center"
+                       Margin="0,16,0,0"/>
         </StackPanel>
     </Grid>
 </Window>

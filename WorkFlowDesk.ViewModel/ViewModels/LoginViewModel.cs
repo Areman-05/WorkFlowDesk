@@ -1,4 +1,5 @@
 using CommunityToolkit.Mvvm.Input;
+using WorkFlowDesk.Common.Helpers;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.ViewModel.Base;
@@ -45,6 +46,8 @@ public class LoginViewModel : ViewModelBase
     }
 
     public IAsyncRelayCommand LoginCommand { get; }
+
+    public string VersionApp => $"v{AppInfo.Version}";
 
     public event EventHandler<Usuario>? LoginExitoso;
 
