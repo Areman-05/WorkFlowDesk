@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.Input;
 using WorkFlowDesk.Common.Authorization;
+using WorkFlowDesk.Common.Configuration;
 using WorkFlowDesk.Common.Helpers;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
@@ -12,8 +13,10 @@ public class ProyectosViewModel : ListViewModelBase
 {
     private readonly IProyectoService _proyectoService;
     private readonly IExportService _exportService;
+    private readonly PaginationHelper _paginacion = new();
     private IEnumerable<Proyecto> _proyectos = new List<Proyecto>();
     private IEnumerable<Proyecto> _proyectosFiltrados = new List<Proyecto>();
+    private List<Proyecto> _resultadoFiltrado = new();
     private Proyecto? _proyectoSeleccionado;
     private string _textoBusqueda = string.Empty;
 
@@ -27,11 +30,14 @@ public class ProyectosViewModel : ListViewModelBase
         EditarProyectoCommand = new RelayCommand<Proyecto>(EditarProyecto, CanEditarProyecto);
         EliminarProyectoCommand = new AsyncRelayCommand<Proyecto>(EliminarProyectoAsync, CanEliminarProyecto);
         ExportarCommand = new AsyncRelayCommand(ExportarAsync);
+        PaginaAnteriorCommand = new RelayCommand(IrPaginaAnterior, () => _paginacion.TienePaginaAnterior);
+        PaginaSiguienteCommand = new RelayCommand(IrPaginaSiguiente, () => _paginacion.TienePaginaSiguiente);
         
         CargarProyectosCommand.ExecuteAsync(null);
     }
 
     public bool CanManage => RolePermissions.CanManageProyectos;
+    public string InfoPaginacion => _paginacion.Resumen;
     public bool CanExport => RolePermissions.CanExportData;
 
     public IEnumerable<Proyecto> Proyectos
@@ -72,6 +78,8 @@ public class ProyectosViewModel : ListViewModelBase
     public IRelayCommand<Proyecto> EditarProyectoCommand { get; }
     public IAsyncRelayCommand<Proyecto> EliminarProyectoCommand { get; }
     public IAsyncRelayCommand ExportarCommand { get; }
+    public IRelayCommand PaginaAnteriorCommand { get; }
+    public IRelayCommand PaginaSiguienteCommand { get; }
 
     public event EventHandler<Proyecto>? ProyectoCreado;
     public event EventHandler<Proyecto>? ProyectoEditado;
@@ -151,7 +159,7 @@ public class ProyectosViewModel : ListViewModelBase
         IsLoading = true;
         try
         {
-            var path = await _exportService.ExportToCsvAsync(_proyectosFiltrados, "proyectos");
+            var path = await _exportService.ExportToCsvAsync(_resultadoFiltrado, "proyectos");
             ExportacionCompletada?.Invoke(this, path);
         }
         catch (Exception ex)
@@ -167,16 +175,36 @@ public class ProyectosViewModel : ListViewModelBase
 
     private void FiltrarProyectos()
     {
-        if (string.IsNullOrWhiteSpace(TextoBusqueda))
-        {
-            Proyectos = _proyectos;
-            return;
-        }
+        _resultadoFiltrado = string.IsNullOrWhiteSpace(TextoBusqueda)
+            ? _proyectos.ToList()
+            : SearchHelper.FilterByText(
+                _proyectos,
+                TextoBusqueda,
+                p => p.Nombre,
+                p => p.Descripcion).ToList();
 
-        Proyectos = SearchHelper.FilterByText(
-            _proyectos,
-            TextoBusqueda,
-            p => p.Nombre,
-            p => p.Descripcion);
+        _paginacion.Reiniciar();
+        AplicarPaginacion();
+    }
+
+    private void AplicarPaginacion()
+    {
+        _paginacion.TamañoPagina = Math.Max(1, AppConfig.Settings.DefaultPageSize);
+        Proyectos = _paginacion.Aplicar(_resultadoFiltrado).ToList();
+        OnPropertyChanged(nameof(InfoPaginacion));
+        PaginaAnteriorCommand.NotifyCanExecuteChanged();
+        PaginaSiguienteCommand.NotifyCanExecuteChanged();
+    }
+
+    private void IrPaginaAnterior()
+    {
+        _paginacion.PaginaAnterior();
+        AplicarPaginacion();
+    }
+
+    private void IrPaginaSiguiente()
+    {
+        _paginacion.PaginaSiguiente();
+        AplicarPaginacion();
     }
 }

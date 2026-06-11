@@ -10,6 +10,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
@@ -85,5 +86,14 @@
                                  Visibility="{Binding MostrarEstadoVacio, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         <controls:LoadingIndicator Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         </Grid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+            <TextBlock Text="{Binding InfoPaginacion}"
+                       VerticalAlignment="Center"
+                       Foreground="#7F8C8D"
+                       Margin="0,0,15,0"/>
+            <Button Content="Anterior" Command="{Binding PaginaAnteriorCommand}" Padding="12,6" Margin="0,0,8,0"/>
+            <Button Content="Siguiente" Command="{Binding PaginaSiguienteCommand}" Padding="12,6"/>
+        </StackPanel>
     </Grid>
 </UserControl>

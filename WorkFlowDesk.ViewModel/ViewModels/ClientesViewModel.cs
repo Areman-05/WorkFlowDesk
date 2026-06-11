@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.Input;
 using WorkFlowDesk.Common.Authorization;
+using WorkFlowDesk.Common.Configuration;
 using WorkFlowDesk.Common.Helpers;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
@@ -12,8 +13,10 @@ public class ClientesViewModel : ListViewModelBase
 {
     private readonly IClienteService _clienteService;
     private readonly IExportService _exportService;
+    private readonly PaginationHelper _paginacion = new();
     private IEnumerable<Cliente> _clientes = new List<Cliente>();
     private IEnumerable<Cliente> _clientesFiltrados = new List<Cliente>();
+    private List<Cliente> _resultadoFiltrado = new();
     private Cliente? _clienteSeleccionado;
     private string _textoBusqueda = string.Empty;
 
@@ -27,11 +30,14 @@ public class ClientesViewModel : ListViewModelBase
         EditarClienteCommand = new RelayCommand<Cliente>(EditarCliente, CanEditarCliente);
         EliminarClienteCommand = new AsyncRelayCommand<Cliente>(EliminarClienteAsync, CanEliminarCliente);
         ExportarCommand = new AsyncRelayCommand(ExportarAsync);
+        PaginaAnteriorCommand = new RelayCommand(IrPaginaAnterior, () => _paginacion.TienePaginaAnterior);
+        PaginaSiguienteCommand = new RelayCommand(IrPaginaSiguiente, () => _paginacion.TienePaginaSiguiente);
         
         CargarClientesCommand.ExecuteAsync(null);
     }
 
     public bool CanManage => RolePermissions.CanManageClientes;
+    public string InfoPaginacion => _paginacion.Resumen;
     public bool CanExport => RolePermissions.CanExportData;
 
     public IEnumerable<Cliente> Clientes
@@ -72,6 +78,8 @@ public class ClientesViewModel : ListViewModelBase
     public IRelayCommand<Cliente> EditarClienteCommand { get; }
     public IAsyncRelayCommand<Cliente> EliminarClienteCommand { get; }
     public IAsyncRelayCommand ExportarCommand { get; }
+    public IRelayCommand PaginaAnteriorCommand { get; }
+    public IRelayCommand PaginaSiguienteCommand { get; }
 
     public event EventHandler<Cliente>? ClienteCreado;
     public event EventHandler<Cliente>? ClienteEditado;
@@ -151,7 +159,7 @@ public class ClientesViewModel : ListViewModelBase
         IsLoading = true;
         try
         {
-            var path = await _exportService.ExportToCsvAsync(_clientesFiltrados, "clientes");
+            var path = await _exportService.ExportToCsvAsync(_resultadoFiltrado, "clientes");
             ExportacionCompletada?.Invoke(this, path);
         }
         catch (Exception ex)
@@ -167,19 +175,38 @@ public class ClientesViewModel : ListViewModelBase
 
     private void FiltrarClientes()
     {
-        if (string.IsNullOrWhiteSpace(TextoBusqueda))
-        {
-            Clientes = _clientes;
-            return;
-        }
+        _resultadoFiltrado = string.IsNullOrWhiteSpace(TextoBusqueda)
+            ? _clientes.ToList()
+            : SearchHelper.FilterByText(
+                _clientes,
+                TextoBusqueda,
+                c => c.Nombre,
+                c => c.Empresa,
+                c => c.Email,
+                c => c.Telefono).ToList();
 
-        Clientes = SearchHelper.FilterByText(
-            _clientes,
-            TextoBusqueda,
-            c => c.Nombre,
-            c => c.Empresa,
-            c => c.Email,
-            c => c.Telefono
-        );
+        _paginacion.Reiniciar();
+        AplicarPaginacion();
+    }
+
+    private void AplicarPaginacion()
+    {
+        _paginacion.TamañoPagina = Math.Max(1, AppConfig.Settings.DefaultPageSize);
+        Clientes = _paginacion.Aplicar(_resultadoFiltrado).ToList();
+        OnPropertyChanged(nameof(InfoPaginacion));
+        PaginaAnteriorCommand.NotifyCanExecuteChanged();
+        PaginaSiguienteCommand.NotifyCanExecuteChanged();
+    }
+
+    private void IrPaginaAnterior()
+    {
+        _paginacion.PaginaAnterior();
+        AplicarPaginacion();
+    }
+
+    private void IrPaginaSiguiente()
+    {
+        _paginacion.PaginaSiguiente();
+        AplicarPaginacion();
     }
 }
