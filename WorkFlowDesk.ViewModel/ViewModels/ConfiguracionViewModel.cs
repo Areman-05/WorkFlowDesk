@@ -244,6 +244,13 @@ public class ConfiguracionViewModel : ViewModelBase
 
     private async Task InicializarBaseDatosAsync()
     {
+        if (!SolicitarConfirmacion(
+                "Se eliminarán todos los datos y se recreará la base de datos con datos de prueba. ¿Continuar?",
+                "Inicializar base de datos"))
+        {
+            return;
+        }
+
         IsLoading = true;
         try
         {
