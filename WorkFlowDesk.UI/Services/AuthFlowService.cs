@@ -1,4 +1,5 @@
 using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
 using WorkFlowDesk.Common.Services;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.UI.Views;
@@ -12,7 +13,7 @@ public static class AuthFlowService
     /// <summary>Muestra el diálogo de login y abre la ventana principal si las credenciales son válidas.</summary>
     public static void ShowLoginFlow()
     {
-        var authService = ServiceLocator.GetService<IAuthenticationService>();
+        var authService = ServiceLocator.Provider.GetRequiredService<IAuthenticationService>();
         var loginViewModel = new LoginViewModel(authService);
         var loginView = new LoginView(loginViewModel);
 
