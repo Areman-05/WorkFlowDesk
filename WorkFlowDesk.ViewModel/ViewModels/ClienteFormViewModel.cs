@@ -59,6 +59,8 @@ public class ClienteFormViewModel : ViewModelBase
         {
             _cliente.Telefono = value;
             OnPropertyChanged();
+            ValidarTelefono();
+            GuardarCommand.NotifyCanExecuteChanged();
         }
     }
 
@@ -102,7 +104,20 @@ public class ClienteFormViewModel : ViewModelBase
     {
         return !string.IsNullOrWhiteSpace(Nombre) &&
                !string.IsNullOrWhiteSpace(Email) &&
-               ValidationHelper.IsValidEmail(Email);
+               ValidationHelper.IsValidEmail(Email) &&
+               (string.IsNullOrWhiteSpace(Telefono) || ValidationHelper.IsValidPhone(Telefono));
+    }
+
+    private void ValidarTelefono()
+    {
+        if (!string.IsNullOrWhiteSpace(Telefono) && !ValidationHelper.IsValidPhone(Telefono))
+        {
+            ErrorMessage = "El teléfono debe tener al menos 9 dígitos";
+        }
+        else if (string.IsNullOrWhiteSpace(ErrorMessage) || ErrorMessage.Contains("teléfono"))
+        {
+            ErrorMessage = null;
+        }
     }
 
     private void ValidarEmail()
