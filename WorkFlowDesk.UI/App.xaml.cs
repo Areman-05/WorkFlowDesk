@@ -1,4 +1,5 @@
 using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
 using WorkFlowDesk.Common.Configuration;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.UI.Services;
@@ -23,7 +24,7 @@ namespace WorkFlowDesk.UI
         {
             try
             {
-                var dbInitService = ServiceLocator.GetService<IDatabaseInitializationService>();
+                var dbInitService = ServiceLocator.Provider.GetRequiredService<IDatabaseInitializationService>();
                 await dbInitService.InitializeAsync();
             }
             catch (Exception ex)

@@ -12,6 +12,10 @@ public static class ServiceLocator
 {
     private static ServiceProvider? _serviceProvider;
 
+    /// <summary>Proveedor de dependencias de la aplicación.</summary>
+    public static IServiceProvider Provider =>
+        _serviceProvider ?? throw new InvalidOperationException("ServiceProvider no está configurado. Llame a ConfigureServices() primero.");
+
     /// <summary>Registra todos los servicios y construye el proveedor de dependencias.</summary>
     public static void ConfigureServices()
     {
@@ -46,10 +50,6 @@ public static class ServiceLocator
         _serviceProvider = services.BuildServiceProvider();
     }
 
-    /// <summary>Obtiene un servicio registrado. Requiere haber llamado antes a <see cref="ConfigureServices"/>.</summary>
-    public static T GetService<T>() where T : class
-    {
-        return _serviceProvider?.GetRequiredService<T>() 
-            ?? throw new InvalidOperationException("ServiceProvider no está configurado");
-    }
+    /// <summary>Obtiene un servicio registrado del contenedor DI.</summary>
+    public static T GetService<T>() where T : class => Provider.GetRequiredService<T>();
 }
