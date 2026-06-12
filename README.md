@@ -1,6 +1,8 @@
 # WorkFlowDesk
 
-Aplicación de escritorio WPF para gestión de tareas, proyectos, empleados y clientes. Pensada como producto de portfolio: arquitectura en capas, MVVM, Entity Framework Core y SQL Server LocalDB.
+![Build and Test](https://github.com/Areman-05/WorkFlowDesk/actions/workflows/build.yml/badge.svg)
+
+Aplicación de escritorio WPF para gestión de tareas, proyectos, clientes y empleados. Pensada como producto de portfolio: arquitectura en capas, MVVM, Entity Framework Core y SQL Server LocalDB.
 
 ## Características
 
@@ -35,7 +37,9 @@ Aplicación de escritorio WPF para gestión de tareas, proyectos, empleados y cl
 | Supervisor | `supervisor` | `Supervisor123` |
 | Empleado | `empleado` | `Empleado123` |
 
-Guía detallada de pruebas y resolución de problemas: [COMO_PROBAR.md](COMO_PROBAR.md).
+Guía detallada de pruebas: [COMO_PROBAR.md](COMO_PROBAR.md).  
+Ejecución sin Visual Studio: [DESPLIEGUE.md](DESPLIEGUE.md).  
+Historial de versiones: [CHANGELOG.md](CHANGELOG.md).
 
 ## Arquitectura
 

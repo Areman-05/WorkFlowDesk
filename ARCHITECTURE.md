@@ -43,7 +43,7 @@ flowchart TB
 ## Patrones utilizados
 
 - **MVVM** con CommunityToolkit.Mvvm (`ObservableObject`, `RelayCommand`).
-- **Service Locator** manual en UI (pendiente de migrar a DI nativa de WPF).
+- **Inyección de dependencias** con `Microsoft.Extensions.DependencyInjection` y `ServiceLocator.Provider`.
 - **Repository + Service** en la capa de datos y negocio.
 - **Eventos de confirmación** (`ConfirmacionSolicitada`) para desacoplar ViewModels de MessageBox.
 
