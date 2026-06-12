@@ -7,6 +7,16 @@
         mc:Ignorable="d"
         Title="WorkFlowDesk" Height="600" Width="1000"
         WindowStartupLocation="CenterScreen">
+    <Window.InputBindings>
+        <KeyBinding Key="D1" Modifiers="Control" Command="{Binding NavigateToDashboardCommand}"/>
+        <KeyBinding Key="D2" Modifiers="Control" Command="{Binding NavigateToEmpleadosCommand}"/>
+        <KeyBinding Key="D3" Modifiers="Control" Command="{Binding NavigateToProyectosCommand}"/>
+        <KeyBinding Key="D4" Modifiers="Control" Command="{Binding NavigateToTareasCommand}"/>
+        <KeyBinding Key="D5" Modifiers="Control" Command="{Binding NavigateToClientesCommand}"/>
+        <KeyBinding Key="D6" Modifiers="Control" Command="{Binding NavigateToReportesCommand}"/>
+        <KeyBinding Key="D7" Modifiers="Control" Command="{Binding NavigateToConfiguracionCommand}"/>
+        <KeyBinding Key="L" Modifiers="Control" Command="{Binding LogoutCommand}"/>
+    </Window.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
@@ -44,40 +54,48 @@
                 <Button Content="Dashboard" 
                         Style="{StaticResource SidebarButtonStyle}"
                         Command="{Binding NavigateToDashboardCommand}"
+                        ToolTip="Panel principal (Ctrl+1)"
                         Margin="10,5"/>
                 <Button Content="Empleados" 
                         Style="{StaticResource SidebarButtonStyle}"
                         Command="{Binding NavigateToEmpleadosCommand}"
                         Visibility="{Binding ShowEmpleados, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        ToolTip="Gestión de empleados (Ctrl+2)"
                         Margin="10,5"/>
                 <Button Content="Proyectos" 
                         Style="{StaticResource SidebarButtonStyle}"
                         Command="{Binding NavigateToProyectosCommand}"
                         Visibility="{Binding ShowProyectos, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        ToolTip="Gestión de proyectos (Ctrl+3)"
                         Margin="10,5"/>
                 <Button Content="Tareas" 
                         Style="{StaticResource SidebarButtonStyle}"
                         Command="{Binding NavigateToTareasCommand}"
+                        ToolTip="Gestión de tareas (Ctrl+4)"
                         Margin="10,5"/>
                 <Button Content="Clientes" 
                         Style="{StaticResource SidebarButtonStyle}"
                         Command="{Binding NavigateToClientesCommand}"
                         Visibility="{Binding ShowClientes, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        ToolTip="Gestión de clientes (Ctrl+5)"
                         Margin="10,5"/>
                 <Button Content="Reportes" 
                         Style="{StaticResource SidebarButtonStyle}"
                         Command="{Binding NavigateToReportesCommand}"
                         Visibility="{Binding ShowReportes, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        ToolTip="Estadísticas y exportación (Ctrl+6)"
                         Margin="10,5"/>
                 <Button Content="Configuración" 
                         Style="{StaticResource SidebarButtonStyle}"
                         Command="{Binding NavigateToConfiguracionCommand}"
                         Visibility="{Binding ShowConfiguracion, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        ToolTip="Backup, BD y preferencias (Ctrl+7)"
                         Margin="10,5"/>
 
                 <Button Content="Cerrar sesión"
                         Style="{StaticResource SidebarButtonStyle}"
                         Command="{Binding LogoutCommand}"
+                        ToolTip="Cerrar sesión actual (Ctrl+L)"
                         Margin="10,20,10,10"/>
                 </StackPanel>
             </DockPanel>
