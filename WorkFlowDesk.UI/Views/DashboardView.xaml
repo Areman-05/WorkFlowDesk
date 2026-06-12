@@ -25,11 +25,15 @@
                     VerticalAlignment="Center"/>
         </StackPanel>
 
-        <TextBlock Grid.Row="1"
-                   Text="{Binding MensajeBienvenida}"
-                   FontSize="16"
-                   Foreground="#7F8C8D"
-                   Margin="0,0,0,20"/>
+        <StackPanel Grid.Row="1" Margin="0,0,0,20">
+            <TextBlock Text="{Binding MensajeBienvenida}"
+                       FontSize="16"
+                       Foreground="#7F8C8D"/>
+            <TextBlock Text="{Binding ErrorMessage}"
+                       Style="{StaticResource ErrorMessageStyle}"
+                       Margin="0,8,0,0"
+                       Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+        </StackPanel>
 
         <Grid Grid.Row="2">
             <UniformGrid Columns="3" Rows="2">
