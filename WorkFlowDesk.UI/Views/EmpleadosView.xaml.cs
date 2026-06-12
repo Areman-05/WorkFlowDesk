@@ -9,12 +9,14 @@ namespace WorkFlowDesk.UI.Views;
 public partial class EmpleadosView : UserControl
 {
     private readonly EmpleadosViewModel _viewModel;
+    private readonly IEmpleadoService _empleadoService;
 
-    public EmpleadosView(EmpleadosViewModel viewModel)
+    public EmpleadosView(EmpleadosViewModel viewModel, IEmpleadoService empleadoService)
     {
         InitializeComponent();
         DataContext = viewModel;
         _viewModel = viewModel;
+        _empleadoService = empleadoService;
         ViewConfirmationHelper.BindConfirmaciones(viewModel);
 
         _viewModel.EmpleadoCreado += OnEmpleadoCreado;
@@ -29,9 +31,8 @@ public partial class EmpleadosView : UserControl
 
     private void OnEmpleadoCreado(object? sender, Domain.Entities.Empleado empleado)
     {
-        var empleadoService = ServiceLocator.GetService<IEmpleadoService>();
-        var formViewModel = new EmpleadoFormViewModel(empleadoService, empleado);
-        
+        var formViewModel = new EmpleadoFormViewModel(_empleadoService, empleado);
+
         if (DialogService.ShowEmpleadoForm(formViewModel) == true)
         {
             _viewModel.CargarEmpleadosCommand.ExecuteAsync(null);
@@ -40,9 +41,8 @@ public partial class EmpleadosView : UserControl
 
     private void OnEmpleadoEditado(object? sender, Domain.Entities.Empleado empleado)
     {
-        var empleadoService = ServiceLocator.GetService<IEmpleadoService>();
-        var formViewModel = new EmpleadoFormViewModel(empleadoService, empleado);
-        
+        var formViewModel = new EmpleadoFormViewModel(_empleadoService, empleado);
+
         if (DialogService.ShowEmpleadoForm(formViewModel) == true)
         {
             _viewModel.CargarEmpleadosCommand.ExecuteAsync(null);

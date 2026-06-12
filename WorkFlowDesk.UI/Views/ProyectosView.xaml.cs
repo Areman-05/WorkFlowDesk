@@ -9,12 +9,22 @@ namespace WorkFlowDesk.UI.Views;
 public partial class ProyectosView : UserControl
 {
     private readonly ProyectosViewModel _viewModel;
+    private readonly IProyectoService _proyectoService;
+    private readonly IClienteService _clienteService;
+    private readonly IEmpleadoService _empleadoService;
 
-    public ProyectosView(ProyectosViewModel viewModel)
+    public ProyectosView(
+        ProyectosViewModel viewModel,
+        IProyectoService proyectoService,
+        IClienteService clienteService,
+        IEmpleadoService empleadoService)
     {
         InitializeComponent();
         DataContext = viewModel;
         _viewModel = viewModel;
+        _proyectoService = proyectoService;
+        _clienteService = clienteService;
+        _empleadoService = empleadoService;
         ViewConfirmationHelper.BindConfirmaciones(viewModel);
 
         _viewModel.ProyectoCreado += OnProyectoCreado;
@@ -29,10 +39,7 @@ public partial class ProyectosView : UserControl
 
     private void OnProyectoCreado(object? sender, Domain.Entities.Proyecto _)
     {
-        var proyectoService = ServiceLocator.GetService<IProyectoService>();
-        var clienteService = ServiceLocator.GetService<IClienteService>();
-        var empleadoService = ServiceLocator.GetService<IEmpleadoService>();
-        var formViewModel = new ProyectoFormViewModel(proyectoService, clienteService, empleadoService, proyecto: null);
+        var formViewModel = new ProyectoFormViewModel(_proyectoService, _clienteService, _empleadoService, proyecto: null);
 
         if (DialogService.ShowProyectoForm(formViewModel) == true)
         {
@@ -42,10 +49,7 @@ public partial class ProyectosView : UserControl
 
     private void OnProyectoEditado(object? sender, Domain.Entities.Proyecto proyecto)
     {
-        var proyectoService = ServiceLocator.GetService<IProyectoService>();
-        var clienteService = ServiceLocator.GetService<IClienteService>();
-        var empleadoService = ServiceLocator.GetService<IEmpleadoService>();
-        var formViewModel = new ProyectoFormViewModel(proyectoService, clienteService, empleadoService, proyecto);
+        var formViewModel = new ProyectoFormViewModel(_proyectoService, _clienteService, _empleadoService, proyecto);
 
         if (DialogService.ShowProyectoForm(formViewModel) == true)
         {

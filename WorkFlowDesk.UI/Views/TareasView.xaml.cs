@@ -9,12 +9,22 @@ namespace WorkFlowDesk.UI.Views;
 public partial class TareasView : UserControl
 {
     private readonly TareasViewModel _viewModel;
+    private readonly ITareaService _tareaService;
+    private readonly IProyectoService _proyectoService;
+    private readonly IEmpleadoService _empleadoService;
 
-    public TareasView(TareasViewModel viewModel)
+    public TareasView(
+        TareasViewModel viewModel,
+        ITareaService tareaService,
+        IProyectoService proyectoService,
+        IEmpleadoService empleadoService)
     {
         InitializeComponent();
         DataContext = viewModel;
         _viewModel = viewModel;
+        _tareaService = tareaService;
+        _proyectoService = proyectoService;
+        _empleadoService = empleadoService;
         ViewConfirmationHelper.BindConfirmaciones(viewModel);
 
         _viewModel.TareaCreada += OnTareaCreada;
@@ -29,10 +39,7 @@ public partial class TareasView : UserControl
 
     private void OnTareaCreada(object? sender, Domain.Entities.Tarea _)
     {
-        var tareaService = ServiceLocator.GetService<ITareaService>();
-        var proyectoService = ServiceLocator.GetService<IProyectoService>();
-        var empleadoService = ServiceLocator.GetService<IEmpleadoService>();
-        var formViewModel = new TareaFormViewModel(tareaService, proyectoService, empleadoService, tarea: null);
+        var formViewModel = new TareaFormViewModel(_tareaService, _proyectoService, _empleadoService, tarea: null);
 
         if (DialogService.ShowTareaForm(formViewModel) == true)
         {
@@ -42,10 +49,7 @@ public partial class TareasView : UserControl
 
     private void OnTareaEditada(object? sender, Domain.Entities.Tarea tarea)
     {
-        var tareaService = ServiceLocator.GetService<ITareaService>();
-        var proyectoService = ServiceLocator.GetService<IProyectoService>();
-        var empleadoService = ServiceLocator.GetService<IEmpleadoService>();
-        var formViewModel = new TareaFormViewModel(tareaService, proyectoService, empleadoService, tarea);
+        var formViewModel = new TareaFormViewModel(_tareaService, _proyectoService, _empleadoService, tarea);
 
         if (DialogService.ShowTareaForm(formViewModel) == true)
         {

@@ -9,12 +9,14 @@ namespace WorkFlowDesk.UI.Views;
 public partial class ClientesView : UserControl
 {
     private readonly ClientesViewModel _viewModel;
+    private readonly IClienteService _clienteService;
 
-    public ClientesView(ClientesViewModel viewModel)
+    public ClientesView(ClientesViewModel viewModel, IClienteService clienteService)
     {
         InitializeComponent();
         DataContext = viewModel;
         _viewModel = viewModel;
+        _clienteService = clienteService;
         ViewConfirmationHelper.BindConfirmaciones(viewModel);
 
         _viewModel.ClienteCreado += OnClienteCreado;
@@ -29,9 +31,8 @@ public partial class ClientesView : UserControl
 
     private void OnClienteCreado(object? sender, Domain.Entities.Cliente cliente)
     {
-        var clienteService = ServiceLocator.GetService<IClienteService>();
-        var formViewModel = new ClienteFormViewModel(clienteService, cliente);
-        
+        var formViewModel = new ClienteFormViewModel(_clienteService, cliente);
+
         if (DialogService.ShowClienteForm(formViewModel) == true)
         {
             _viewModel.CargarClientesCommand.ExecuteAsync(null);
@@ -40,9 +41,8 @@ public partial class ClientesView : UserControl
 
     private void OnClienteEditado(object? sender, Domain.Entities.Cliente cliente)
     {
-        var clienteService = ServiceLocator.GetService<IClienteService>();
-        var formViewModel = new ClienteFormViewModel(clienteService, cliente);
-        
+        var formViewModel = new ClienteFormViewModel(_clienteService, cliente);
+
         if (DialogService.ShowClienteForm(formViewModel) == true)
         {
             _viewModel.CargarClientesCommand.ExecuteAsync(null);
