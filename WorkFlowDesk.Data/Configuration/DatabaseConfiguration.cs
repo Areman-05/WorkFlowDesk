@@ -23,4 +23,22 @@ public static class DatabaseConfiguration
     {
         await Seed.DatabaseSeeder.SeedAsync(context);
     }
+
+    /// <summary>Comprueba si una tabla existe en SQLite.</summary>
+    public static async Task<bool> TableExistsAsync(ApplicationDbContext context, string tableName)
+    {
+        var connection = context.Database.GetDbConnection();
+        if (connection.State != System.Data.ConnectionState.Open)
+            await connection.OpenAsync();
+
+        await using var command = connection.CreateCommand();
+        command.CommandText = "SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = $name";
+        var parameter = command.CreateParameter();
+        parameter.ParameterName = "$name";
+        parameter.Value = tableName;
+        command.Parameters.Add(parameter);
+
+        var result = await command.ExecuteScalarAsync();
+        return Convert.ToInt32(result) > 0;
+    }
 }

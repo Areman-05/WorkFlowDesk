@@ -23,6 +23,13 @@ public class DatabaseInitializationService : IDatabaseInitializationService
         try
         {
             await DatabaseConfiguration.MigrateDatabaseAsync(_context);
+
+            if (!await DatabaseConfiguration.TableExistsAsync(_context, "Usuarios"))
+            {
+                await _context.Database.EnsureDeletedAsync();
+                await DatabaseConfiguration.MigrateDatabaseAsync(_context);
+            }
+
             await DatabaseConfiguration.SeedDatabaseAsync(_context);
         }
         catch (Exception ex)
