@@ -37,6 +37,16 @@ La primera vez que abras la app, la base de datos se crea en segundo plano. Si p
 
 Tras iniciar sesión se abrirá la ventana principal con el menú lateral (Dashboard, Empleados, Proyectos, Tareas, Clientes, Reportes, Configuración). Desde el menú puedes navegar a cada sección.
 
+## 5. Crear una cuenta nueva
+
+En la ventana de login pulsa **Crear cuenta**. Completa el formulario y elige el rol:
+
+- **Empleado:** Dashboard y Tareas
+- **Supervisor:** además Empleados, Proyectos, Clientes y Reportes
+- **Administrador:** acceso completo, incluida Configuración
+
+Tras registrarte entrarás directamente con los permisos de ese rol.
+
 ## 6. Si algo falla
 
 Si tras seguir los pasos anteriores algo no funciona, revisa los puntos siguientes.
