@@ -2,7 +2,7 @@
 
 ![Build and Test](https://github.com/Areman-05/WorkFlowDesk/actions/workflows/build.yml/badge.svg)
 
-Aplicación de escritorio WPF para gestión de tareas, proyectos, clientes y empleados. Pensada como producto de portfolio: arquitectura en capas, MVVM, Entity Framework Core y SQL Server LocalDB.
+Aplicación de escritorio WPF para gestión de tareas, proyectos, clientes y empleados. Pensada como producto de portfolio: arquitectura en capas, MVVM, Entity Framework Core y **SQLite embebido** (sin instalar SQL Server).
 
 ## Características
 
@@ -13,23 +13,26 @@ Aplicación de escritorio WPF para gestión de tareas, proyectos, clientes y emp
 - Reportes y exportación a CSV
 - Control de acceso por rol en menú y acciones
 - Cerrar sesión, cambio de contraseña y reinicio de base de datos desde Configuración
-- Backup y restauración real de SQL Server (`.bak`)
+- Backup y restauración del archivo SQLite (`.db`)
 - Paginación y estados vacíos en listados
 - Tests unitarios y CI en GitHub Actions
 
 ## Requisitos
 
 - Windows 10/11
-- Visual Studio 2022 (carga de trabajo **Desarrollo de escritorio .NET**)
 - .NET 8 SDK
-- SQL Server Express LocalDB
+- **No requiere SQL Server ni LocalDB** — la base de datos vive en `%LocalAppData%\WorkFlowDesk\`
 
 ## Inicio rápido
 
-1. Abre `WorkFlowDesk.sln` en Visual Studio.
-2. Establece **WorkFlowDesk.UI** como proyecto de inicio.
-3. Pulsa **F5**.
-4. Inicia sesión con cualquiera de estos usuarios demo:
+1. Clona el repositorio e instala el [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0).
+2. Desde la raíz del repo:
+
+```powershell
+dotnet run --project WorkFlowDesk.UI\WorkFlowDesk.UI.csproj -c Release
+```
+
+3. Inicia sesión con cualquiera de estos usuarios demo:
 
 | Rol | Usuario | Contraseña |
 |-----|---------|------------|
@@ -54,12 +57,11 @@ WorkFlowDesk.Common      → Sesión, permisos, helpers, DTOs
 
 ## Base de datos
 
-- Motor: SQL Server LocalDB
-- Base de datos: `WorkFlowDeskDb`
-- Cadena de conexión: `WorkFlowDesk.UI/appsettings.json`
+- Motor: **SQLite** (archivo local, sin servidor)
+- Ubicación: `%LocalAppData%\WorkFlowDesk\workflowdesk.db`
 - Esquema gestionado con **migraciones EF Core** (`WorkFlowDesk.Data/Migrations`)
 
-Si migras desde una versión anterior que usaba `EnsureCreated`, entra en **Configuración → Inicializar base de datos** o borra la BD local y vuelve a ejecutar la app.
+Si la BD queda corrupta, entra en **Configuración → Inicializar base de datos** o borra la carpeta `%LocalAppData%\WorkFlowDesk\` y vuelve a ejecutar la app.
 
 ## Roles y permisos
 

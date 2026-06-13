@@ -49,10 +49,10 @@ flowchart TB
 
 ## Persistencia
 
-- SQL Server LocalDB, base `WorkFlowDeskDb`.
+- **SQLite** embebido en `%LocalAppData%/WorkFlowDesk/workflowdesk.db`.
 - Migraciones en `WorkFlowDesk.Data/Migrations`.
 - Seed de usuarios demo en `DatabaseSeeder`.
-- Backup/restore mediante archivos `.bak` de SQL Server.
+- Backup/restore copiando el archivo `.db`.
 
 ## Tests
 

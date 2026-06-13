@@ -6,8 +6,10 @@ Esta guía permite compilar, probar y ejecutar WorkFlowDesk usando solo la líne
 
 1. **Windows 10/11**
 2. **[.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)** — descarga e instala el SDK (no solo el runtime)
-3. **SQL Server Express LocalDB** — suele venir con Visual Studio Build Tools o se instala aparte:
-   - [SQL Server Express](https://www.microsoft.com/sql-server/sql-server-downloads) (incluye LocalDB)
+
+No necesitas instalar SQL Server, LocalDB ni Visual Studio. La base de datos SQLite se crea automáticamente en:
+
+`%LocalAppData%\WorkFlowDesk\workflowdesk.db`
 
 Comprueba que `dotnet` está en el PATH:
 
@@ -39,7 +41,7 @@ dotnet test WorkFlowDesk.Tests\WorkFlowDesk.Tests.csproj -c Release --verbosity 
 dotnet run --project WorkFlowDesk.UI\WorkFlowDesk.UI.csproj -c Release
 ```
 
-La primera ejecución crea la base de datos `WorkFlowDeskDb` en LocalDB y los usuarios demo.
+La primera ejecución crea la base de datos SQLite y los usuarios demo.
 
 ### Usuarios demo
 
@@ -51,30 +53,22 @@ La primera ejecución crea la base de datos `WorkFlowDeskDb` en LocalDB y los us
 
 ## Publicar ejecutable
 
-Genera una carpeta autocontenida lista para distribuir:
-
 ```powershell
 dotnet publish WorkFlowDesk.UI\WorkFlowDesk.UI.csproj -c Release -r win-x64 --self-contained false -o .\publish
-```
-
-Ejecuta desde la carpeta publicada:
-
-```powershell
 .\publish\WorkFlowDesk.UI.exe
 ```
 
 ## Solución de problemas
 
-### Error de conexión a LocalDB
+### Error al inicializar la base de datos
 
-Comprueba que LocalDB está instalado:
+Borra la carpeta de datos y reinicia la app:
 
 ```powershell
-sqllocaldb info
-sqllocaldb start MSSQLLocalDB
+Remove-Item -Recurse -Force "$env:LOCALAPPDATA\WorkFlowDesk" -ErrorAction SilentlyContinue
 ```
 
-Si la BD quedó en un estado inconsistente, borra `WorkFlowDeskDb` o usa **Configuración → Inicializar base de datos** (como `admin`).
+O usa **Configuración → Inicializar base de datos** (como `admin`).
 
 ### `dotnet` no reconocido
 
@@ -84,4 +78,4 @@ Cierra y vuelve a abrir la terminal tras instalar el SDK, o añade al PATH:
 
 ### Migraciones
 
-El esquema se aplica automáticamente al arrancar. Si hay conflictos con una BD antigua, elimina la base local y reinicia la app.
+El esquema se aplica automáticamente al arrancar.

@@ -1,32 +1,31 @@
-# Cómo probar WorkFlowDesk en Visual Studio 2022
+# Cómo probar WorkFlowDesk
 
-Guía rápida para abrir la solución, ejecutar la aplicación e iniciar sesión con el usuario por defecto. Ver también el README principal del repositorio.
+Guía rápida para ejecutar la aplicación e iniciar sesión con los usuarios demo. Ver también [DESPLIEGUE.md](DESPLIEGUE.md) para usar solo la terminal.
 
 ## 1. Requisitos
 
-- **Visual Studio 2022** (recomendada la última actualización). (cualquier edición: Community, Professional o Enterprise).
-- **.NET 8 SDK** (incluido con VS 2022 si instalaste la carga de trabajo “Desarrollo de escritorio .NET”).
-- **SQL Server LocalDB** (viene con Visual Studio al instalar “Desarrollo de almacenamiento y procesamiento de datos” o “Desarrollo de escritorio .NET”).
+- **Windows 10/11**
+- **.NET 8 SDK** ([descarga](https://dotnet.microsoft.com/download/dotnet/8.0))
+- **No requiere SQL Server ni LocalDB** — la BD SQLite se crea sola en `%LocalAppData%\WorkFlowDesk\`
 
-## 2. Abrir la solución
+Opcional: Visual Studio 2022 con carga de trabajo “Desarrollo de escritorio .NET”.
 
-1. Abre Visual Studio 2022 (o la versión que tengas instalada).
-2. **Archivo → Abrir → Proyecto o solución**.
-3. Ve a la carpeta del repositorio y selecciona **`WorkFlowDesk.sln`**.
-4. Acepta y, si aparece, restaura los paquetes NuGet.
+## 2. Ejecutar (terminal)
 
-## 3. Proyecto de inicio
+```powershell
+cd ruta\al\repo\WorkFlowDesk
+dotnet run --project WorkFlowDesk.UI\WorkFlowDesk.UI.csproj -c Release
+```
 
-1. En el **Explorador de soluciones**, clic derecho en el proyecto **WorkFlowDesk.UI** (el de la interfaz).
-2. Elige **Establecer como proyecto de inicio**.
-3. Comprueba que en la barra de herramientas aparezca **WorkFlowDesk.UI** como proyecto de inicio.
+## 3. Ejecutar (Visual Studio)
 
-## 4. Ejecutar la aplicación
+1. Abre **`WorkFlowDesk.sln`**.
+2. Establece **WorkFlowDesk.UI** como proyecto de inicio.
+3. Pulsa **F5** o **Ctrl+F5**.
 
-1. Pulsa **F5** (con depuración) o **Ctrl+F5** (sin depuración; más rápido para probar).
-2. La primera vez se creará la base de datos en LocalDB y se ejecutará el seed (roles + usuario administrador). La ventana de login aparecerá de inmediato. Cierra la app con **Alt+F4** o desde la X.
+## 4. Primera ejecución
 
-## 5. Iniciar sesión
+Se crea la base de datos SQLite y el seed (roles + usuarios demo). Aparece la ventana de login.
 
 - **Administrador:** usuario `admin` / contraseña `Admin123`
 - **Supervisor:** usuario `supervisor` / contraseña `Supervisor123`
