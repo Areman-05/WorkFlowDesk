@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WorkFlowDesk.Data;
+using WorkFlowDesk.Data.Extensions;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
 
@@ -29,6 +30,7 @@ public class ProyectoService : IProyectoService
     public async Task<IEnumerable<Proyecto>> GetAllAsync()
     {
         return await _context.Proyectos
+            .AsReadOnly()
             .Include(p => p.Cliente)
             .Include(p => p.Responsable)
             .OrderByDescending(p => p.FechaCreacion)
@@ -39,6 +41,7 @@ public class ProyectoService : IProyectoService
     public async Task<IEnumerable<Proyecto>> GetByEstadoAsync(EstadoProyecto estado)
     {
         return await _context.Proyectos
+            .AsReadOnly()
             .Include(p => p.Cliente)
             .Include(p => p.Responsable)
             .Where(p => p.Estado == estado)

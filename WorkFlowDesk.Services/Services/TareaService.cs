@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WorkFlowDesk.Data;
+using WorkFlowDesk.Data.Extensions;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
 
@@ -32,6 +33,7 @@ public class TareaService : ITareaService
     public async Task<IEnumerable<Tarea>> GetAllAsync()
     {
         return await _context.Tareas
+            .AsReadOnly()
             .Include(t => t.Asignado)
             .Include(t => t.Proyecto)
             .OrderByDescending(t => t.FechaCreacion)
@@ -42,6 +44,7 @@ public class TareaService : ITareaService
     public async Task<IEnumerable<Tarea>> GetByEstadoAsync(EstadoTarea estado)
     {
         return await _context.Tareas
+            .AsReadOnly()
             .Include(t => t.Asignado)
             .Include(t => t.Proyecto)
             .Where(t => t.Estado == estado)
@@ -53,6 +56,7 @@ public class TareaService : ITareaService
     public async Task<IEnumerable<Tarea>> GetByProyectoAsync(int proyectoId)
     {
         return await _context.Tareas
+            .AsReadOnly()
             .Include(t => t.Asignado)
             .Where(t => t.ProyectoId == proyectoId)
             .OrderByDescending(t => t.FechaCreacion)
@@ -63,6 +67,7 @@ public class TareaService : ITareaService
     public async Task<IEnumerable<Tarea>> GetByAsignadoAsync(int empleadoId)
     {
         return await _context.Tareas
+            .AsReadOnly()
             .Include(t => t.Proyecto)
             .Where(t => t.AsignadoId == empleadoId)
             .OrderByDescending(t => t.FechaCreacion)

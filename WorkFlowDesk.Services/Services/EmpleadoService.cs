@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using WorkFlowDesk.Data;
+using WorkFlowDesk.Data.Extensions;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Exceptions;
 using WorkFlowDesk.Services.Interfaces;
@@ -29,6 +30,7 @@ public class EmpleadoService : IEmpleadoService
     public async Task<IEnumerable<Empleado>> GetAllAsync()
     {
         return await _context.Empleados
+            .AsReadOnly()
             .Include(e => e.Usuario)
             .OrderBy(e => e.Apellidos)
             .ThenBy(e => e.Nombre)
@@ -39,6 +41,7 @@ public class EmpleadoService : IEmpleadoService
     public async Task<IEnumerable<Empleado>> GetActivosAsync()
     {
         return await _context.Empleados
+            .AsReadOnly()
             .Include(e => e.Usuario)
             .Where(e => e.Estado == EstadoEmpleado.Activo)
             .OrderBy(e => e.Apellidos)

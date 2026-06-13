@@ -10,67 +10,54 @@ public class ReporteService : IReporteService
 {
     private readonly ApplicationDbContext _context;
 
-    /// <summary>Inicializa el servicio con el contexto de base de datos.</summary>
     public ReporteService(ApplicationDbContext context)
     {
         _context = context;
     }
 
-    /// <summary>Obtiene conteos de empleados por estado (Total, Activos, Inactivos, etc.).</summary>
     public async Task<Dictionary<string, int>> ObtenerEstadisticasEmpleadosAsync()
     {
-        var empleados = await _context.Empleados.ToListAsync();
-        
         return new Dictionary<string, int>
         {
-            { "Total", empleados.Count },
-            { "Activos", empleados.Count(e => e.Estado == EstadoEmpleado.Activo) },
-            { "Inactivos", empleados.Count(e => e.Estado == EstadoEmpleado.Inactivo) },
-            { "Vacaciones", empleados.Count(e => e.Estado == EstadoEmpleado.Vacaciones) },
-            { "Baja", empleados.Count(e => e.Estado == EstadoEmpleado.Baja) }
+            { "Total", await _context.Empleados.CountAsync() },
+            { "Activos", await _context.Empleados.CountAsync(e => e.Estado == EstadoEmpleado.Activo) },
+            { "Inactivos", await _context.Empleados.CountAsync(e => e.Estado == EstadoEmpleado.Inactivo) },
+            { "Vacaciones", await _context.Empleados.CountAsync(e => e.Estado == EstadoEmpleado.Vacaciones) },
+            { "Baja", await _context.Empleados.CountAsync(e => e.Estado == EstadoEmpleado.Baja) }
         };
     }
 
-    /// <summary>Obtiene conteos de proyectos por estado.</summary>
     public async Task<Dictionary<string, int>> ObtenerEstadisticasProyectosAsync()
     {
-        var proyectos = await _context.Proyectos.ToListAsync();
-        
         return new Dictionary<string, int>
         {
-            { "Total", proyectos.Count },
-            { "Planificación", proyectos.Count(p => p.Estado == EstadoProyecto.Planificacion) },
-            { "En Progreso", proyectos.Count(p => p.Estado == EstadoProyecto.EnProgreso) },
-            { "Completados", proyectos.Count(p => p.Estado == EstadoProyecto.Completado) },
-            { "Cancelados", proyectos.Count(p => p.Estado == EstadoProyecto.Cancelado) }
+            { "Total", await _context.Proyectos.CountAsync() },
+            { "Planificación", await _context.Proyectos.CountAsync(p => p.Estado == EstadoProyecto.Planificacion) },
+            { "En Progreso", await _context.Proyectos.CountAsync(p => p.Estado == EstadoProyecto.EnProgreso) },
+            { "Completados", await _context.Proyectos.CountAsync(p => p.Estado == EstadoProyecto.Completado) },
+            { "Cancelados", await _context.Proyectos.CountAsync(p => p.Estado == EstadoProyecto.Cancelado) }
         };
     }
 
-    /// <summary>Obtiene conteos de tareas por estado y prioridad.</summary>
     public async Task<Dictionary<string, int>> ObtenerEstadisticasTareasAsync()
     {
-        var tareas = await _context.Tareas.ToListAsync();
-        
         return new Dictionary<string, int>
         {
-            { "Total", tareas.Count },
-            { "Pendientes", tareas.Count(t => t.Estado == EstadoTarea.Pendiente) },
-            { "En Progreso", tareas.Count(t => t.Estado == EstadoTarea.EnProgreso) },
-            { "Completadas", tareas.Count(t => t.Estado == EstadoTarea.Completada) },
-            { "Canceladas", tareas.Count(t => t.Estado == EstadoTarea.Cancelada) }
+            { "Total", await _context.Tareas.CountAsync() },
+            { "Pendientes", await _context.Tareas.CountAsync(t => t.Estado == EstadoTarea.Pendiente) },
+            { "En Progreso", await _context.Tareas.CountAsync(t => t.Estado == EstadoTarea.EnProgreso) },
+            { "Completadas", await _context.Tareas.CountAsync(t => t.Estado == EstadoTarea.Completada) },
+            { "Canceladas", await _context.Tareas.CountAsync(t => t.Estado == EstadoTarea.Cancelada) }
         };
     }
 
-    /// <summary>Obtiene total de clientes y clientes activos.</summary>
     public async Task<Dictionary<string, int>> ObtenerEstadisticasClientesAsync()
     {
-        var clientes = await _context.Clientes.ToListAsync();
-        
         return new Dictionary<string, int>
         {
-            { "Total", clientes.Count },
-            { "Activos", clientes.Count(c => c.Activo) },
-            { "Inactivos", clientes.Count(c => !c.Activo) }
+            { "Total", await _context.Clientes.CountAsync() },
+            { "Activos", await _context.Clientes.CountAsync(c => c.Activo) },
+            { "Inactivos", await _context.Clientes.CountAsync(c => !c.Activo) }
         };
     }
 }
