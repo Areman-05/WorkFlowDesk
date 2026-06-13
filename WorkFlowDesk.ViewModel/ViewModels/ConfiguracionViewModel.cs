@@ -126,7 +126,7 @@ public class ConfiguracionViewModel : ViewModelBase
 
     public event EventHandler<string>? OperacionCompletada;
 
-    private async Task CargarConfiguracionAsync()
+    private Task CargarConfiguracionAsync()
     {
         IsLoading = true;
         try
@@ -146,6 +146,8 @@ public class ConfiguracionViewModel : ViewModelBase
         {
             IsLoading = false;
         }
+
+        return Task.CompletedTask;
     }
 
     private void GuardarConfiguracion()

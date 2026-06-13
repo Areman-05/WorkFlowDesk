@@ -6,20 +6,23 @@ using WorkFlowDesk.UI.Services;
 
 namespace WorkFlowDesk.UI
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
         protected override void OnStartup(StartupEventArgs e)
         {
             AppConfig.LoadFromFile();
+            DatabasePaths.GetDataDirectory();
             ServiceLocator.ConfigureServices();
             base.OnStartup(e);
             _ = InitializeDatabaseAsync();
         }
 
-        /// <summary>Inicializa la base de datos y el seed en segundo plano.</summary>
+        protected override void OnExit(ExitEventArgs e)
+        {
+            ServiceLocator.Dispose();
+            base.OnExit(e);
+        }
+
         private async Task InitializeDatabaseAsync()
         {
             try
@@ -29,7 +32,11 @@ namespace WorkFlowDesk.UI
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error al inicializar base de datos: {ex.Message}");
+                MessageBox.Show(
+                    $"No se pudo inicializar la base de datos.\n\n{ex.Message}",
+                    "WorkFlowDesk",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
             }
         }
 
