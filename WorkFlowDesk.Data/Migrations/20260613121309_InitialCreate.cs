@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -15,15 +15,15 @@ namespace WorkFlowDesk.Data.Migrations
                 name: "Clientes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Telefono = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Direccion = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Empresa = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Activo = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nombre = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Telefono = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
+                    Direccion = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
+                    Empresa = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    FechaCreacion = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Activo = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -34,13 +34,13 @@ namespace WorkFlowDesk.Data.Migrations
                 name: "Roles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TipoRol = table.Column<int>(type: "int", nullable: false),
-                    Nombre = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Activo = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    TipoRol = table.Column<int>(type: "INTEGER", nullable: false),
+                    Nombre = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    Descripcion = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
+                    FechaCreacion = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Activo = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,16 +51,16 @@ namespace WorkFlowDesk.Data.Migrations
                 name: "Usuarios",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NombreUsuario = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    NombreCompleto = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    RolId = table.Column<int>(type: "int", nullable: false),
-                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UltimoAcceso = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Activo = table.Column<bool>(type: "bit", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    NombreUsuario = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    PasswordHash = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    NombreCompleto = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    RolId = table.Column<int>(type: "INTEGER", nullable: false),
+                    FechaCreacion = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UltimoAcceso = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    Activo = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -77,19 +77,19 @@ namespace WorkFlowDesk.Data.Migrations
                 name: "Empleados",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Apellidos = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Telefono = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Departamento = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Cargo = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Estado = table.Column<int>(type: "int", nullable: false),
-                    FechaContratacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FechaBaja = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UsuarioId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nombre = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Apellidos = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Telefono = table.Column<string>(type: "TEXT", maxLength: 20, nullable: false),
+                    Departamento = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Cargo = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Estado = table.Column<int>(type: "INTEGER", nullable: false),
+                    FechaContratacion = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    FechaBaja = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    FechaCreacion = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    UsuarioId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -106,16 +106,16 @@ namespace WorkFlowDesk.Data.Migrations
                 name: "Proyectos",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    Estado = table.Column<int>(type: "int", nullable: false),
-                    FechaInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FechaFin = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ClienteId = table.Column<int>(type: "int", nullable: true),
-                    ResponsableId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nombre = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    Descripcion = table.Column<string>(type: "TEXT", maxLength: 1000, nullable: false),
+                    Estado = table.Column<int>(type: "INTEGER", nullable: false),
+                    FechaInicio = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    FechaFin = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    FechaCreacion = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ClienteId = table.Column<int>(type: "INTEGER", nullable: true),
+                    ResponsableId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -138,19 +138,19 @@ namespace WorkFlowDesk.Data.Migrations
                 name: "Tareas",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Titulo = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
-                    Prioridad = table.Column<int>(type: "int", nullable: false),
-                    Estado = table.Column<int>(type: "int", nullable: false),
-                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FechaInicio = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    FechaFin = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    FechaVencimiento = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    AsignadoId = table.Column<int>(type: "int", nullable: true),
-                    CreadorId = table.Column<int>(type: "int", nullable: true),
-                    ProyectoId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Titulo = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    Descripcion = table.Column<string>(type: "TEXT", maxLength: 2000, nullable: false),
+                    Prioridad = table.Column<int>(type: "INTEGER", nullable: false),
+                    Estado = table.Column<int>(type: "INTEGER", nullable: false),
+                    FechaCreacion = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    FechaInicio = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    FechaFin = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    FechaVencimiento = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    AsignadoId = table.Column<int>(type: "INTEGER", nullable: true),
+                    CreadorId = table.Column<int>(type: "INTEGER", nullable: true),
+                    ProyectoId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -179,12 +179,12 @@ namespace WorkFlowDesk.Data.Migrations
                 name: "ComentariosTareas",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Contenido = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
-                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TareaId = table.Column<int>(type: "int", nullable: false),
-                    EmpleadoId = table.Column<int>(type: "int", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Contenido = table.Column<string>(type: "TEXT", maxLength: 2000, nullable: false),
+                    FechaCreacion = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    TareaId = table.Column<int>(type: "INTEGER", nullable: false),
+                    EmpleadoId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -282,13 +282,26 @@ namespace WorkFlowDesk.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(name: "ComentariosTareas");
-            migrationBuilder.DropTable(name: "Tareas");
-            migrationBuilder.DropTable(name: "Proyectos");
-            migrationBuilder.DropTable(name: "Empleados");
-            migrationBuilder.DropTable(name: "Clientes");
-            migrationBuilder.DropTable(name: "Usuarios");
-            migrationBuilder.DropTable(name: "Roles");
+            migrationBuilder.DropTable(
+                name: "ComentariosTareas");
+
+            migrationBuilder.DropTable(
+                name: "Tareas");
+
+            migrationBuilder.DropTable(
+                name: "Proyectos");
+
+            migrationBuilder.DropTable(
+                name: "Clientes");
+
+            migrationBuilder.DropTable(
+                name: "Empleados");
+
+            migrationBuilder.DropTable(
+                name: "Usuarios");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
         }
     }
 }

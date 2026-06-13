@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using WorkFlowDesk.Common.Configuration;
 using WorkFlowDesk.Data;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.Services.Services;
@@ -10,31 +11,35 @@ namespace WorkFlowDesk.UI.Services;
 /// <summary>Contenedor de servicios de la aplicación (DI).</summary>
 public static class ServiceLocator
 {
-    private static ServiceProvider? _serviceProvider;
+    private static ServiceProvider? _rootProvider;
+    private static IServiceScope? _appScope;
 
-    /// <summary>Proveedor de dependencias de la aplicación.</summary>
+    /// <summary>Proveedor de dependencias del scope activo de la aplicación.</summary>
     public static IServiceProvider Provider =>
-        _serviceProvider ?? throw new InvalidOperationException("ServiceProvider no está configurado. Llame a ConfigureServices() primero.");
+        _appScope?.ServiceProvider
+        ?? throw new InvalidOperationException("ServiceProvider no está configurado. Llame a ConfigureServices() primero.");
 
-    /// <summary>Registra todos los servicios y construye el proveedor de dependencias.</summary>
+    /// <summary>Registra servicios y abre un scope único para toda la sesión de la app.</summary>
     public static void ConfigureServices()
     {
         var services = new ServiceCollection();
 
-        // Configuración
         var configuration = new ConfigurationBuilder()
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
             .Build();
 
-        // DbContext
-        var connectionString = configuration.GetConnectionString("DefaultConnection") 
-            ?? "Server=(localdb)\\mssqllocaldb;Database=WorkFlowDeskDb;Trusted_Connection=True;MultipleActiveResultSets=true";
-        
-        services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(connectionString));
+        var configured = configuration.GetConnectionString("DefaultConnection");
+        var connectionString = string.IsNullOrWhiteSpace(configured)
+            ? DatabasePaths.GetConnectionString()
+            : configured;
 
-        // Servicios
+        services.AddDbContext<ApplicationDbContext>(options =>
+        {
+            options.UseSqlite(connectionString);
+            options.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
+        }, ServiceLifetime.Scoped);
+
         services.AddScoped<IPasswordHasherService, PasswordHasherService>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IUsuarioService, UsuarioService>();
@@ -47,9 +52,22 @@ public static class ServiceLocator
         services.AddScoped<IExportService, ExportService>();
         services.AddScoped<IBackupService, BackupService>();
 
-        _serviceProvider = services.BuildServiceProvider();
+        _rootProvider?.Dispose();
+        _appScope?.Dispose();
+
+        _rootProvider = services.BuildServiceProvider();
+        _appScope = _rootProvider.CreateScope();
     }
 
-    /// <summary>Obtiene un servicio registrado del contenedor DI.</summary>
+    /// <summary>Obtiene un servicio registrado del scope activo.</summary>
     public static T GetService<T>() where T : class => Provider.GetRequiredService<T>();
+
+    /// <summary>Libera recursos al cerrar la aplicación.</summary>
+    public static void Dispose()
+    {
+        _appScope?.Dispose();
+        _appScope = null;
+        _rootProvider?.Dispose();
+        _rootProvider = null;
+    }
 }
