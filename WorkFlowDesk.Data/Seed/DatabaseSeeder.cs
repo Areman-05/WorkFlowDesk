@@ -19,6 +19,7 @@ public static class DatabaseSeeder
     public static async Task SeedAsync(ApplicationDbContext context)
     {
         await SeedRolesAsync(context);
+        await context.SaveChangesAsync();
         await SeedAdminUserAsync(context);
         await SeedDemoUserAsync(context, DefaultSupervisorUserName, "supervisor@workflowdesk.local", "Supervisor Demo", TipoRol.Supervisor, DefaultSupervisorPassword);
         await SeedDemoUserAsync(context, DefaultEmpleadoUserName, "empleado@workflowdesk.local", "Empleado Demo", TipoRol.Empleado, DefaultEmpleadoPassword);
