@@ -10,11 +10,21 @@ namespace WorkFlowDesk.UI
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            DispatcherUnhandledException += (_, args) =>
+            {
+                MessageBox.Show(
+                    $"Error inesperado:\n\n{args.Exception.Message}",
+                    "WorkFlowDesk",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                args.Handled = true;
+            };
+
             AppConfig.LoadFromFile();
             DatabasePaths.GetDataDirectory();
             ServiceLocator.ConfigureServices();
             base.OnStartup(e);
-            _ = InitializeDatabaseAsync();
         }
 
         protected override void OnExit(ExitEventArgs e)
@@ -23,12 +33,24 @@ namespace WorkFlowDesk.UI
             base.OnExit(e);
         }
 
-        private async Task InitializeDatabaseAsync()
+        private async void Application_Startup(object sender, StartupEventArgs e)
+        {
+            if (!await InitializeDatabaseAsync())
+            {
+                Shutdown();
+                return;
+            }
+
+            AuthFlowService.ShowLoginFlow();
+        }
+
+        private async Task<bool> InitializeDatabaseAsync()
         {
             try
             {
                 var dbInitService = ServiceLocator.Provider.GetRequiredService<IDatabaseInitializationService>();
                 await dbInitService.InitializeAsync();
+                return true;
             }
             catch (Exception ex)
             {
@@ -37,12 +59,8 @@ namespace WorkFlowDesk.UI
                     "WorkFlowDesk",
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning);
+                return false;
             }
-        }
-
-        private void Application_Startup(object sender, StartupEventArgs e)
-        {
-            AuthFlowService.ShowLoginFlow();
         }
     }
 }

@@ -1,6 +1,7 @@
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using WorkFlowDesk.Common.Services;
+using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.UI.Views;
 using WorkFlowDesk.ViewModel.ViewModels;
@@ -17,17 +18,23 @@ public static class AuthFlowService
         var loginViewModel = new LoginViewModel(authService);
         var loginView = new LoginView(loginViewModel);
 
-        loginViewModel.LoginExitoso += (_, usuario) =>
-        {
-            SessionService.SetCurrentUser(usuario);
-            loginView.Close();
+        loginViewModel.LoginExitoso += (_, usuario) => OpenMainApplication(loginView, usuario);
 
-            var mainWindow = new MainWindow();
-            Application.Current.MainWindow = mainWindow;
-            mainWindow.Show();
+        loginViewModel.AbrirRegistroRequested += (_, _) =>
+        {
+            var usuario = ShowRegisterDialog();
+            if (usuario != null)
+            {
+                OpenMainApplication(loginView, usuario);
+            }
         };
 
         loginView.ShowDialog();
+
+        if (!SessionService.IsAuthenticated)
+        {
+            Application.Current.Shutdown();
+        }
     }
 
     /// <summary>Cierra la sesión actual y vuelve a mostrar el login.</summary>
@@ -36,5 +43,44 @@ public static class AuthFlowService
         SessionService.ClearSession();
         windowToClose?.Close();
         ShowLoginFlow();
+    }
+
+    /// <summary>Muestra el formulario de registro y devuelve el usuario creado si tuvo éxito.</summary>
+    public static Usuario? ShowRegisterDialog()
+    {
+        var usuarioService = ServiceLocator.Provider.GetRequiredService<IUsuarioService>();
+        var authService = ServiceLocator.Provider.GetRequiredService<IAuthenticationService>();
+        var registerViewModel = new RegisterViewModel(usuarioService, authService);
+        var registerView = new RegisterView(registerViewModel);
+
+        Usuario? usuarioRegistrado = null;
+        registerViewModel.RegistroExitoso += (_, usuario) => usuarioRegistrado = usuario;
+
+        registerView.ShowDialog();
+        return usuarioRegistrado;
+    }
+
+    private static void OpenMainApplication(Window dialogToClose, Usuario usuario)
+    {
+        try
+        {
+            SessionService.SetCurrentUser(usuario);
+
+            var mainWindow = new MainWindow();
+            Application.Current.MainWindow = mainWindow;
+            Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+            mainWindow.Show();
+
+            dialogToClose.DialogResult = true;
+            dialogToClose.Close();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(
+                $"No se pudo abrir la aplicación.\n\n{ex.Message}",
+                "WorkFlowDesk",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+        }
     }
 }

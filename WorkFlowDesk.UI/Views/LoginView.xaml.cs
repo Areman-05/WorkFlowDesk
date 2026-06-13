@@ -11,12 +11,6 @@ public partial class LoginView : Window
     {
         InitializeComponent();
         DataContext = viewModel;
-        
-        viewModel.LoginExitoso += (sender, usuario) =>
-        {
-            DialogResult = true;
-            Close();
-        };
     }
 
     /// <summary>Pasa la contraseña del PasswordBox al ViewModel y ejecuta el login (el binding no siempre actualiza a tiempo).</summary>
