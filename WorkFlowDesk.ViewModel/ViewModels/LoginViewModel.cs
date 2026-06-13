@@ -17,6 +17,7 @@ public class LoginViewModel : ViewModelBase
     {
         _authenticationService = authenticationService;
         LoginCommand = new AsyncRelayCommand(LoginAsync, CanLogin);
+        AbrirRegistroCommand = new RelayCommand(() => AbrirRegistroRequested?.Invoke(this, EventArgs.Empty));
     }
 
     public string NombreUsuario
@@ -46,10 +47,12 @@ public class LoginViewModel : ViewModelBase
     }
 
     public IAsyncRelayCommand LoginCommand { get; }
+    public IRelayCommand AbrirRegistroCommand { get; }
 
     public string VersionApp => $"v{AppInfo.Version}";
 
     public event EventHandler<Usuario>? LoginExitoso;
+    public event EventHandler? AbrirRegistroRequested;
 
     private bool CanLogin() => !string.IsNullOrWhiteSpace(NombreUsuario) && !string.IsNullOrWhiteSpace(Password);
 
