@@ -1,0 +1,99 @@
+<UserControl x:Class="WorkFlowDesk.UI.Views.ProfileView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="900">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24" MaxWidth="720">
+            <TextBlock Text="Perfil" Style="{StaticResource StitchH1TextStyle}"/>
+            <TextBlock Text="Personaliza tu avatar y revisa tu información de cuenta."
+                       Style="{StaticResource StitchBodyTextStyle}" Margin="0,4,0,24"/>
+
+            <Border Style="{StaticResource GlassCardBorderStyle}" Padding="24" Margin="0,0,0,24">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Width="80" Height="80" CornerRadius="40"
+                            BorderBrush="{StaticResource StitchPrimaryBrush}" BorderThickness="2" Padding="3">
+                        <Image Source="{Binding SelectedAvatarIndex, Converter={StaticResource AvatarIndexToImageConverter}}"
+                               Stretch="UniformToFill"/>
+                    </Border>
+                    <StackPanel Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding UserName}" Style="{StaticResource StitchH2TextStyle}"/>
+                        <TextBlock Text="{Binding UserRole}" Style="{StaticResource StitchBodyTextStyle}" Margin="0,4,0,0"/>
+                        <TextBlock Text="{Binding Email}" Style="{StaticResource StitchCaptionTextStyle}" Margin="0,2,0,0"/>
+                        <TextBlock Text="{Binding NombreUsuario, StringFormat=Usuario: {0}}"
+                                   Style="{StaticResource StitchCaptionTextStyle}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource GlassCardBorderStyle}" Padding="24">
+                <StackPanel>
+                    <TextBlock Text="Elige tu avatar" Style="{StaticResource StitchH3TextStyle}" Margin="0,0,0,8"/>
+                    <TextBlock Text="Selecciona uno de los 12 avatares disponibles."
+                               Style="{StaticResource StitchCaptionTextStyle}" Margin="0,0,0,16"/>
+
+                    <ListBox ItemsSource="{Binding Avatares}"
+                             SelectedValue="{Binding SelectedAvatarIndex, Mode=TwoWay}"
+                             SelectedValuePath="Index"
+                             BorderThickness="0"
+                             Background="Transparent"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="4"/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="Padding" Value="6"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListBoxItem">
+                                            <Border x:Name="Bd" Width="72" Height="72" CornerRadius="36"
+                                                    BorderThickness="3" BorderBrush="Transparent" Padding="2">
+                                                <ContentPresenter/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource StitchPrimaryBrush}"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Ellipse Width="64" Height="64">
+                                    <Ellipse.Fill>
+                                        <ImageBrush ImageSource="{Binding Url, Converter={StaticResource UrlToBitmapConverter}}" Stretch="UniformToFill"/>
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+
+                    <Button Content="Guardar avatar"
+                            Style="{StaticResource StitchPrimaryButtonStyle}"
+                            Command="{Binding GuardarAvatarCommand}"
+                            HorizontalAlignment="Left"
+                            Margin="0,20,0,0"/>
+
+                    <TextBlock Text="{Binding SuccessMessage}"
+                               Style="{StaticResource SuccessMessageStyle}"
+                               Margin="0,12,0,0"
+                               Visibility="{Binding SuccessMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

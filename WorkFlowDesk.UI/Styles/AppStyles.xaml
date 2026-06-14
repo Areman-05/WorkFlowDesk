@@ -188,5 +188,8 @@
     <!-- Enum Converters -->
     <local:EnumToStringConverter x:Key="EnumToStringConverter"/>
     <local:EnumToDescriptionConverter x:Key="EnumToDescriptionConverter"/>
+    <local:UrlToBitmapConverter x:Key="UrlToBitmapConverter"/>
+    <local:AvatarIndexToImageConverter x:Key="AvatarIndexToImageConverter"/>
+    <local:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
 
 </ResourceDictionary>

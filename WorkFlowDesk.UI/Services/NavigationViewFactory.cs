@@ -22,6 +22,7 @@ public static class NavigationViewFactory
             "Clientes" => CreateClientes(services),
             "Reportes" => CreateReportes(services),
             "Configuracion" => CreateConfiguracion(services),
+            "Perfil" => CreatePerfil(),
             _ => throw new ArgumentException($"Vista desconocida: {viewName}", nameof(viewName))
         };
     }
@@ -90,4 +91,7 @@ public static class NavigationViewFactory
             services.GetRequiredService<IDatabaseInitializationService>(),
             services.GetRequiredService<IAuthenticationService>()));
     }
+
+    private static UserControl CreatePerfil() =>
+        new ProfileView(new ProfileViewModel());
 }

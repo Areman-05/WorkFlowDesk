@@ -3,10 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WorkFlowDesk.UI"
         mc:Ignorable="d"
-        Title="WorkFlowDesk" Height="600" Width="1000"
-        WindowStartupLocation="CenterScreen">
+        Title="WorkFlowDesk"
+        Height="720"
+        Width="1200"
+        MinHeight="640"
+        MinWidth="1000"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource StitchBackgroundGradientBrush}"
+        Loaded="OnLoaded">
     <Window.InputBindings>
         <KeyBinding Key="D1" Modifiers="Control" Command="{Binding NavigateToDashboardCommand}"/>
         <KeyBinding Key="D2" Modifiers="Control" Command="{Binding NavigateToEmpleadosCommand}"/>
@@ -17,93 +22,254 @@
         <KeyBinding Key="D7" Modifiers="Control" Command="{Binding NavigateToConfiguracionCommand}"/>
         <KeyBinding Key="L" Modifiers="Control" Command="{Binding LogoutCommand}"/>
     </Window.InputBindings>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
 
-        <!-- Sidebar -->
-        <Border Grid.Column="0" Background="#2C3E50">
-            <DockPanel LastChildFill="True">
-                <Border DockPanel.Dock="Bottom"
-                        Background="#243342"
-                        Padding="12"
-                        Margin="8,0,8,8">
-                    <StackPanel>
-                        <TextBlock Text="{Binding UserName}"
-                                   Foreground="White"
-                                   FontWeight="SemiBold"
-                                   FontSize="13"
-                                   TextTrimming="CharacterEllipsis"/>
-                        <TextBlock Text="{Binding UserRole}"
-                                   Foreground="#BDC3C7"
-                                   FontSize="11"
-                                   Margin="0,4,0,0"/>
+    <Window.Resources>
+        <DataTemplate x:Key="NavItemDashboardTemplate">
+            <Grid>
+                <Button Style="{StaticResource StitchSidebarNavButtonStyle}" Command="{Binding NavigateToDashboardCommand}"
+                        Visibility="{Binding IsDashboardActive, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="Dashboard" Margin="12,0,0,0"/>
                     </StackPanel>
+                </Button>
+                <Button Style="{StaticResource StitchSidebarNavActiveButtonStyle}" Command="{Binding NavigateToDashboardCommand}"
+                        Visibility="{Binding IsDashboardActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="Dashboard" Margin="12,0,0,0"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="NavItemEmpleadosTemplate">
+            <Grid>
+                <Button Style="{StaticResource StitchSidebarNavButtonStyle}" Command="{Binding NavigateToEmpleadosCommand}"
+                        Visibility="{Binding IsEmpleadosActive, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="Empleados" Margin="12,0,0,0"/>
+                    </StackPanel>
+                </Button>
+                <Button Style="{StaticResource StitchSidebarNavActiveButtonStyle}" Command="{Binding NavigateToEmpleadosCommand}"
+                        Visibility="{Binding IsEmpleadosActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="Empleados" Margin="12,0,0,0"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="NavItemProyectosTemplate">
+            <Grid>
+                <Button Style="{StaticResource StitchSidebarNavButtonStyle}" Command="{Binding NavigateToProyectosCommand}"
+                        Visibility="{Binding IsProyectosActive, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE8B7;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="Proyectos" Margin="12,0,0,0"/>
+                    </StackPanel>
+                </Button>
+                <Button Style="{StaticResource StitchSidebarNavActiveButtonStyle}" Command="{Binding NavigateToProyectosCommand}"
+                        Visibility="{Binding IsProyectosActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE8B7;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="Proyectos" Margin="12,0,0,0"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="NavItemTareasTemplate">
+            <Grid>
+                <Button Style="{StaticResource StitchSidebarNavButtonStyle}" Command="{Binding NavigateToTareasCommand}"
+                        Visibility="{Binding IsTareasActive, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE7C3;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="Tareas" Margin="12,0,0,0"/>
+                    </StackPanel>
+                </Button>
+                <Button Style="{StaticResource StitchSidebarNavActiveButtonStyle}" Command="{Binding NavigateToTareasCommand}"
+                        Visibility="{Binding IsTareasActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE7C3;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="Tareas" Margin="12,0,0,0"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="NavItemClientesTemplate">
+            <Grid>
+                <Button Style="{StaticResource StitchSidebarNavButtonStyle}" Command="{Binding NavigateToClientesCommand}"
+                        Visibility="{Binding IsClientesActive, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="Clientes" Margin="12,0,0,0"/>
+                    </StackPanel>
+                </Button>
+                <Button Style="{StaticResource StitchSidebarNavActiveButtonStyle}" Command="{Binding NavigateToClientesCommand}"
+                        Visibility="{Binding IsClientesActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="Clientes" Margin="12,0,0,0"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="NavItemReportesTemplate">
+            <Grid>
+                <Button Style="{StaticResource StitchSidebarNavButtonStyle}" Command="{Binding NavigateToReportesCommand}"
+                        Visibility="{Binding IsReportesActive, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE9D2;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="Reportes" Margin="12,0,0,0"/>
+                    </StackPanel>
+                </Button>
+                <Button Style="{StaticResource StitchSidebarNavActiveButtonStyle}" Command="{Binding NavigateToReportesCommand}"
+                        Visibility="{Binding IsReportesActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE9D2;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="Reportes" Margin="12,0,0,0"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="NavItemConfiguracionTemplate">
+            <Grid>
+                <Button Style="{StaticResource StitchSidebarNavButtonStyle}" Command="{Binding NavigateToConfiguracionCommand}"
+                        Visibility="{Binding IsConfiguracionActive, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="Configuración" Margin="12,0,0,0"/>
+                    </StackPanel>
+                </Button>
+                <Button Style="{StaticResource StitchSidebarNavActiveButtonStyle}" Command="{Binding NavigateToConfiguracionCommand}"
+                        Visibility="{Binding IsConfiguracionActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="Configuración" Margin="12,0,0,0"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <!-- Orbes decorativos -->
+        <Ellipse Width="400" Height="400" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-100,-100,0"
+                 Fill="#669E00B5" IsHitTestVisible="False">
+            <Ellipse.Effect>
+                <BlurEffect Radius="100"/>
+            </Ellipse.Effect>
+        </Ellipse>
+        <Ellipse Width="300" Height="300" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="260,0,0,-50"
+                 Fill="#66FD933D" IsHitTestVisible="False">
+            <Ellipse.Effect>
+                <BlurEffect Radius="100"/>
+            </Ellipse.Effect>
+        </Ellipse>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="260"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Sidebar -->
+            <Border Grid.Column="0" Background="{StaticResource StitchSidebarBrush}"
+                    BorderBrush="#33D6C0D3" BorderThickness="0,0,1,0">
+                <DockPanel LastChildFill="True" Margin="0,24,0,16">
+                    <StackPanel DockPanel.Dock="Top" Margin="24,0,24,24">
+                        <TextBlock Text="WorkFlowDesk" FontSize="20" FontWeight="SemiBold" Foreground="White"/>
+                        <TextBlock Text="{Binding UserRole}" Style="{StaticResource StitchCaptionTextStyle}"
+                                   Foreground="#99F3EEFF" Margin="0,4,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel DockPanel.Dock="Bottom" Margin="8,0">
+                        <Button Style="{StaticResource StitchSidebarNavButtonStyle}"
+                                Command="{Binding NavigateToPerfilCommand}"
+                                Visibility="{Binding IsPerfilActive, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                                <TextBlock Text="Perfil" Margin="12,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource StitchSidebarNavActiveButtonStyle}"
+                                Command="{Binding NavigateToPerfilCommand}"
+                                Visibility="{Binding IsPerfilActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                                <TextBlock Text="Perfil" Margin="12,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource StitchSidebarNavButtonStyle}"
+                                Command="{Binding LogoutCommand}" Margin="0,8,0,0"
+                                ToolTip="Cerrar sesión (Ctrl+L)">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xF3B1;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                                <TextBlock Text="Cerrar sesión" Margin="12,0,0,0"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
+                    <StackPanel Margin="0,0,0,8">
+                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource NavItemDashboardTemplate}"/>
+                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource NavItemEmpleadosTemplate}"
+                                        Visibility="{Binding ShowEmpleados, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource NavItemProyectosTemplate}"
+                                        Visibility="{Binding ShowProyectos, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource NavItemTareasTemplate}"/>
+                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource NavItemClientesTemplate}"
+                                        Visibility="{Binding ShowClientes, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource NavItemReportesTemplate}"
+                                        Visibility="{Binding ShowReportes, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource NavItemConfiguracionTemplate}"
+                                        Visibility="{Binding ShowConfiguracion, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <!-- Área principal -->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="64"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Top bar -->
+                <Border Grid.Row="0" Background="#D9FCF8FF" BorderBrush="#1AD6C0D3" BorderThickness="0,0,0,1">
+                    <Grid Margin="24,0">
+                        <Border HorizontalAlignment="Left" VerticalAlignment="Center"
+                                Background="{StaticResource StitchSurfaceContainerBrush}"
+                                BorderBrush="#33D6C0D3" BorderThickness="1" CornerRadius="12" Padding="12,6">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets"
+                                           Foreground="{StaticResource StitchOnSurfaceVariantBrush}" Margin="0,0,8,0"/>
+                                <TextBox Width="220" BorderThickness="0" Background="Transparent"
+                                         Foreground="{StaticResource StitchOnSurfaceBrush}"
+                                         VerticalAlignment="Center"
+                                         Tag="Buscar..."
+                                         IsReadOnly="True"
+                                         ToolTip="Búsqueda global (próximamente)"/>
+                            </StackPanel>
+                        </Border>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
+                                <TextBlock Text="{Binding UserName}" FontWeight="SemiBold" FontSize="13"
+                                           Foreground="{StaticResource StitchOnSurfaceBrush}" HorizontalAlignment="Right"/>
+                                <TextBlock Text="{Binding UserRole}" Style="{StaticResource StitchCaptionTextStyle}" HorizontalAlignment="Right"/>
+                            </StackPanel>
+                            <Border Width="40" Height="40" CornerRadius="20"
+                                    BorderBrush="#339E00B5" BorderThickness="2" Padding="2"
+                                    Cursor="Hand" MouseLeftButtonUp="OnAvatarClick">
+                                <Image x:Name="TopBarAvatar" Stretch="UniformToFill"/>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
                 </Border>
 
-                <StackPanel Margin="0,0,0,0">
-                <TextBlock Text="WorkFlowDesk" 
-                           Foreground="White" 
-                           FontSize="20" 
-                           FontWeight="Bold" 
-                           Margin="15,20,15,30"
-                           HorizontalAlignment="Center"/>
-                
-                <Button Content="Dashboard" 
-                        Style="{StaticResource SidebarButtonStyle}"
-                        Command="{Binding NavigateToDashboardCommand}"
-                        ToolTip="Panel principal (Ctrl+1)"
-                        Margin="10,5"/>
-                <Button Content="Empleados" 
-                        Style="{StaticResource SidebarButtonStyle}"
-                        Command="{Binding NavigateToEmpleadosCommand}"
-                        Visibility="{Binding ShowEmpleados, Converter={StaticResource BooleanToVisibilityConverter}}"
-                        ToolTip="Gestión de empleados (Ctrl+2)"
-                        Margin="10,5"/>
-                <Button Content="Proyectos" 
-                        Style="{StaticResource SidebarButtonStyle}"
-                        Command="{Binding NavigateToProyectosCommand}"
-                        Visibility="{Binding ShowProyectos, Converter={StaticResource BooleanToVisibilityConverter}}"
-                        ToolTip="Gestión de proyectos (Ctrl+3)"
-                        Margin="10,5"/>
-                <Button Content="Tareas" 
-                        Style="{StaticResource SidebarButtonStyle}"
-                        Command="{Binding NavigateToTareasCommand}"
-                        ToolTip="Gestión de tareas (Ctrl+4)"
-                        Margin="10,5"/>
-                <Button Content="Clientes" 
-                        Style="{StaticResource SidebarButtonStyle}"
-                        Command="{Binding NavigateToClientesCommand}"
-                        Visibility="{Binding ShowClientes, Converter={StaticResource BooleanToVisibilityConverter}}"
-                        ToolTip="Gestión de clientes (Ctrl+5)"
-                        Margin="10,5"/>
-                <Button Content="Reportes" 
-                        Style="{StaticResource SidebarButtonStyle}"
-                        Command="{Binding NavigateToReportesCommand}"
-                        Visibility="{Binding ShowReportes, Converter={StaticResource BooleanToVisibilityConverter}}"
-                        ToolTip="Estadísticas y exportación (Ctrl+6)"
-                        Margin="10,5"/>
-                <Button Content="Configuración" 
-                        Style="{StaticResource SidebarButtonStyle}"
-                        Command="{Binding NavigateToConfiguracionCommand}"
-                        Visibility="{Binding ShowConfiguracion, Converter={StaticResource BooleanToVisibilityConverter}}"
-                        ToolTip="Backup, BD y preferencias (Ctrl+7)"
-                        Margin="10,5"/>
-
-                <Button Content="Cerrar sesión"
-                        Style="{StaticResource SidebarButtonStyle}"
-                        Command="{Binding LogoutCommand}"
-                        ToolTip="Cerrar sesión actual (Ctrl+L)"
-                        Margin="10,20,10,10"/>
-                </StackPanel>
-            </DockPanel>
-        </Border>
-
-        <!-- Content Area -->
-        <Grid Grid.Column="1">
-            <ContentControl x:Name="ContentArea"/>
+                <!-- Contenido -->
+                <ContentControl x:Name="ContentArea" Grid.Row="1"/>
+            </Grid>
         </Grid>
     </Grid>
 </Window>
