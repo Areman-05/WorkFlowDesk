@@ -49,8 +49,6 @@ public class LoginViewModel : ViewModelBase
     public IAsyncRelayCommand LoginCommand { get; }
     public IRelayCommand AbrirRegistroCommand { get; }
 
-    public string VersionApp => $"v{AppInfo.Version}";
-
     public event EventHandler<Usuario>? LoginExitoso;
     public event EventHandler? AbrirRegistroRequested;
 

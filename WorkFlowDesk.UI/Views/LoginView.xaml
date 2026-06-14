@@ -5,76 +5,82 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WorkFlowDesk.UI.Behaviors"
         mc:Ignorable="d"
-        Title="Iniciar Sesión - WorkFlowDesk" 
-        Height="520" 
-        Width="380"
+        Title="Iniciar sesión - WorkFlowDesk"
+        Width="420"
+        SizeToContent="Height"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="NoResize">
-    <Grid Margin="30">
-        <StackPanel>
-            <TextBlock Text="WorkFlowDesk" 
-                       FontSize="28" 
-                       FontWeight="Bold" 
-                       HorizontalAlignment="Center" 
-                       Margin="0,0,0,30"/>
-            
-            <TextBlock Text="Nombre de Usuario" 
-                       Margin="0,0,0,5"/>
-            <TextBox Text="{Binding NombreUsuario, UpdateSourceTrigger=PropertyChanged}" 
-                     Margin="0,0,0,15"/>
-            
-            <TextBlock Text="Contraseña" 
-                       Margin="0,0,0,5"/>
-            <PasswordBox x:Name="PasswordBox"
-                         local:PasswordBoxHelper.Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}" 
-                         Margin="0,0,0,15"/>
-            
-            <TextBlock Text="{Binding ErrorMessage}"
-                       Style="{StaticResource ErrorMessageStyle}"
-                       Margin="0,0,0,15"
-                       Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
-            
-            <Button Content="Iniciar Sesión" 
-                    Click="OnLoginClick"
-                    IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}"
-                    Height="35" 
-                    Margin="0,10,0,0"/>
+        ResizeMode="NoResize"
+        Background="{StaticResource StitchBackgroundGradientBrush}">
+    <Grid MinHeight="480">
+        <Ellipse Width="360" Height="360" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-80,-80,0"
+                 Fill="#669E00B5" IsHitTestVisible="False">
+            <Ellipse.Effect>
+                <BlurEffect Radius="90"/>
+            </Ellipse.Effect>
+        </Ellipse>
+        <Ellipse Width="280" Height="280" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-60,0,0,-40"
+                 Fill="#66FD933D" IsHitTestVisible="False">
+            <Ellipse.Effect>
+                <BlurEffect Radius="90"/>
+            </Ellipse.Effect>
+        </Ellipse>
 
-            <Button Content="Crear cuenta"
-                    Command="{Binding AbrirRegistroCommand}"
-                    Height="32"
-                    Margin="0,8,0,0"/>
-            
-            <ProgressBar IsIndeterminate="True" 
-                         Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" 
-                         Height="5" 
-                         Margin="0,10,0,0"/>
+        <Border Style="{StaticResource GlassCardBorderStyle}"
+                MaxWidth="400"
+                Margin="32,40"
+                Padding="28"
+                VerticalAlignment="Center">
+            <StackPanel>
+                <TextBlock Text="WorkFlowDesk"
+                           Style="{StaticResource StitchH1TextStyle}"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="Gestión de tareas y proyectos"
+                           Style="{StaticResource StitchBodyTextStyle}"
+                           HorizontalAlignment="Center"
+                           Margin="0,6,0,28"/>
 
-            <Border Background="#F4F6F7"
-                    CornerRadius="4"
-                    Padding="12"
-                    Margin="0,20,0,0">
-                <StackPanel>
-                    <TextBlock Text="Usuarios demo"
-                               FontWeight="SemiBold"
-                               Margin="0,0,0,6"/>
-                    <TextBlock Text="admin / Admin123 (Administrador)"
-                               FontSize="12"
-                               Foreground="#5D6D7E"/>
-                    <TextBlock Text="supervisor / Supervisor123"
-                               FontSize="12"
-                               Foreground="#5D6D7E"/>
-                    <TextBlock Text="empleado / Empleado123"
-                               FontSize="12"
-                               Foreground="#5D6D7E"/>
-                </StackPanel>
-            </Border>
+                <TextBlock Text="Nombre de usuario" Style="{StaticResource StitchLabelTextStyle}" Margin="0,0,0,6"/>
+                <TextBox Text="{Binding NombreUsuario, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource ModernTextBoxStyle}"
+                         Margin="0,0,0,16"/>
 
-            <TextBlock Text="{Binding VersionApp}"
-                       FontSize="11"
-                       Foreground="#95A5A6"
-                       HorizontalAlignment="Center"
-                       Margin="0,16,0,0"/>
-        </StackPanel>
+                <TextBlock Text="Contraseña" Style="{StaticResource StitchLabelTextStyle}" Margin="0,0,0,6"/>
+                <PasswordBox x:Name="PasswordBox"
+                             local:PasswordBoxHelper.Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                             Padding="10,8"
+                             BorderBrush="#D6C0D3"
+                             BorderThickness="1"
+                             FontSize="14"
+                             Margin="0,0,0,8"/>
+
+                <TextBlock Text="{Binding ErrorMessage}"
+                           Style="{StaticResource ErrorMessageStyle}"
+                           Margin="0,0,0,8"
+                           TextWrapping="Wrap"
+                           Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+
+                <Button Style="{StaticResource StitchPrimaryButtonStyle}"
+                        Click="OnLoginClick"
+                        IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}"
+                        Margin="0,8,0,0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock Text="&#xE8D7;" FontFamily="Segoe MDL2 Assets" Margin="0,0,8,0"/>
+                        <TextBlock Text="Iniciar sesión"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{StaticResource StitchGhostButtonStyle}"
+                        Command="{Binding AbrirRegistroCommand}"
+                        Content="Crear cuenta"
+                        HorizontalAlignment="Center"
+                        Margin="0,12,0,0"/>
+
+                <ProgressBar IsIndeterminate="True"
+                               Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
+                               Height="4"
+                               Margin="0,16,0,0"
+                               Foreground="{StaticResource StitchPrimaryBrush}"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>
