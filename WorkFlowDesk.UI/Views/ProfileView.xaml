@@ -5,8 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="900">
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <StackPanel Margin="24" MaxWidth="720">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="24"
+                    MaxWidth="720"
+                    HorizontalAlignment="Center">
             <TextBlock Text="Perfil" Style="{StaticResource StitchH1TextStyle}"/>
             <TextBlock Text="Personaliza tu avatar y revisa tu información de cuenta."
                        Style="{StaticResource StitchBodyTextStyle}" Margin="0,4,0,24"/>

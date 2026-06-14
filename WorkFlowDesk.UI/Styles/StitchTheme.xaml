@@ -15,6 +15,11 @@
     <Color x:Key="StitchOutlineVariantColor">#D6C0D3</Color>
     <Color x:Key="StitchErrorColor">#BA1A1A</Color>
     <Color x:Key="StitchSuccessColor">#22C55E</Color>
+    <Color x:Key="StitchTertiaryColor">#87466D</Color>
+    <Color x:Key="StitchTertiaryContainerColor">#A45E86</Color>
+    <Color x:Key="StitchOnTertiaryContainerColor">#FFFBFF</Color>
+    <Color x:Key="StitchOnPrimaryContainerColor">#FFFBFF</Color>
+    <Color x:Key="StitchOnSecondaryContainerColor">#693300</Color>
 
     <SolidColorBrush x:Key="StitchPrimaryBrush" Color="{StaticResource StitchPrimaryColor}"/>
     <SolidColorBrush x:Key="StitchPrimaryContainerBrush" Color="{StaticResource StitchPrimaryContainerColor}"/>
@@ -29,6 +34,11 @@
     <SolidColorBrush x:Key="StitchOutlineVariantBrush" Color="{StaticResource StitchOutlineVariantColor}"/>
     <SolidColorBrush x:Key="StitchErrorBrush" Color="{StaticResource StitchErrorColor}"/>
     <SolidColorBrush x:Key="StitchSuccessBrush" Color="{StaticResource StitchSuccessColor}"/>
+    <SolidColorBrush x:Key="StitchTertiaryBrush" Color="{StaticResource StitchTertiaryColor}"/>
+    <SolidColorBrush x:Key="StitchTertiaryContainerBrush" Color="{StaticResource StitchTertiaryContainerColor}"/>
+    <SolidColorBrush x:Key="StitchOnTertiaryContainerBrush" Color="{StaticResource StitchOnTertiaryContainerColor}"/>
+    <SolidColorBrush x:Key="StitchOnPrimaryContainerBrush" Color="{StaticResource StitchOnPrimaryContainerColor}"/>
+    <SolidColorBrush x:Key="StitchOnSecondaryContainerBrush" Color="{StaticResource StitchOnSecondaryContainerColor}"/>
     <SolidColorBrush x:Key="StitchWhiteBrush" Color="White"/>
 
     <!-- Degradado fondo principal -->
@@ -37,6 +47,11 @@
         <GradientStop Color="#EDE9FE" Offset="0.5"/>
         <GradientStop Color="#FCF8FF" Offset="1"/>
     </LinearGradientBrush>
+
+    <RadialGradientBrush x:Key="StitchFogBackgroundBrush" GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.85" RadiusY="0.85">
+        <GradientStop Color="#FCF8FF" Offset="0"/>
+        <GradientStop Color="#E9E5FF" Offset="1"/>
+    </RadialGradientBrush>
 
     <!-- Tarjeta cristal -->
     <Style x:Key="GlassCardBorderStyle" TargetType="Border">
@@ -48,6 +63,122 @@
         <Setter Property="Effect">
             <Setter.Value>
                 <DropShadowEffect BlurRadius="32" ShadowDepth="0" Opacity="0.08" Color="#2E1065"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="StitchAuthGlassCardStyle" TargetType="Border" BasedOn="{StaticResource GlassCardBorderStyle}">
+        <Setter Property="Background" Value="#D9FFFFFF"/>
+        <Setter Property="CornerRadius" Value="24"/>
+        <Setter Property="Padding" Value="32"/>
+    </Style>
+
+    <Style x:Key="StitchAuthInnerTextBoxStyle" TargetType="TextBox">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="44,10,16,10"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceBrush}"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="MinHeight" Value="40"/>
+    </Style>
+
+    <Style x:Key="StitchAuthInnerPasswordBoxStyle" TargetType="PasswordBox">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="44,10,16,10"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceBrush}"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="MinHeight" Value="40"/>
+    </Style>
+
+    <Style x:Key="StitchAuthComboBoxStyle" TargetType="ComboBox">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="44,10,32,10"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="MinHeight" Value="40"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceBrush}"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBox">
+                    <Grid SnapsToDevicePixels="True">
+                        <ToggleButton x:Name="ToggleButton"
+                                      Focusable="False"
+                                      ClickMode="Press"
+                                      IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                            <ToggleButton.Template>
+                                <ControlTemplate TargetType="ToggleButton">
+                                    <Border Background="Transparent"/>
+                                </ControlTemplate>
+                            </ToggleButton.Template>
+                        </ToggleButton>
+                        <ContentPresenter x:Name="ContentSite"
+                                          Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="Left"
+                                          VerticalAlignment="Center"
+                                          Content="{TemplateBinding SelectionBoxItem}"
+                                          ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                          ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                          IsHitTestVisible="False"/>
+                        <Popup x:Name="Popup"
+                               Placement="Bottom"
+                               IsOpen="{TemplateBinding IsDropDownOpen}"
+                               AllowsTransparency="True"
+                               Focusable="False"
+                               PopupAnimation="Slide">
+                            <Grid x:Name="DropDown"
+                                  MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                                  MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                <Border x:Name="DropDownBorder"
+                                        Background="White"
+                                        BorderBrush="#D6C0D3"
+                                        BorderThickness="1"
+                                        CornerRadius="8">
+                                    <ScrollViewer Margin="4,6">
+                                        <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Grid>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="StitchAuthOutlineButtonStyle" TargetType="Button">
+        <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceBrush}"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Padding" Value="16,12"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd"
+                            Background="#33FFFFFF"
+                            BorderBrush="#33D6C0D3"
+                            BorderThickness="1"
+                            CornerRadius="10"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#66FFFFFF"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Bd" Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>

@@ -11,25 +11,17 @@ namespace WorkFlowDesk.UI.Services;
 /// <summary>Gestiona el flujo de login y reapertura de sesión tras cerrar sesión.</summary>
 public static class AuthFlowService
 {
-    /// <summary>Muestra el diálogo de login y abre la ventana principal si las credenciales son válidas.</summary>
+    /// <summary>Muestra la ventana de autenticación y abre la aplicación principal si las credenciales son válidas.</summary>
     public static void ShowLoginFlow()
     {
         var authService = ServiceLocator.Provider.GetRequiredService<IAuthenticationService>();
-        var loginViewModel = new LoginViewModel(authService);
-        var loginView = new LoginView(loginViewModel);
+        var usuarioService = ServiceLocator.Provider.GetRequiredService<IUsuarioService>();
+        var shell = new AuthShellViewModel(authService, usuarioService);
+        var authWindow = new AuthWindow(shell);
 
-        loginViewModel.LoginExitoso += (_, usuario) => OpenMainApplication(loginView, usuario);
+        shell.AutenticacionExitosa += (_, usuario) => OpenMainApplication(authWindow, usuario);
 
-        loginViewModel.AbrirRegistroRequested += (_, _) =>
-        {
-            var usuario = ShowRegisterDialog();
-            if (usuario != null)
-            {
-                OpenMainApplication(loginView, usuario);
-            }
-        };
-
-        loginView.ShowDialog();
+        authWindow.ShowDialog();
 
         if (!SessionService.IsAuthenticated)
         {
@@ -43,21 +35,6 @@ public static class AuthFlowService
         SessionService.ClearSession();
         windowToClose?.Close();
         ShowLoginFlow();
-    }
-
-    /// <summary>Muestra el formulario de registro y devuelve el usuario creado si tuvo éxito.</summary>
-    public static Usuario? ShowRegisterDialog()
-    {
-        var usuarioService = ServiceLocator.Provider.GetRequiredService<IUsuarioService>();
-        var authService = ServiceLocator.Provider.GetRequiredService<IAuthenticationService>();
-        var registerViewModel = new RegisterViewModel(usuarioService, authService);
-        var registerView = new RegisterView(registerViewModel);
-
-        Usuario? usuarioRegistrado = null;
-        registerViewModel.RegistroExitoso += (_, usuario) => usuarioRegistrado = usuario;
-
-        registerView.ShowDialog();
-        return usuarioRegistrado;
     }
 
     private static void OpenMainApplication(Window dialogToClose, Usuario usuario)

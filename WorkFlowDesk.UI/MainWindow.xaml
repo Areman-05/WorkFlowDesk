@@ -10,6 +10,7 @@
         MinHeight="640"
         MinWidth="1000"
         WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResize"
         Background="{StaticResource StitchBackgroundGradientBrush}"
         Loaded="OnLoaded">
     <Window.InputBindings>

@@ -32,6 +32,7 @@ public class RegisterViewModel : ViewModelBase
     private string _email = string.Empty;
     private string _password = string.Empty;
     private string _confirmPassword = string.Empty;
+    private bool _aceptaTerminos;
     private RolRegistroOption _rolSeleccionado;
 
     public RegisterViewModel(IUsuarioService usuarioService, IAuthenticationService authenticationService)
@@ -112,6 +113,16 @@ public class RegisterViewModel : ViewModelBase
         }
     }
 
+    public bool AceptaTerminos
+    {
+        get => _aceptaTerminos;
+        set
+        {
+            SetProperty(ref _aceptaTerminos, value);
+            RegisterCommand.NotifyCanExecuteChanged();
+        }
+    }
+
     public IAsyncRelayCommand RegisterCommand { get; }
     public IRelayCommand CancelarCommand { get; }
 
@@ -126,6 +137,7 @@ public class RegisterViewModel : ViewModelBase
     }
 
     private bool CanRegister() =>
+        AceptaTerminos &&
         !string.IsNullOrWhiteSpace(NombreCompleto) &&
         !string.IsNullOrWhiteSpace(NombreUsuario) &&
         !string.IsNullOrWhiteSpace(Email) &&
