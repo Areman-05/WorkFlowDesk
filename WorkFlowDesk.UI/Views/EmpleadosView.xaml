@@ -1,95 +1,264 @@
 <UserControl x:Class="WorkFlowDesk.UI.Views.EmpleadosView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:WorkFlowDesk.UI.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+             mc:Ignorable="d"
+             d:DesignHeight="900" d:DesignWidth="1100">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="24" MaxWidth="1200" HorizontalAlignment="Center">
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
-            <TextBlock Text="Empleados" 
-                       FontSize="24" 
-                       FontWeight="Bold" 
-                       VerticalAlignment="Center"
-                       Margin="0,0,20,0"/>
-            <Button Content="Nuevo Empleado" 
-                    Command="{Binding CrearEmpleadoCommand}"
-                    Visibility="{Binding CanManage, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    Padding="15,8"
-                    Margin="0,0,10,0"/>
-            <Button Content="Exportar CSV"
-                    Command="{Binding ExportarCommand}"
-                    Visibility="{Binding CanExport, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    Padding="15,8"
-                    Margin="0,0,10,0"/>
-            <TextBox Text="{Binding TextoBusqueda, UpdateSourceTrigger=PropertyChanged}" 
-                     Width="200"
-                     Margin="10,0,0,0"
-                     Padding="5"/>
-        </StackPanel>
+            <!-- Cabecera -->
+            <Grid Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="Empleados" Style="{StaticResource StitchH1TextStyle}"/>
+                    <TextBlock Text="Gestiona y visualiza la nómina de tu equipo de trabajo."
+                               Style="{StaticResource StitchBodyTextStyle}" Margin="0,4,0,0"/>
+                    <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorMessageStyle}" Margin="0,8,0,0"
+                               Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
+                    <Button Style="{StaticResource StitchAuthOutlineButtonStyle}"
+                            Command="{Binding ExportarCommand}"
+                            Visibility="{Binding CanExport, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Padding="16,10" Margin="0,0,12,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE896;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"/>
+                            <TextBlock Text="Exportar CSV" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource StitchPrimaryButtonStyle}"
+                            Command="{Binding CrearEmpleadoCommand}"
+                            Visibility="{Binding CanManage, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Padding="20,10">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"/>
+                            <TextBlock Text="Nuevo empleado" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
 
-        <Grid Grid.Row="1">
-        <DataGrid ItemsSource="{Binding Empleados}"
-                  Visibility="{Binding HayElementos, Converter={StaticResource BooleanToVisibilityConverter}}"
-                  SelectedItem="{Binding EmpleadoSeleccionado}"
-                  AutoGenerateColumns="False"
-                  IsReadOnly="True"
-                  GridLinesVisibility="All"
-                  HeadersVisibility="Column">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" Width="*"/>
-                <DataGridTextColumn Header="Apellidos" Binding="{Binding Apellidos}" Width="*"/>
-                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*"/>
-                <DataGridTextColumn Header="Departamento" Binding="{Binding Departamento}" Width="*"/>
-                <DataGridTextColumn Header="Cargo" Binding="{Binding Cargo}" Width="*"/>
-                <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="100"/>
-                <DataGridTemplateColumn Width="Auto">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Button Content="Editar" 
-                                        Command="{Binding DataContext.EditarEmpleadoCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                        CommandParameter="{Binding}"
-                                        Visibility="{Binding DataContext.CanManage, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                        Margin="5,0"
-                                        Padding="10,5"/>
-                                <Button Content="Eliminar" 
-                                        Command="{Binding DataContext.EliminarEmpleadoCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                        CommandParameter="{Binding}"
-                                        Visibility="{Binding DataContext.CanManage, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                        Margin="5,0"
-                                        Padding="10,5"/>
+            <!-- Tabla -->
+            <Border Style="{StaticResource GlassCardBorderStyle}" Padding="0" Margin="0,0,0,24">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Cabecera columnas -->
+                    <Border Grid.Row="0" Background="#80F6F2FF" BorderBrush="#1AD6C0D3" BorderThickness="0,0,0,1" Padding="24,14">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2.2*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="1.4*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="0.8*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="AVATAR / NOMBRE" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="1" Text="USUARIO" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="2" Text="CORREO" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="3" Text="ROL" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="4" Text="ESTADO" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="5" Text="ACCIONES" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Filas -->
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding Empleados}"
+                                  Visibility="{Binding HayElementos, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="#0DD6C0D3" BorderThickness="0,0,0,1" Padding="24,12" Background="Transparent">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#0D9E00B5"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2.2*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="1.4*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="0.8*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <controls:AvatarImage AvatarIndex="{Binding AvatarIndex}"
+                                                                  FallbackInitials="{Binding Iniciales}"
+                                                                  Size="40"
+                                                                  Margin="0,0,16,0"/>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding NombreCompleto}" FontWeight="SemiBold" FontSize="14"
+                                                           Foreground="{StaticResource StitchOnSurfaceBrush}"/>
+                                                <TextBlock Text="{Binding CodigoId}" Style="{StaticResource StitchCaptionTextStyle}" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <TextBlock Grid.Column="1" Text="{Binding NombreUsuario}" Style="{StaticResource StitchBodyTextStyle}"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding Email}" Style="{StaticResource StitchBodyTextStyle}"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="3" Text="{Binding Cargo}" FontWeight="Medium" FontSize="14"
+                                                   Foreground="{StaticResource StitchOnSurfaceBrush}" VerticalAlignment="Center"/>
+
+                                        <Border Grid.Column="4" CornerRadius="10" Padding="10,4" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                Background="{Binding EstadoFondo, Converter={StaticResource HexToBrushConverter}}">
+                                            <TextBlock Text="{Binding EstadoTexto}" FontSize="12" FontWeight="SemiBold"
+                                                       Foreground="{Binding EstadoTextoColor, Converter={StaticResource HexToBrushConverter}}"/>
+                                        </Border>
+
+                                        <StackPanel Grid.Column="5" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                            <Button Command="{Binding DataContext.EditarEmpleadoCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"
+                                                    Visibility="{Binding DataContext.CanManage, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                    Width="32" Height="32" Margin="0,0,4,0" Cursor="Hand">
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Setter Property="BorderThickness" Value="0"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="Button">
+                                                                    <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="8" Padding="6">
+                                                                        <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                                                                   Foreground="{StaticResource StitchPrimaryBrush}" HorizontalAlignment="Center"/>
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter TargetName="Bd" Property="Background" Value="#1A9E00B5"/>
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+                                            <Button Command="{Binding DataContext.EliminarEmpleadoCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"
+                                                    Visibility="{Binding DataContext.CanManage, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                    Width="32" Height="32" Cursor="Hand">
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Setter Property="BorderThickness" Value="0"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="Button">
+                                                                    <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="8" Padding="6">
+                                                                        <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                                                                   Foreground="{StaticResource StitchErrorBrush}" HorizontalAlignment="Center"/>
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter TargetName="Bd" Property="Background" Value="#1ABA1A1A"/>
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <controls:EmptyStateView Grid.Row="1" Title="Sin empleados"
+                                             Message="No hay empleados registrados o ninguno coincide con la búsqueda."
+                                             Visibility="{Binding MostrarEstadoVacio, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                             Margin="24"/>
+                    <controls:LoadingIndicator Grid.Row="1"
+                                               Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                    <!-- Paginación -->
+                    <Border Grid.Row="2" BorderBrush="#1AD6C0D3" BorderThickness="0,1,0,0" Padding="24,14">
+                        <Grid>
+                            <TextBlock Text="{Binding InfoPaginacion}" Style="{StaticResource StitchCaptionTextStyle}" VerticalAlignment="Center"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button Content="Anterior" Command="{Binding PaginaAnteriorCommand}"
+                                        Style="{StaticResource StitchAuthOutlineButtonStyle}" Padding="12,6" Margin="0,0,8,0"/>
+                                <Button Content="Siguiente" Command="{Binding PaginaSiguienteCommand}"
+                                        Style="{StaticResource StitchAuthOutlineButtonStyle}" Padding="12,6"/>
                             </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-        <controls:EmptyStateView Title="Sin empleados"
-                                 Message="No hay empleados registrados o ninguno coincide con la búsqueda."
-                                 Visibility="{Binding MostrarEstadoVacio, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        <controls:LoadingIndicator Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        </Grid>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
-            <TextBlock Text="{Binding InfoPaginacion}"
-                       VerticalAlignment="Center"
-                       Foreground="#7F8C8D"
-                       Margin="0,0,15,0"/>
-            <Button Content="Anterior"
-                    Command="{Binding PaginaAnteriorCommand}"
-                    Padding="12,6"
-                    Margin="0,0,8,0"/>
-            <Button Content="Siguiente"
-                    Command="{Binding PaginaSiguienteCommand}"
-                    Padding="12,6"/>
+            <!-- Stats -->
+            <UniformGrid Columns="4">
+                <Border Style="{StaticResource GlassCardBorderStyle}" Margin="0,0,8,0" Padding="16">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="48" Height="48" CornerRadius="24" Background="#1A9E00B5" Margin="0,0,12,0">
+                            <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource StitchPrimaryBrush}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="TOTAL EQUIPO" Style="{StaticResource StitchLabelTextStyle}" FontSize="11"/>
+                            <TextBlock Text="{Binding TotalEquipo}" Style="{StaticResource StitchStatNumberStyle}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource GlassCardBorderStyle}" Margin="4,0,4,0" Padding="16">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="48" Height="48" CornerRadius="24" Background="#1AFD933D" Margin="0,0,12,0">
+                            <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource StitchSecondaryBrush}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="ACTIVOS HOY" Style="{StaticResource StitchLabelTextStyle}" FontSize="11"/>
+                            <TextBlock Text="{Binding ActivosHoy}" Style="{StaticResource StitchStatNumberStyle}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource GlassCardBorderStyle}" Margin="4,0,4,0" Padding="16">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="48" Height="48" CornerRadius="24" Background="#1ABA1A1A" Margin="0,0,12,0">
+                            <TextBlock Text="&#xE787;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource StitchErrorBrush}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="AUSENCIAS" Style="{StaticResource StitchLabelTextStyle}" FontSize="11"/>
+                            <TextBlock Text="{Binding Ausencias}" Style="{StaticResource StitchStatNumberStyle}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource GlassCardBorderStyle}" Margin="8,0,0,0" Padding="16">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="48" Height="48" CornerRadius="24" Background="#1A6F3157" Margin="0,0,12,0">
+                            <TextBlock Text="&#xE8F4;" FontFamily="Segoe MDL2 Assets" Foreground="#6F3157"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="NUEVOS ESTE MES" Style="{StaticResource StitchLabelTextStyle}" FontSize="11"/>
+                            <TextBlock Text="{Binding NuevosEsteMes}" Style="{StaticResource StitchStatNumberStyle}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
         </StackPanel>
-    </Grid>
+    </ScrollViewer>
 </UserControl>

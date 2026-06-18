@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:WorkFlowDesk.UI.Controls"
              mc:Ignorable="d"
              d:DesignHeight="600" d:DesignWidth="900">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
@@ -21,8 +22,7 @@
                     </Grid.ColumnDefinitions>
                     <Border Width="80" Height="80" CornerRadius="40"
                             BorderBrush="{StaticResource StitchPrimaryBrush}" BorderThickness="2" Padding="3">
-                        <Image Source="{Binding SelectedAvatarIndex, Converter={StaticResource AvatarIndexToImageConverter}}"
-                               Stretch="UniformToFill"/>
+                        <controls:AvatarImage AvatarIndex="{Binding SelectedAvatarIndex}" Size="74"/>
                     </Border>
                     <StackPanel Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Center">
                         <TextBlock Text="{Binding UserName}" Style="{StaticResource StitchH2TextStyle}"/>
@@ -75,11 +75,7 @@
                         </ListBox.ItemContainerStyle>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Ellipse Width="64" Height="64">
-                                    <Ellipse.Fill>
-                                        <ImageBrush ImageSource="{Binding Url, Converter={StaticResource UrlToBitmapConverter}}" Stretch="UniformToFill"/>
-                                    </Ellipse.Fill>
-                                </Ellipse>
+                                <controls:AvatarImage AvatarIndex="{Binding Index}" Size="52"/>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>

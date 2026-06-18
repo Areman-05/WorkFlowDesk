@@ -60,6 +60,7 @@ public class ApplicationDbContext : DbContext
             entity.Property(e => e.Telefono).HasMaxLength(20);
             entity.Property(e => e.Departamento).HasMaxLength(100);
             entity.Property(e => e.Cargo).HasMaxLength(100);
+            entity.Property(e => e.AvatarIndex).HasDefaultValue(0);
             entity.HasIndex(e => e.Email).IsUnique();
             entity.HasOne(e => e.Usuario)
                   .WithMany()

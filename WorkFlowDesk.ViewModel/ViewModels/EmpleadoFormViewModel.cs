@@ -1,8 +1,11 @@
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Input;
 using WorkFlowDesk.Common.Helpers;
+using WorkFlowDesk.Common.Services;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.ViewModel.Base;
+using WorkFlowDesk.ViewModel.Models;
 
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
@@ -11,7 +14,8 @@ public class EmpleadoFormViewModel : ViewModelBase
 {
     private readonly IEmpleadoService _empleadoService;
     private Empleado _empleado;
-    private bool _esNuevo;
+    private readonly bool _esNuevo;
+    private int _selectedAvatarIndex;
 
     public EmpleadoFormViewModel(IEmpleadoService empleadoService, Empleado? empleado = null)
     {
@@ -21,13 +25,55 @@ public class EmpleadoFormViewModel : ViewModelBase
             Estado = EstadoEmpleado.Activo,
             FechaContratacion = DateTime.Now
         };
-        _esNuevo = empleado == null;
+        _esNuevo = empleado is null || empleado.Id == 0;
+
+        if (_esNuevo && _empleado.AvatarIndex == 0)
+            _empleado.AvatarIndex = Random.Shared.Next(0, AvatarCatalog.Count);
+
+        _selectedAvatarIndex = Math.Clamp(_empleado.AvatarIndex, 0, AvatarCatalog.Count - 1);
+
+        Avatares = new ObservableCollection<AvatarOption>(
+            Enumerable.Range(0, AvatarCatalog.Count)
+                .Select(i => new AvatarOption { Index = i, Url = AvatarCatalog.GetUrl(i) }));
+
+        EstadosDisponibles = Enum.GetValues<EstadoEmpleado>();
 
         GuardarCommand = new AsyncRelayCommand(GuardarAsync, CanGuardar);
         CancelarCommand = new RelayCommand(Cancelar);
+        SelectAvatarCommand = new RelayCommand<int>(index => SelectedAvatarIndex = index);
     }
 
-    public string Titulo => _esNuevo ? "Nuevo Empleado" : "Editar Empleado";
+    public string Titulo => _esNuevo ? "Nuevo empleado" : "Editar empleado";
+
+    public string Subtitulo => _esNuevo
+        ? "Añade un miembro al equipo y asigna su avatar."
+        : "Actualiza los datos y el avatar del empleado.";
+
+    public ObservableCollection<AvatarOption> Avatares { get; }
+
+    public Array EstadosDisponibles { get; }
+
+    public int SelectedAvatarIndex
+    {
+        get => _selectedAvatarIndex;
+        set
+        {
+            if (!SetProperty(ref _selectedAvatarIndex, Math.Clamp(value, 0, AvatarCatalog.Count - 1)))
+                return;
+
+            _empleado.AvatarIndex = _selectedAvatarIndex;
+        }
+    }
+
+    public string InicialesVistaPrevia
+    {
+        get
+        {
+            var n = string.IsNullOrWhiteSpace(Nombre) ? "?" : Nombre.Trim()[0].ToString();
+            var a = string.IsNullOrWhiteSpace(Apellidos) ? string.Empty : Apellidos.Trim()[0].ToString();
+            return $"{n}{a}".ToUpperInvariant();
+        }
+    }
 
     public string Nombre
     {
@@ -36,6 +82,7 @@ public class EmpleadoFormViewModel : ViewModelBase
         {
             _empleado.Nombre = value;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(InicialesVistaPrevia));
             GuardarCommand.NotifyCanExecuteChanged();
         }
     }
@@ -47,6 +94,7 @@ public class EmpleadoFormViewModel : ViewModelBase
         {
             _empleado.Apellidos = value;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(InicialesVistaPrevia));
             GuardarCommand.NotifyCanExecuteChanged();
         }
     }
@@ -66,13 +114,9 @@ public class EmpleadoFormViewModel : ViewModelBase
     private void ValidarEmail()
     {
         if (!string.IsNullOrWhiteSpace(Email) && !ValidationHelper.IsValidEmail(Email))
-        {
             ErrorMessage = "El formato del email no es válido";
-        }
         else if (string.IsNullOrWhiteSpace(ErrorMessage) || ErrorMessage.Contains("email"))
-        {
             ErrorMessage = null;
-        }
     }
 
     public string Telefono
@@ -129,6 +173,7 @@ public class EmpleadoFormViewModel : ViewModelBase
 
     public IAsyncRelayCommand GuardarCommand { get; }
     public IRelayCommand CancelarCommand { get; }
+    public IRelayCommand<int> SelectAvatarCommand { get; }
 
     public event EventHandler? Guardado;
     public event EventHandler? Cancelado;
@@ -145,13 +190,9 @@ public class EmpleadoFormViewModel : ViewModelBase
     private void ValidarTelefono()
     {
         if (!string.IsNullOrWhiteSpace(Telefono) && !ValidationHelper.IsValidPhone(Telefono))
-        {
             ErrorMessage = "El teléfono debe tener al menos 9 dígitos";
-        }
         else if (string.IsNullOrWhiteSpace(ErrorMessage) || ErrorMessage.Contains("teléfono"))
-        {
             ErrorMessage = null;
-        }
     }
 
     private async Task GuardarAsync()
@@ -161,14 +202,12 @@ public class EmpleadoFormViewModel : ViewModelBase
 
         try
         {
+            _empleado.AvatarIndex = SelectedAvatarIndex;
+
             if (_esNuevo)
-            {
                 await _empleadoService.CreateAsync(_empleado);
-            }
             else
-            {
                 await _empleadoService.UpdateAsync(_empleado);
-            }
 
             Guardado?.Invoke(this, EventArgs.Empty);
         }
@@ -183,8 +222,5 @@ public class EmpleadoFormViewModel : ViewModelBase
         }
     }
 
-    private void Cancelar()
-    {
-        Cancelado?.Invoke(this, EventArgs.Empty);
-    }
+    private void Cancelar() => Cancelado?.Invoke(this, EventArgs.Empty);
 }

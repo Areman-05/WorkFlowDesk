@@ -13,11 +13,14 @@ public static class DialogService
         var window = new Window
         {
             Title = viewModel.Titulo,
-            Width = 600,
-            Height = 600,
+            Width = 640,
+            Height = 780,
+            MinWidth = 560,
+            MinHeight = 640,
             WindowStartupLocation = WindowStartupLocation.CenterOwner,
             Owner = Application.Current.MainWindow,
-            ResizeMode = ResizeMode.CanResize
+            ResizeMode = ResizeMode.CanResize,
+            Background = (System.Windows.Media.Brush)Application.Current.FindResource("StitchBackgroundBrush")
         };
 
         var formView = new EmpleadoFormView();

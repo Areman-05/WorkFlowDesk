@@ -9,7 +9,7 @@ public static class AvatarCatalog
     public static string GetUrl(int index)
     {
         var safeIndex = Math.Clamp(index, 0, Count - 1);
-        return $"https://api.dicebear.com/7.x/adventurer/png?seed=workflowdesk-{safeIndex + 1}&size=128";
+        return $"https://api.dicebear.com/7.x/adventurer/png?seed=workflowdesk-{safeIndex + 1}&size=80";
     }
 
     /// <summary>Devuelve las 12 URLs del catálogo.</summary>

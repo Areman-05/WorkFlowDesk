@@ -4,94 +4,201 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:helpers="clr-namespace:WorkFlowDesk.UI.Helpers"
+             xmlns:controls="clr-namespace:WorkFlowDesk.UI.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="500" d:DesignWidth="600">
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-
-        <TextBlock Grid.Row="0" 
-                   Text="{Binding Titulo}" 
-                   FontSize="20" 
-                   FontWeight="Bold" 
-                   Margin="0,0,0,20"/>
-
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+             d:DesignHeight="720" d:DesignWidth="620">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="24">
+        <Border Style="{StaticResource StitchAuthRegisterGlassCardStyle}" MaxWidth="560">
             <StackPanel>
-                <TextBlock Text="Nombre *" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding Nombre, UpdateSourceTrigger=PropertyChanged}"
-                         ToolTip="{x:Static helpers:FormTooltips.Nombre}"
-                         Style="{StaticResource ModernTextBoxStyle}"
-                         Margin="0,0,0,15"/>
+                <!-- Cabecera -->
+                <StackPanel Margin="0,0,0,20">
+                    <TextBlock Text="{Binding Titulo}" Style="{StaticResource StitchH2TextStyle}"/>
+                    <TextBlock Text="{Binding Subtitulo}" Style="{StaticResource StitchBodyTextStyle}" Margin="0,4,0,0"/>
+                </StackPanel>
 
-                <TextBlock Text="Apellidos *" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding Apellidos, UpdateSourceTrigger=PropertyChanged}"
-                         ToolTip="{x:Static helpers:FormTooltips.Apellidos}"
-                         Style="{StaticResource ModernTextBoxStyle}"
-                         Margin="0,0,0,15"/>
+                <!-- Vista previa avatar -->
+                <Border Background="#80F6F2FF" CornerRadius="12" Padding="16" Margin="0,0,0,20">
+                    <StackPanel Orientation="Horizontal">
+                        <controls:AvatarImage AvatarIndex="{Binding SelectedAvatarIndex}"
+                                              FallbackInitials="{Binding InicialesVistaPrevia}"
+                                              Size="72"/>
+                        <StackPanel Margin="16,0,0,0" VerticalAlignment="Center">
+                            <TextBlock Text="Avatar del empleado" Style="{StaticResource StitchLabelTextStyle}"/>
+                            <TextBlock Text="Elige uno de los 12 avatares del catálogo."
+                                       Style="{StaticResource StitchCaptionTextStyle}" Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
 
-                <TextBlock Text="Email *" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
-                         ToolTip="{x:Static helpers:FormTooltips.Email}"
-                         Style="{StaticResource ModernTextBoxStyle}"
-                         Margin="0,0,0,15"/>
+                <!-- Selector avatares -->
+                <TextBlock Text="Seleccionar avatar" Style="{StaticResource StitchLabelTextStyle}" Margin="4,0,0,8"/>
+                <ListBox ItemsSource="{Binding Avatares}"
+                         SelectedValue="{Binding SelectedAvatarIndex, Mode=TwoWay}"
+                         SelectedValuePath="Index"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         Margin="0,0,0,20">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="6"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="Padding" Value="4"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border x:Name="Bd" Width="56" Height="56" CornerRadius="28"
+                                                BorderThickness="2" BorderBrush="Transparent" Padding="2">
+                                            <ContentPresenter/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource StitchPrimaryBrush}"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Bd" Property="Background" Value="#0D9E00B5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <controls:AvatarImage AvatarIndex="{Binding Index}" Size="48"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
 
-                <TextBlock Text="Teléfono" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding Telefono, UpdateSourceTrigger=PropertyChanged}"
-                         ToolTip="{x:Static helpers:FormTooltips.Telefono}"
-                         Style="{StaticResource ModernTextBoxStyle}"
-                         Margin="0,0,0,15"/>
+                <!-- Nombre + Apellidos -->
+                <Grid Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Nombre *" Style="{StaticResource StitchLabelTextStyle}" Margin="4,0,0,4"/>
+                        <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
+                            <TextBox Text="{Binding Nombre, UpdateSourceTrigger=PropertyChanged}"
+                                     ToolTip="{x:Static helpers:FormTooltips.Nombre}"
+                                     Style="{StaticResource StitchAuthInnerTextBoxStyle}"/>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Apellidos *" Style="{StaticResource StitchLabelTextStyle}" Margin="4,0,0,4"/>
+                        <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
+                            <TextBox Text="{Binding Apellidos, UpdateSourceTrigger=PropertyChanged}"
+                                     ToolTip="{x:Static helpers:FormTooltips.Apellidos}"
+                                     Style="{StaticResource StitchAuthInnerTextBoxStyle}"/>
+                        </Border>
+                    </StackPanel>
+                </Grid>
 
-                <TextBlock Text="Departamento" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding Departamento, UpdateSourceTrigger=PropertyChanged}"
-                         ToolTip="{x:Static helpers:FormTooltips.Departamento}"
-                         Style="{StaticResource ModernTextBoxStyle}"
-                         Margin="0,0,0,15"/>
+                <!-- Email -->
+                <StackPanel Margin="0,0,0,16">
+                    <TextBlock Text="Correo electrónico *" Style="{StaticResource StitchLabelTextStyle}" Margin="4,0,0,4"/>
+                    <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
+                        <Grid>
+                            <TextBlock Text="&#xE715;" FontFamily="Segoe MDL2 Assets" FontSize="18"
+                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                       VerticalAlignment="Center" Margin="16,0,0,0" IsHitTestVisible="False"/>
+                            <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+                                     ToolTip="{x:Static helpers:FormTooltips.Email}"
+                                     Style="{StaticResource StitchAuthInnerTextBoxStyle}"/>
+                        </Grid>
+                    </Border>
+                </StackPanel>
 
-                <TextBlock Text="Cargo" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding Cargo, UpdateSourceTrigger=PropertyChanged}"
-                         ToolTip="{x:Static helpers:FormTooltips.Cargo}"
-                         Style="{StaticResource ModernTextBoxStyle}"
-                         Margin="0,0,0,15"/>
+                <!-- Teléfono + Departamento -->
+                <Grid Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Teléfono" Style="{StaticResource StitchLabelTextStyle}" Margin="4,0,0,4"/>
+                        <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
+                            <TextBox Text="{Binding Telefono, UpdateSourceTrigger=PropertyChanged}"
+                                     ToolTip="{x:Static helpers:FormTooltips.Telefono}"
+                                     Style="{StaticResource StitchAuthInnerTextBoxStyle}"/>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Departamento" Style="{StaticResource StitchLabelTextStyle}" Margin="4,0,0,4"/>
+                        <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
+                            <TextBox Text="{Binding Departamento, UpdateSourceTrigger=PropertyChanged}"
+                                     ToolTip="{x:Static helpers:FormTooltips.Departamento}"
+                                     Style="{StaticResource StitchAuthInnerTextBoxStyle}"/>
+                        </Border>
+                    </StackPanel>
+                </Grid>
 
-                <TextBlock Text="Estado" Margin="0,0,0,5"/>
-                <ComboBox SelectedItem="{Binding Estado}"
-                          ToolTip="{x:Static helpers:FormTooltips.Estado}"
-                          Margin="0,0,0,15">
-                    <ComboBoxItem Content="Activo" Tag="Activo"/>
-                    <ComboBoxItem Content="Inactivo" Tag="Inactivo"/>
-                    <ComboBoxItem Content="Vacaciones" Tag="Vacaciones"/>
-                    <ComboBoxItem Content="Baja" Tag="Baja"/>
-                </ComboBox>
+                <!-- Cargo + Estado -->
+                <Grid Margin="0,0,0,16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Cargo / Rol" Style="{StaticResource StitchLabelTextStyle}" Margin="4,0,0,4"/>
+                        <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
+                            <TextBox Text="{Binding Cargo, UpdateSourceTrigger=PropertyChanged}"
+                                     ToolTip="{x:Static helpers:FormTooltips.Cargo}"
+                                     Style="{StaticResource StitchAuthInnerTextBoxStyle}"/>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Estado" Style="{StaticResource StitchLabelTextStyle}" Margin="4,0,0,4"/>
+                        <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
+                            <ComboBox ItemsSource="{Binding EstadosDisponibles}"
+                                      SelectedItem="{Binding Estado}"
+                                      ToolTip="{x:Static helpers:FormTooltips.Estado}"
+                                      Style="{StaticResource StitchAuthComboBoxStyle}"/>
+                        </Border>
+                    </StackPanel>
+                </Grid>
 
-                <TextBlock Text="Fecha de Contratación *" Margin="0,0,0,5"/>
-                <DatePicker SelectedDate="{Binding FechaContratacion}"
-                            ToolTip="{x:Static helpers:FormTooltips.FechaContratacion}"
-                            Style="{StaticResource ModernDatePickerStyle}"
-                            Margin="0,0,0,15"/>
+                <!-- Fecha contratación -->
+                <StackPanel Margin="0,0,0,16">
+                    <TextBlock Text="Fecha de contratación *" Style="{StaticResource StitchLabelTextStyle}" Margin="4,0,0,4"/>
+                    <Border Style="{StaticResource StitchAuthFieldBorderStyle}" Padding="8,4">
+                        <DatePicker SelectedDate="{Binding FechaContratacion}"
+                                    ToolTip="{x:Static helpers:FormTooltips.FechaContratacion}"
+                                    BorderThickness="0" Background="Transparent"/>
+                    </Border>
+                </StackPanel>
 
                 <TextBlock Text="{Binding ErrorMessage}"
                            Style="{StaticResource ErrorMessageStyle}"
-                           Margin="0,10,0,0"
+                           Margin="0,0,0,8"
                            Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
-            </StackPanel>
-        </ScrollViewer>
 
-        <StackPanel Grid.Row="2" 
-                    Orientation="Horizontal" 
-                    HorizontalAlignment="Right" 
-                    Margin="0,20,0,0">
-            <Button Content="Guardar" 
-                    Command="{Binding GuardarCommand}"
-                    Style="{StaticResource PrimaryButtonStyle}"
-                    Margin="0,0,10,0"
-                    Padding="20,8"/>
-            <Button Content="Cancelar" 
-                    Command="{Binding CancelarCommand}"
-                    Padding="20,8"/>
-        </StackPanel>
-    </Grid>
+                <!-- Acciones -->
+                <Grid Margin="0,8,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="1" Content="Cancelar"
+                            Command="{Binding CancelarCommand}"
+                            Style="{StaticResource StitchAuthCancelButtonStyle}"
+                            Padding="20,10" Margin="0,0,12,0"/>
+                    <Button Grid.Column="2" Content="Guardar empleado"
+                            Command="{Binding GuardarCommand}"
+                            Style="{StaticResource StitchPrimaryButtonStyle}"
+                            Padding="20,10"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </ScrollViewer>
 </UserControl>

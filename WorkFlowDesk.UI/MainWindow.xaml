@@ -233,7 +233,6 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="64"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <!-- Top bar -->
@@ -271,16 +270,6 @@
 
                 <!-- Contenido -->
                 <ContentControl x:Name="ContentArea" Grid.Row="1"/>
-
-                <Border Grid.Row="2"
-                        Background="#CCFCF8FF"
-                        BorderBrush="#1AD6C0D3"
-                        BorderThickness="0,1,0,0"
-                        Padding="24,10">
-                    <TextBlock Text="© 2026 WorkFlowDesk. Todos los derechos reservados."
-                               Style="{StaticResource StitchCaptionTextStyle}"
-                               HorizontalAlignment="Center"/>
-                </Border>
             </Grid>
         </Grid>
     </Grid>

@@ -26,6 +26,20 @@ public static class DatabaseSeeder
         await context.SaveChangesAsync();
 
         await DemoDataSeeder.SeedAsync(context);
+        await EnsureEmpleadoAvatarsAsync(context);
+    }
+
+    /// <summary>Asigna avatares DiceBear distintos cuando todos los empleados tienen índice 0 (legacy).</summary>
+    private static async Task EnsureEmpleadoAvatarsAsync(ApplicationDbContext context)
+    {
+        var empleados = await context.Empleados.OrderBy(e => e.Id).ToListAsync();
+        if (empleados.Count <= 1 || !empleados.All(e => e.AvatarIndex == 0))
+            return;
+
+        foreach (var empleado in empleados)
+            empleado.AvatarIndex = (empleado.Id - 1) % WorkFlowDesk.Common.Services.AvatarCatalog.Count;
+
+        await context.SaveChangesAsync();
     }
 
     /// <summary>Crea el usuario administrador por defecto si no existe.</summary>

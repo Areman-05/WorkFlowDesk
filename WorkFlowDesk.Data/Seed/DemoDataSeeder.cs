@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using WorkFlowDesk.Common.Services;
 using WorkFlowDesk.Domain.Entities;
 
 namespace WorkFlowDesk.Data.Seed;
@@ -82,15 +83,18 @@ public static class DemoDataSeeder
                 FechaContratacion = ahora.AddMonths(-10), UsuarioId = empleadoUser.Id
             },
             new() { Nombre = "Carlos", Apellidos = "Ruiz", Email = "c.ruiz@workflowdesk.local", Telefono = "600 000 004", Departamento = "Diseño", Cargo = "Diseñador UX", FechaContratacion = ahora.AddMonths(-9) },
-            new() { Nombre = "Marta", Apellidos = "López", Email = "m.lopez@workflowdesk.local", Telefono = "600 000 005", Departamento = "Marketing", Cargo = "SEO Specialist", FechaContratacion = ahora.AddMonths(-8) },
+            new() { Nombre = "Marta", Apellidos = "López", Email = "m.lopez@workflowdesk.local", Telefono = "600 000 005", Departamento = "Marketing", Cargo = "SEO Specialist", FechaContratacion = ahora.AddMonths(-8), Estado = EstadoEmpleado.Vacaciones },
             new() { Nombre = "Laura", Apellidos = "García", Email = "l.garcia@workflowdesk.local", Telefono = "600 000 006", Departamento = "Desarrollo", Cargo = "Dev Frontend", FechaContratacion = ahora.AddMonths(-7) },
             new() { Nombre = "Pablo", Apellidos = "Martín", Email = "p.martin@workflowdesk.local", Telefono = "600 000 007", Departamento = "Desarrollo", Cargo = "Dev Backend", FechaContratacion = ahora.AddMonths(-6) },
             new() { Nombre = "Ana", Apellidos = "Serrano", Email = "a.serrano@workflowdesk.local", Telefono = "600 000 008", Departamento = "QA", Cargo = "Tester", FechaContratacion = ahora.AddMonths(-5) },
             new() { Nombre = "Diego", Apellidos = "Torres", Email = "d.torres@workflowdesk.local", Telefono = "600 000 009", Departamento = "Soporte", Cargo = "Técnico", FechaContratacion = ahora.AddMonths(-4) },
             new() { Nombre = "Elena", Apellidos = "Vega", Email = "e.vega@workflowdesk.local", Telefono = "600 000 010", Departamento = "RRHH", Cargo = "People Ops", FechaContratacion = ahora.AddMonths(-3) },
-            new() { Nombre = "Jorge", Apellidos = "Núñez", Email = "j.nunez@workflowdesk.local", Telefono = "600 000 011", Departamento = "Ventas", Cargo = "Account Manager", FechaContratacion = ahora.AddMonths(-2) },
+            new() { Nombre = "Jorge", Apellidos = "Núñez", Email = "j.nunez@workflowdesk.local", Telefono = "600 000 011", Departamento = "Ventas", Cargo = "Account Manager", FechaContratacion = ahora.AddMonths(-2), Estado = EstadoEmpleado.Inactivo },
             new() { Nombre = "Sofía", Apellidos = "Ramos", Email = "s.ramos@workflowdesk.local", Telefono = "600 000 012", Departamento = "Diseño", Cargo = "UI Designer", FechaContratacion = ahora.AddDays(-20) }
         };
+
+        for (var i = 0; i < empleados.Count; i++)
+            empleados[i].AvatarIndex = i % AvatarCatalog.Count;
 
         await context.Empleados.AddRangeAsync(empleados);
         await context.SaveChangesAsync();

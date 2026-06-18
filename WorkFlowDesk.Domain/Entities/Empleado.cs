@@ -24,6 +24,8 @@ public class Empleado
     public DateTime? FechaBaja { get; set; }
     public DateTime FechaCreacion { get; set; } = DateTime.Now;
     public int? UsuarioId { get; set; }
+    /// <summary>Índice del avatar DiceBear (0–11) en <see cref="WorkFlowDesk.Common.Services.AvatarCatalog"/>.</summary>
+    public int AvatarIndex { get; set; }
 
     // Navegación
     public Usuario? Usuario { get; set; }
