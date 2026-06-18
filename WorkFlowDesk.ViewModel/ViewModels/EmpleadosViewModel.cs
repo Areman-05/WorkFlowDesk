@@ -292,6 +292,7 @@ public class EmpleadosViewModel : ListViewModelBase
             CodigoId = $"ID: #{44000 + empleado.Id}",
             NombreUsuario = usuario.StartsWith('@') ? usuario : $"@{usuario}",
             Email = empleado.Email,
+            Rol = empleado.Usuario?.Rol?.Nombre ?? "Empleado",
             Cargo = string.IsNullOrWhiteSpace(empleado.Cargo) ? empleado.Departamento : empleado.Cargo,
             EstadoTexto = estadoTexto,
             EstadoFondo = estadoFondo,

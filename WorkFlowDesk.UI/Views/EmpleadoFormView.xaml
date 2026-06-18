@@ -175,16 +175,16 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0">
-                                <TextBlock Text="Rol" Style="{StaticResource StitchLabelTextStyle}"
+                                <TextBlock Text="Rol del sistema" Style="{StaticResource StitchLabelTextStyle}"
                                            Foreground="{StaticResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
                                 <Border Style="{StaticResource StitchModalFieldBorderStyle}">
                                     <Grid>
-                                        <TextBlock Text="&#xE7EE;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                        <TextBlock Text="&#xECAA;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                                    Foreground="#66524251" VerticalAlignment="Center" Margin="12,0,0,0" IsHitTestVisible="False"/>
-                                        <TextBox local:TextBoxBindingHelper.BoundText="{Binding Cargo, UpdateSourceTrigger=PropertyChanged}"
-                                                 ToolTip="{x:Static helpers:FormTooltips.Cargo}"
-                                                 Style="{StaticResource StitchModalInnerTextBoxStyle}"
-                                                 Tag="Ej. Desarrollador"/>
+                                        <ComboBox ItemsSource="{Binding RolesDisponibles}"
+                                                  SelectedItem="{Binding RolSeleccionado}"
+                                                  DisplayMemberPath="Nombre"
+                                                  Style="{StaticResource StitchModalComboBoxStyle}"/>
                                         <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="14"
                                                    Foreground="#66524251" HorizontalAlignment="Right"
                                                    VerticalAlignment="Center" Margin="0,0,12,0" IsHitTestVisible="False"/>
@@ -225,15 +225,8 @@
                         <StackPanel Margin="0,0,0,16">
                             <TextBlock Text="Fecha de contratación" Style="{StaticResource StitchLabelTextStyle}"
                                        Foreground="{StaticResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
-                            <Border Style="{StaticResource StitchModalFieldBorderStyle}">
-                                <Grid>
-                                    <TextBlock Text="&#xE787;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                                               Foreground="#66524251" VerticalAlignment="Center" Margin="12,0,0,0" IsHitTestVisible="False"/>
-                                    <DatePicker SelectedDate="{Binding FechaContratacion}"
-                                                ToolTip="{x:Static helpers:FormTooltips.FechaContratacion}"
-                                                Style="{StaticResource StitchModalDatePickerStyle}"/>
-                                </Grid>
-                            </Border>
+                            <controls:StitchDateField SelectedDate="{Binding FechaContratacion, Mode=TwoWay}"
+                                                      ToolTip="{x:Static helpers:FormTooltips.FechaContratacion}"/>
                         </StackPanel>
 
                         <!-- Avatar -->

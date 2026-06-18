@@ -41,7 +41,8 @@ public static class NavigationViewFactory
     {
         var empleadoService = services.GetRequiredService<IEmpleadoService>();
         var exportService = services.GetRequiredService<IExportService>();
-        return new EmpleadosView(new EmpleadosViewModel(empleadoService, exportService), empleadoService);
+        var usuarioService = services.GetRequiredService<IUsuarioService>();
+        return new EmpleadosView(new EmpleadosViewModel(empleadoService, exportService), empleadoService, usuarioService);
     }
 
     private static UserControl CreateProyectos(IServiceProvider services)

@@ -123,4 +123,17 @@ public class UsuarioService : IUsuarioService
     {
         return await _context.Usuarios.AnyAsync(u => u.Email == email);
     }
+
+    /// <summary>Asigna un rol de sistema a un usuario existente.</summary>
+    public async Task AsignarRolAsync(int usuarioId, TipoRol tipoRol)
+    {
+        var usuario = await GetByIdAsync(usuarioId)
+            ?? throw new InvalidOperationException("El usuario no existe.");
+
+        var rol = await _context.Roles.FirstOrDefaultAsync(r => r.TipoRol == tipoRol && r.Activo)
+            ?? throw new InvalidOperationException("El rol seleccionado no está disponible.");
+
+        usuario.RolId = rol.Id;
+        await UpdateAsync(usuario);
+    }
 }

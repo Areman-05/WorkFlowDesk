@@ -10,13 +10,15 @@ public partial class EmpleadosView : UserControl
 {
     private readonly EmpleadosViewModel _viewModel;
     private readonly IEmpleadoService _empleadoService;
+    private readonly IUsuarioService _usuarioService;
 
-    public EmpleadosView(EmpleadosViewModel viewModel, IEmpleadoService empleadoService)
+    public EmpleadosView(EmpleadosViewModel viewModel, IEmpleadoService empleadoService, IUsuarioService usuarioService)
     {
         InitializeComponent();
         DataContext = viewModel;
         _viewModel = viewModel;
         _empleadoService = empleadoService;
+        _usuarioService = usuarioService;
         ViewConfirmationHelper.BindConfirmaciones(viewModel);
 
         _viewModel.EmpleadoCreado += OnEmpleadoCreado;
@@ -31,7 +33,7 @@ public partial class EmpleadosView : UserControl
 
     private void OnEmpleadoCreado(object? sender, Domain.Entities.Empleado empleado)
     {
-        var formViewModel = new EmpleadoFormViewModel(_empleadoService, empleado);
+        var formViewModel = new EmpleadoFormViewModel(_empleadoService, _usuarioService, empleado);
 
         if (DialogService.ShowEmpleadoForm(formViewModel) == true)
         {
@@ -41,7 +43,7 @@ public partial class EmpleadosView : UserControl
 
     private void OnEmpleadoEditado(object? sender, Domain.Entities.Empleado empleado)
     {
-        var formViewModel = new EmpleadoFormViewModel(_empleadoService, empleado);
+        var formViewModel = new EmpleadoFormViewModel(_empleadoService, _usuarioService, empleado);
 
         if (DialogService.ShowEmpleadoForm(formViewModel) == true)
         {

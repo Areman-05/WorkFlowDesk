@@ -213,8 +213,8 @@
                                   MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
                                   MaxHeight="{TemplateBinding MaxDropDownHeight}">
                                 <Border x:Name="DropDownBorder"
-                                        Background="White"
-                                        BorderBrush="#D6C0D3"
+                                        Background="{StaticResource StitchSurfaceBrush}"
+                                        BorderBrush="{StaticResource StitchOutlineVariantBrush}"
                                         BorderThickness="1"
                                         CornerRadius="8">
                                     <ScrollViewer Margin="4,6">
@@ -227,6 +227,11 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style x:Key="StitchModalComboBoxStyle" TargetType="ComboBox" BasedOn="{StaticResource StitchAuthComboBoxStyle}">
+        <Setter Property="Padding" Value="40,10,36,10"/>
+        <Setter Property="MinHeight" Value="40"/>
     </Style>
 
     <!-- Botón primario Stitch (degradado) -->
@@ -463,7 +468,36 @@
     </Style>
 
     <!-- Calendario modal (DatePicker) -->
+    <Style x:Key="StitchCalendarButtonStyle" TargetType="CalendarButton">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="MinWidth" Value="32"/>
+        <Setter Property="MinHeight" Value="32"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceBrush}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CalendarButton">
+                    <Border x:Name="Bg" Background="Transparent" CornerRadius="8" Padding="6,4">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bg" Property="Background" Value="#1A9E00B5"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Bg" Property="Background" Value="#339E00B5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="StitchCalendarDayButtonStyle" TargetType="CalendarDayButton">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="MinWidth" Value="34"/>
         <Setter Property="MinHeight" Value="34"/>
         <Setter Property="Margin" Value="1"/>
@@ -494,6 +528,10 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="Bg" Property="Background" Value="#1A9E00B5"/>
                         </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="Bg" Property="BorderBrush" Value="{StaticResource StitchPrimaryBrush}"/>
+                            <Setter TargetName="Bg" Property="BorderThickness" Value="1"/>
+                        </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter Property="Foreground" Value="#99524251"/>
                         </Trigger>
@@ -504,93 +542,15 @@
     </Style>
 
     <Style x:Key="StitchCalendarStyle" TargetType="Calendar">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="Background" Value="{StaticResource StitchSurfaceBrush}"/>
         <Setter Property="BorderBrush" Value="{StaticResource StitchOutlineVariantBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Padding" Value="12"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="4"/>
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceBrush}"/>
         <Setter Property="CalendarDayButtonStyle" Value="{StaticResource StitchCalendarDayButtonStyle}"/>
-    </Style>
-
-    <Style x:Key="StitchDatePickerTextBoxStyle" TargetType="DatePickerTextBox">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceBrush}"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Padding" Value="0"/>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="DatePickerTextBox">
-                    <TextBox x:Name="PART_TextBox"
-                             Background="Transparent"
-                             BorderThickness="0"
-                             Foreground="{TemplateBinding Foreground}"
-                             FontSize="{TemplateBinding FontSize}"
-                             Padding="{TemplateBinding Padding}"
-                             VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                             HorizontalContentAlignment="Stretch"
-                             Text="{Binding Path=SelectedDate, RelativeSource={RelativeSource AncestorType={x:Type DatePicker}}, StringFormat='dd/MM/yyyy'}"/>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style x:Key="StitchModalDatePickerStyle" TargetType="DatePicker">
-        <Setter Property="SnapsToDevicePixels" Value="True"/>
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Padding" Value="40,0,4,0"/>
-        <Setter Property="Height" Value="40"/>
-        <Setter Property="FontSize" Value="14"/>
-        <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceBrush}"/>
-        <Setter Property="CalendarStyle" Value="{StaticResource StitchCalendarStyle}"/>
-        <Setter Property="SelectedDateFormat" Value="Short"/>
-        <Setter Property="HorizontalAlignment" Value="Stretch"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="DatePicker">
-                    <Grid x:Name="PART_Root">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <DatePickerTextBox x:Name="PART_TextBox"
-                                           Grid.Column="0"
-                                           Style="{StaticResource StitchDatePickerTextBoxStyle}"
-                                           Focusable="{TemplateBinding Focusable}"/>
-                        <Button x:Name="PART_Button"
-                                Grid.Column="1"
-                                Width="36" Height="36"
-                                Background="Transparent"
-                                BorderThickness="0"
-                                Cursor="Hand"
-                                Focusable="False"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Center">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border x:Name="Bd" Background="Transparent" CornerRadius="8" Width="32" Height="32">
-                                        <TextBlock Text="&#xE787;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                                                   Foreground="{StaticResource StitchPrimaryBrush}"
-                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter TargetName="Bd" Property="Background" Value="#1A9E00B5"/>
-                                        </Trigger>
-                                        <Trigger Property="IsPressed" Value="True">
-                                            <Setter TargetName="Bd" Property="Background" Value="#339E00B5"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="CalendarButtonStyle" Value="{StaticResource StitchCalendarButtonStyle}"/>
     </Style>
 
 </ResourceDictionary>

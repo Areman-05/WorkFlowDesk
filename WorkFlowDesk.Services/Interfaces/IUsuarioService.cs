@@ -12,4 +12,5 @@ public interface IUsuarioService
     Task DeleteAsync(int id);
     Task<bool> ExistsAsync(string nombreUsuario);
     Task<bool> EmailExistsAsync(string email);
+    Task AsignarRolAsync(int usuarioId, TipoRol tipoRol);
 }

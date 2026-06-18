@@ -12,14 +12,21 @@ namespace WorkFlowDesk.ViewModel.ViewModels;
 /// <summary>ViewModel del formulario de empleado (alta/edición).</summary>
 public class EmpleadoFormViewModel : ViewModelBase
 {
+    private const string DefaultTemporaryPassword = "Welcome1";
     private readonly IEmpleadoService _empleadoService;
+    private readonly IUsuarioService _usuarioService;
     private Empleado _empleado;
     private readonly bool _esNuevo;
     private int _selectedAvatarIndex;
+    private RolRegistroOption _rolSeleccionado;
 
-    public EmpleadoFormViewModel(IEmpleadoService empleadoService, Empleado? empleado = null)
+    public EmpleadoFormViewModel(
+        IEmpleadoService empleadoService,
+        IUsuarioService usuarioService,
+        Empleado? empleado = null)
     {
         _empleadoService = empleadoService;
+        _usuarioService = usuarioService;
         _empleado = empleado ?? new Empleado
         {
             Estado = EstadoEmpleado.Activo,
@@ -36,6 +43,9 @@ public class EmpleadoFormViewModel : ViewModelBase
             Enumerable.Range(0, AvatarCatalog.Count)
                 .Select(i => new AvatarOption { Index = i, Url = AvatarCatalog.GetUrl(i) }));
 
+        RolesDisponibles = BuildRolesDisponibles(_empleado);
+        _rolSeleccionado = ResolveRolInicial(_empleado);
+
         GuardarCommand = new AsyncRelayCommand(GuardarAsync, CanGuardar);
         CancelarCommand = new RelayCommand(Cancelar);
         SelectAvatarCommand = new RelayCommand<int>(index => SelectedAvatarIndex = index);
@@ -48,6 +58,14 @@ public class EmpleadoFormViewModel : ViewModelBase
         : "Actualiza la información del empleado";
 
     public ObservableCollection<AvatarOption> Avatares { get; }
+
+    public IReadOnlyList<RolRegistroOption> RolesDisponibles { get; }
+
+    public RolRegistroOption RolSeleccionado
+    {
+        get => _rolSeleccionado;
+        set => SetProperty(ref _rolSeleccionado, value);
+    }
 
     public int SelectedAvatarIndex
     {
@@ -200,7 +218,8 @@ public class EmpleadoFormViewModel : ViewModelBase
 
     private bool CanGuardar()
     {
-        return !string.IsNullOrWhiteSpace(Nombre) &&
+        return RolSeleccionado != null &&
+               !string.IsNullOrWhiteSpace(Nombre) &&
                !string.IsNullOrWhiteSpace(Apellidos) &&
                !string.IsNullOrWhiteSpace(Email) &&
                ValidationHelper.IsValidEmail(Email) &&
@@ -222,12 +241,21 @@ public class EmpleadoFormViewModel : ViewModelBase
 
         try
         {
+            if (!SessionService.IsAdmin() && RolSeleccionado.TipoRol == TipoRol.Admin)
+                throw new InvalidOperationException("Solo un administrador puede asignar el rol Administrador.");
+
             _empleado.AvatarIndex = SelectedAvatarIndex;
 
             if (_esNuevo)
-                await _empleadoService.CreateAsync(_empleado);
+            {
+                _empleado = await _empleadoService.CreateAsync(_empleado);
+                await CrearUsuarioParaEmpleadoAsync(_empleado);
+            }
             else
+            {
                 await _empleadoService.UpdateAsync(_empleado);
+                await SincronizarRolUsuarioAsync(_empleado);
+            }
 
             Guardado?.Invoke(this, EventArgs.Empty);
         }
@@ -240,6 +268,85 @@ public class EmpleadoFormViewModel : ViewModelBase
         {
             IsLoading = false;
         }
+    }
+
+    private async Task CrearUsuarioParaEmpleadoAsync(Empleado empleado)
+    {
+        if (empleado.UsuarioId.HasValue)
+        {
+            await _usuarioService.AsignarRolAsync(empleado.UsuarioId.Value, RolSeleccionado.TipoRol);
+            return;
+        }
+
+        var nombreCompleto = $"{empleado.Nombre} {empleado.Apellidos}".Trim();
+        var nombreUsuario = await GenerarNombreUsuarioUnicoAsync(empleado.Email, empleado.Nombre, empleado.Apellidos);
+        var usuario = await _usuarioService.RegistrarAsync(
+            nombreUsuario,
+            empleado.Email,
+            nombreCompleto,
+            DefaultTemporaryPassword,
+            RolSeleccionado.TipoRol);
+
+        empleado.UsuarioId = usuario.Id;
+        await _empleadoService.UpdateAsync(empleado);
+    }
+
+    private async Task SincronizarRolUsuarioAsync(Empleado empleado)
+    {
+        if (!empleado.UsuarioId.HasValue)
+        {
+            await CrearUsuarioParaEmpleadoAsync(empleado);
+            return;
+        }
+
+        await _usuarioService.AsignarRolAsync(empleado.UsuarioId.Value, RolSeleccionado.TipoRol);
+    }
+
+    private async Task<string> GenerarNombreUsuarioUnicoAsync(string email, string nombre, string apellidos)
+    {
+        var baseName = email.Split('@')[0]
+            .Replace(".", "_")
+            .Replace("-", "_")
+            .ToLowerInvariant();
+
+        if (string.IsNullOrWhiteSpace(baseName))
+            baseName = $"{nombre}.{apellidos}".Replace(" ", string.Empty).ToLowerInvariant();
+
+        var candidate = baseName;
+        var suffix = 1;
+        while (await _usuarioService.ExistsAsync(candidate))
+        {
+            candidate = $"{baseName}{suffix}";
+            suffix++;
+        }
+
+        return candidate;
+    }
+
+    private static IReadOnlyList<RolRegistroOption> BuildRolesDisponibles(Empleado empleado)
+    {
+        var roles = new List<RolRegistroOption>
+        {
+            new(TipoRol.Empleado, "Empleado", "Dashboard y tareas"),
+            new(TipoRol.Supervisor, "Supervisor", "Equipo, proyectos y reportes")
+        };
+
+        if (SessionService.IsAdmin())
+        {
+            roles.Add(new RolRegistroOption(TipoRol.Admin, "Administrador", "Acceso completo"));
+        }
+        else if (empleado.Usuario?.Rol?.TipoRol == TipoRol.Admin)
+        {
+            roles.Add(new RolRegistroOption(TipoRol.Admin, "Administrador", "Acceso completo"));
+        }
+
+        return roles;
+    }
+
+    private RolRegistroOption ResolveRolInicial(Empleado empleado)
+    {
+        var tipoRol = empleado.Usuario?.Rol?.TipoRol ?? TipoRol.Empleado;
+        return RolesDisponibles.FirstOrDefault(r => r.TipoRol == tipoRol) ?? RolesDisponibles[0];
     }
 
     private void Cancelar() => Cancelado?.Invoke(this, EventArgs.Empty);

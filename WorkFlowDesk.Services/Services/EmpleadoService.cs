@@ -22,7 +22,8 @@ public class EmpleadoService : IEmpleadoService
     public async Task<Empleado?> GetByIdAsync(int id)
     {
         return await _context.Empleados
-            .Include(e => e.Usuario)
+            .Include(e => e.Usuario!)
+                .ThenInclude(u => u.Rol)
             .FirstOrDefaultAsync(e => e.Id == id);
     }
 
@@ -31,7 +32,8 @@ public class EmpleadoService : IEmpleadoService
     {
         return await _context.Empleados
             .AsReadOnly()
-            .Include(e => e.Usuario)
+            .Include(e => e.Usuario!)
+                .ThenInclude(u => u.Rol)
             .OrderBy(e => e.Apellidos)
             .ThenBy(e => e.Nombre)
             .ToListAsync();

@@ -11,6 +11,7 @@ public class EmpleadoListItem
     public string CodigoId { get; init; } = string.Empty;
     public string NombreUsuario { get; init; } = string.Empty;
     public string Email { get; init; } = string.Empty;
+    public string Rol { get; init; } = string.Empty;
     public string Cargo { get; init; } = string.Empty;
     public string EstadoTexto { get; init; } = string.Empty;
     public string EstadoFondo { get; init; } = "#E6FCF5";
