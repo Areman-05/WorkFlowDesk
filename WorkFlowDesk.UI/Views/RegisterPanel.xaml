@@ -4,245 +4,252 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="720"
-             d:DesignWidth="532">
-    <ScrollViewer VerticalScrollBarVisibility="Auto"
+             d:DesignHeight="820"
+             d:DesignWidth="548">
+    <ScrollViewer x:Name="AuthScroll"
+                  VerticalScrollBarVisibility="Auto"
                   HorizontalScrollBarVisibility="Disabled"
                   Padding="16,20">
-        <StackPanel Width="500">
-            <Border Style="{StaticResource StitchAuthGlassCardStyle}"
-                    Padding="28,24">
-            <StackPanel>
-                <StackPanel HorizontalAlignment="Center" Margin="0,0,0,4">
-                    <TextBlock Text="Crear cuenta"
-                               Style="{StaticResource StitchH1TextStyle}"
-                               HorizontalAlignment="Center"/>
-                    <TextBlock Text="Únete a WorkFlowDesk y optimiza tu gestión"
-                               Style="{StaticResource StitchBodyTextStyle}"
-                               TextAlignment="Center"
-                               HorizontalAlignment="Center"
-                               Margin="0,2,0,0"/>
-                </StackPanel>
+        <Grid MinHeight="{Binding ViewportHeight, ElementName=AuthScroll}">
+            <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        MaxWidth="500"
+                        MinWidth="320"
+                        Width="{Binding ViewportWidth, ElementName=AuthScroll, Converter={StaticResource CapWidthConverter}, ConverterParameter=500}">
+                <Border Style="{StaticResource StitchAuthRegisterGlassCardStyle}">
+                    <StackPanel>
+                        <!-- Cabecera -->
+                        <StackPanel HorizontalAlignment="Center" Margin="0,0,0,8">
+                            <TextBlock Text="Crear cuenta"
+                                       Style="{StaticResource StitchH1TextStyle}"
+                                       HorizontalAlignment="Center"/>
+                            <TextBlock Text="Únete a WorkFlowDesk y optimiza tu gestión"
+                                       Style="{StaticResource StitchBodyTextStyle}"
+                                       TextAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,4,0,0"/>
+                        </StackPanel>
 
-                <StackPanel Margin="0,12,0,0">
-                    <TextBlock Text="Nombre completo"
-                               Style="{StaticResource StitchLabelTextStyle}"
-                               Margin="4,0,0,4"/>
-                    <Border Background="#80FFFFFF"
-                            BorderBrush="#4DD6C0D3"
-                            BorderThickness="1"
-                            CornerRadius="8">
-                        <Grid>
-                            <TextBlock Text="&#xE77B;"
-                                       FontFamily="Segoe MDL2 Assets"
-                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
-                                       VerticalAlignment="Center"
-                                       Margin="16,0,0,0"
-                                       IsHitTestVisible="False"/>
-                            <TextBox Text="{Binding NombreCompleto, UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource StitchAuthInnerTextBoxStyle}"/>
-                        </Grid>
-                    </Border>
-                </StackPanel>
-
-                <Grid Margin="0,12,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <StackPanel Grid.Column="0">
-                        <TextBlock Text="Nombre de usuario"
-                                   Style="{StaticResource StitchLabelTextStyle}"
-                                   Margin="4,0,0,4"/>
-                        <Border Background="#80FFFFFF"
-                                BorderBrush="#4DD6C0D3"
-                                BorderThickness="1"
-                                CornerRadius="8">
-                            <Grid>
-                                <TextBlock Text="&#xE8F3;"
-                                           FontFamily="Segoe MDL2 Assets"
+                        <!-- Formulario -->
+                        <StackPanel Margin="0,24,0,0">
+                            <!-- Nombre completo -->
+                            <StackPanel Margin="0,0,0,16">
+                                <TextBlock Text="Nombre completo"
+                                           Style="{StaticResource StitchLabelTextStyle}"
                                            Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
-                                           VerticalAlignment="Center"
-                                           Margin="16,0,0,0"
-                                           IsHitTestVisible="False"/>
-                                <TextBox Text="{Binding NombreUsuario, UpdateSourceTrigger=PropertyChanged}"
-                                         Style="{StaticResource StitchAuthInnerTextBoxStyle}"/>
-                            </Grid>
-                        </Border>
-                    </StackPanel>
+                                           Margin="4,0,0,4"/>
+                                <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
+                                    <Grid>
+                                        <TextBlock Text="&#xE77B;"
+                                                   FontFamily="Segoe MDL2 Assets"
+                                                   FontSize="20"
+                                                   Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                                   VerticalAlignment="Center"
+                                                   Margin="16,0,0,0"
+                                                   IsHitTestVisible="False"/>
+                                        <TextBox Text="{Binding NombreCompleto, UpdateSourceTrigger=PropertyChanged}"
+                                                 Style="{StaticResource StitchAuthInnerTextBoxStyle}"/>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
 
-                    <StackPanel Grid.Column="2">
-                        <TextBlock Text="Correo electrónico"
-                                   Style="{StaticResource StitchLabelTextStyle}"
-                                   Margin="4,0,0,4"/>
-                        <Border Background="#80FFFFFF"
-                                BorderBrush="#4DD6C0D3"
-                                BorderThickness="1"
-                                CornerRadius="8">
-                            <Grid>
-                                <TextBlock Text="&#xE715;"
-                                           FontFamily="Segoe MDL2 Assets"
+                            <!-- Usuario + Email -->
+                            <Grid Margin="0,0,0,16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="Nombre de usuario"
+                                               Style="{StaticResource StitchLabelTextStyle}"
+                                               Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                               Margin="4,0,0,4"/>
+                                    <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
+                                        <Grid>
+                                            <TextBlock Text="&#xE972;"
+                                                       FontFamily="Segoe MDL2 Assets"
+                                                       FontSize="20"
+                                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                                       VerticalAlignment="Center"
+                                                       Margin="16,0,0,0"
+                                                       IsHitTestVisible="False"/>
+                                            <TextBox Text="{Binding NombreUsuario, UpdateSourceTrigger=PropertyChanged}"
+                                                     Style="{StaticResource StitchAuthInnerTextBoxStyle}"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Correo electrónico"
+                                               Style="{StaticResource StitchLabelTextStyle}"
+                                               Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                               Margin="4,0,0,4"/>
+                                    <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
+                                        <Grid>
+                                            <TextBlock Text="&#xE715;"
+                                                       FontFamily="Segoe MDL2 Assets"
+                                                       FontSize="20"
+                                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                                       VerticalAlignment="Center"
+                                                       Margin="16,0,0,0"
+                                                       IsHitTestVisible="False"/>
+                                            <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+                                                     Style="{StaticResource StitchAuthInnerTextBoxStyle}"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- Rol -->
+                            <StackPanel Margin="0,0,0,16">
+                                <TextBlock Text="Rol"
+                                           Style="{StaticResource StitchLabelTextStyle}"
                                            Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
-                                           VerticalAlignment="Center"
-                                           Margin="16,0,0,0"
-                                           IsHitTestVisible="False"/>
-                                <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
-                                         Style="{StaticResource StitchAuthInnerTextBoxStyle}"/>
+                                           Margin="4,0,0,4"/>
+                                <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
+                                    <Grid>
+                                        <TextBlock Text="&#xECAA;"
+                                                   FontFamily="Segoe MDL2 Assets"
+                                                   FontSize="20"
+                                                   Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                                   VerticalAlignment="Center"
+                                                   Margin="16,0,0,0"
+                                                   IsHitTestVisible="False"/>
+                                        <ComboBox ItemsSource="{Binding RolesDisponibles}"
+                                                  SelectedItem="{Binding RolSeleccionado}"
+                                                  DisplayMemberPath="Nombre"
+                                                  Style="{StaticResource StitchAuthComboBoxStyle}"/>
+                                        <TextBlock Text="&#xE70D;"
+                                                   FontFamily="Segoe MDL2 Assets"
+                                                   FontSize="20"
+                                                   Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Right"
+                                                   Margin="0,0,16,0"
+                                                   IsHitTestVisible="False"/>
+                                    </Grid>
+                                </Border>
+                                <TextBlock Text="Elige tu rol para acceder a las secciones correspondientes"
+                                           Style="{StaticResource StitchCaptionTextStyle}"
+                                           Opacity="0.7"
+                                           Margin="4,4,0,0"/>
+                            </StackPanel>
+
+                            <!-- Contraseñas -->
+                            <Grid Margin="0,0,0,16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="16"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="Contraseña"
+                                               Style="{StaticResource StitchLabelTextStyle}"
+                                               Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                               Margin="4,0,0,4"/>
+                                    <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
+                                        <Grid>
+                                            <TextBlock Text="&#xE72E;"
+                                                       FontFamily="Segoe MDL2 Assets"
+                                                       FontSize="20"
+                                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                                       VerticalAlignment="Center"
+                                                       Margin="16,0,0,0"
+                                                       IsHitTestVisible="False"/>
+                                            <PasswordBox x:Name="PasswordBox"
+                                                         Style="{StaticResource StitchAuthInnerPasswordBoxStyle}"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Confirmar contraseña"
+                                               Style="{StaticResource StitchLabelTextStyle}"
+                                               Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                               Margin="4,0,0,4"/>
+                                    <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
+                                        <Grid>
+                                            <TextBlock Text="&#xE785;"
+                                                       FontFamily="Segoe MDL2 Assets"
+                                                       FontSize="20"
+                                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                                       VerticalAlignment="Center"
+                                                       Margin="16,0,0,0"
+                                                       IsHitTestVisible="False"/>
+                                            <PasswordBox x:Name="ConfirmPasswordBox"
+                                                         Style="{StaticResource StitchAuthInnerPasswordBoxStyle}"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
                             </Grid>
-                        </Border>
+
+                            <!-- Términos -->
+                            <CheckBox IsChecked="{Binding AceptaTerminos}"
+                                      Margin="4,0,0,8"
+                                      VerticalContentAlignment="Center">
+                                <TextBlock Text="Acepto los términos y condiciones de servicio."
+                                           Style="{StaticResource StitchCaptionTextStyle}"
+                                           TextWrapping="Wrap"/>
+                            </CheckBox>
+
+                            <TextBlock Text="{Binding ErrorMessage}"
+                                       Style="{StaticResource ErrorMessageStyle}"
+                                       Margin="0,0,0,8"
+                                       TextWrapping="Wrap"
+                                       Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+
+                            <!-- Acciones apiladas -->
+                            <StackPanel Margin="0,8,0,0">
+                                <Button Style="{StaticResource StitchAuthPrimaryButtonLargeStyle}"
+                                        Click="OnRegisterClick"
+                                        IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}"
+                                        HorizontalAlignment="Stretch"
+                                        Content="Registrarse"
+                                        Margin="0,0,0,16"/>
+
+                                <Button Style="{StaticResource StitchAuthCancelButtonStyle}"
+                                        Command="{Binding CancelarCommand}"
+                                        Content="Cancelar"/>
+                            </StackPanel>
+
+                            <ProgressBar IsIndeterminate="True"
+                                         Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                         Height="4"
+                                         Margin="0,16,0,0"
+                                         Foreground="{StaticResource StitchPrimaryBrush}"/>
+                        </StackPanel>
+
+                        <!-- Enlace login -->
+                        <TextBlock HorizontalAlignment="Center"
+                                   Margin="0,8,0,0"
+                                   Style="{StaticResource StitchCaptionTextStyle}">
+                            <Run Text="¿Ya tienes una cuenta? "/>
+                            <Hyperlink Command="{Binding CancelarCommand}"
+                                       Foreground="{StaticResource StitchPrimaryBrush}"
+                                       FontWeight="SemiBold"
+                                       TextDecorations="{x:Null}">
+                                Inicia sesión
+                            </Hyperlink>
+                        </TextBlock>
                     </StackPanel>
-                </Grid>
+                </Border>
 
-                <StackPanel Margin="0,12,0,0">
-                    <TextBlock Text="Rol"
-                               Style="{StaticResource StitchLabelTextStyle}"
-                               Margin="4,0,0,4"/>
-                    <Border Background="#80FFFFFF"
-                            BorderBrush="#4DD6C0D3"
-                            BorderThickness="1"
-                            CornerRadius="8">
-                        <Grid>
-                            <TextBlock Text="&#xECAA;"
-                                       FontFamily="Segoe MDL2 Assets"
-                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
-                                       VerticalAlignment="Center"
-                                       Margin="16,0,0,0"
-                                       IsHitTestVisible="False"/>
-                            <ComboBox ItemsSource="{Binding RolesDisponibles}"
-                                      SelectedItem="{Binding RolSeleccionado}"
-                                      DisplayMemberPath="Nombre"
-                                      Style="{StaticResource StitchAuthComboBoxStyle}"/>
-                            <TextBlock Text="&#xE70D;"
-                                       FontFamily="Segoe MDL2 Assets"
-                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Right"
-                                       Margin="0,0,16,0"
-                                       IsHitTestVisible="False"/>
-                        </Grid>
-                    </Border>
-                    <TextBlock Text="Elige tu rol para acceder a las secciones correspondientes"
-                               Style="{StaticResource StitchCaptionTextStyle}"
-                               Opacity="0.7"
-                               Margin="4,2,0,0"/>
-                </StackPanel>
-
-                <Grid Margin="0,12,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="20"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <StackPanel Grid.Column="0">
-                        <TextBlock Text="Contraseña"
-                                   Style="{StaticResource StitchLabelTextStyle}"
-                                   Margin="4,0,0,4"/>
-                        <Border Background="#80FFFFFF"
-                                BorderBrush="#4DD6C0D3"
-                                BorderThickness="1"
-                                CornerRadius="8">
-                            <Grid>
-                                <TextBlock Text="&#xE72E;"
-                                           FontFamily="Segoe MDL2 Assets"
-                                           Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
-                                           VerticalAlignment="Center"
-                                           Margin="16,0,0,0"
-                                           IsHitTestVisible="False"/>
-                                <PasswordBox x:Name="PasswordBox"
-                                             Style="{StaticResource StitchAuthInnerPasswordBoxStyle}"/>
-                            </Grid>
-                        </Border>
-                    </StackPanel>
-
-                    <StackPanel Grid.Column="2">
-                        <TextBlock Text="Confirmar contraseña"
-                                   Style="{StaticResource StitchLabelTextStyle}"
-                                   Margin="4,0,0,4"/>
-                        <Border Background="#80FFFFFF"
-                                BorderBrush="#4DD6C0D3"
-                                BorderThickness="1"
-                                CornerRadius="8">
-                            <Grid>
-                                <TextBlock Text="&#xE785;"
-                                           FontFamily="Segoe MDL2 Assets"
-                                           Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
-                                           VerticalAlignment="Center"
-                                           Margin="16,0,0,0"
-                                           IsHitTestVisible="False"/>
-                                <PasswordBox x:Name="ConfirmPasswordBox"
-                                             Style="{StaticResource StitchAuthInnerPasswordBoxStyle}"/>
-                            </Grid>
-                        </Border>
-                    </StackPanel>
-                </Grid>
-
-                <CheckBox IsChecked="{Binding AceptaTerminos}"
-                          Margin="4,10,0,0"
-                          VerticalContentAlignment="Center">
-                    <TextBlock Text="Acepto los términos y condiciones de servicio."
-                               Style="{StaticResource StitchCaptionTextStyle}"
-                               TextWrapping="Wrap"/>
-                </CheckBox>
-
-                <TextBlock Text="{Binding ErrorMessage}"
-                           Style="{StaticResource ErrorMessageStyle}"
-                           Margin="0,8,0,0"
-                           TextWrapping="Wrap"
-                           Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
-
-                <Grid Margin="0,12,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="12"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Button Grid.Column="0"
-                            Style="{StaticResource StitchAuthOutlineButtonStyle}"
-                            Command="{Binding CancelarCommand}"
-                            Content="Cancelar"/>
-
-                    <Button Grid.Column="2"
-                            Style="{StaticResource StitchPrimaryButtonStyle}"
-                            Click="OnRegisterClick"
-                            IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}"
-                            HorizontalAlignment="Stretch"
-                            Padding="16,10"
-                            Content="Registrarse"/>
-                </Grid>
-
-                <TextBlock HorizontalAlignment="Center"
-                           Margin="0,10,0,0"
-                           Style="{StaticResource StitchCaptionTextStyle}">
-                    <Run Text="¿Ya tienes una cuenta? "/>
-                    <Hyperlink Command="{Binding CancelarCommand}"
-                               Foreground="{StaticResource StitchPrimaryBrush}"
-                               TextDecorations="{x:Null}">
-                        Inicia sesión
-                    </Hyperlink>
-                </TextBlock>
-
-                <ProgressBar IsIndeterminate="True"
-                             Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
-                             Height="4"
-                             Margin="0,10,0,0"
-                             Foreground="{StaticResource StitchPrimaryBrush}"/>
-
+                <!-- Badges decorativos (fuera de la tarjeta) -->
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Center"
-                            Margin="0,20,0,4"
+                            Margin="0,32,0,0"
                             Opacity="0.3">
                     <StackPanel HorizontalAlignment="Center">
-                        <Border Width="40" Height="40"
-                                CornerRadius="20"
+                        <Border Width="48" Height="48"
+                                CornerRadius="24"
                                 Background="{StaticResource StitchPrimaryContainerBrush}"
                                 HorizontalAlignment="Center">
                             <TextBlock Text="&#xE1D1;"
                                        FontFamily="Segoe MDL2 Assets"
-                                       FontSize="16"
+                                       FontSize="20"
                                        Foreground="{StaticResource StitchOnPrimaryContainerBrush}"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"/>
@@ -250,22 +257,22 @@
                         <TextBlock Text="Seguro"
                                    Style="{StaticResource StitchCaptionTextStyle}"
                                    HorizontalAlignment="Center"
-                                   Margin="0,2,0,0"/>
+                                   Margin="0,4,0,0"/>
                     </StackPanel>
 
-                    <Border Width="1" Height="28"
+                    <Border Width="1" Height="32"
                             Background="#4DD6C0D3"
-                            Margin="28,6,28,0"
+                            Margin="32,8,32,0"
                             VerticalAlignment="Top"/>
 
                     <StackPanel HorizontalAlignment="Center">
-                        <Border Width="40" Height="40"
-                                CornerRadius="20"
+                        <Border Width="48" Height="48"
+                                CornerRadius="24"
                                 Background="{StaticResource StitchSecondaryContainerBrush}"
                                 HorizontalAlignment="Center">
                             <TextBlock Text="&#xE945;"
                                        FontFamily="Segoe MDL2 Assets"
-                                       FontSize="16"
+                                       FontSize="20"
                                        Foreground="{StaticResource StitchOnSecondaryContainerBrush}"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"/>
@@ -273,22 +280,22 @@
                         <TextBlock Text="Rápido"
                                    Style="{StaticResource StitchCaptionTextStyle}"
                                    HorizontalAlignment="Center"
-                                   Margin="0,2,0,0"/>
+                                   Margin="0,4,0,0"/>
                     </StackPanel>
 
-                    <Border Width="1" Height="28"
+                    <Border Width="1" Height="32"
                             Background="#4DD6C0D3"
-                            Margin="28,6,28,0"
+                            Margin="32,8,32,0"
                             VerticalAlignment="Top"/>
 
                     <StackPanel HorizontalAlignment="Center">
-                        <Border Width="40" Height="40"
-                                CornerRadius="20"
+                        <Border Width="48" Height="48"
+                                CornerRadius="24"
                                 Background="{StaticResource StitchTertiaryContainerBrush}"
                                 HorizontalAlignment="Center">
                             <TextBlock Text="&#xE902;"
                                        FontFamily="Segoe MDL2 Assets"
-                                       FontSize="16"
+                                       FontSize="20"
                                        Foreground="{StaticResource StitchOnTertiaryContainerBrush}"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"/>
@@ -296,11 +303,10 @@
                         <TextBlock Text="Colaborativo"
                                    Style="{StaticResource StitchCaptionTextStyle}"
                                    HorizontalAlignment="Center"
-                                   Margin="0,2,0,0"/>
+                                   Margin="0,4,0,0"/>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
-        </Border>
-        </StackPanel>
+        </Grid>
     </ScrollViewer>
 </UserControl>

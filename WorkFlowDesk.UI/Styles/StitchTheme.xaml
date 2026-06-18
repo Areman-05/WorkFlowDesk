@@ -69,36 +69,56 @@
 
     <Style x:Key="StitchAuthGlassCardStyle" TargetType="Border" BasedOn="{StaticResource GlassCardBorderStyle}">
         <Setter Property="Background" Value="#D9FFFFFF"/>
-        <Setter Property="CornerRadius" Value="24"/>
+        <Setter Property="CornerRadius" Value="12"/>
         <Setter Property="Padding" Value="32"/>
+    </Style>
+
+    <Style x:Key="StitchAuthRegisterGlassCardStyle" TargetType="Border" BasedOn="{StaticResource StitchAuthGlassCardStyle}">
+        <Setter Property="CornerRadius" Value="24"/>
+        <Setter Property="BorderBrush" Value="#66FFFFFF"/>
+    </Style>
+
+    <Style x:Key="StitchAuthGlassSubtleStyle" TargetType="Border">
+        <Setter Property="Background" Value="#33FFFFFF"/>
+        <Setter Property="BorderBrush" Value="#66FFFFFF"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Padding" Value="16"/>
+    </Style>
+
+    <Style x:Key="StitchAuthFieldBorderStyle" TargetType="Border">
+        <Setter Property="Background" Value="#80FCF8FF"/>
+        <Setter Property="BorderBrush" Value="#4DD6C0D3"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="CornerRadius" Value="8"/>
     </Style>
 
     <Style x:Key="StitchAuthInnerTextBoxStyle" TargetType="TextBox">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Padding" Value="44,10,16,10"/>
+        <Setter Property="Padding" Value="48,14,16,14"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceBrush}"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="MinHeight" Value="40"/>
+        <Setter Property="MinHeight" Value="48"/>
     </Style>
 
     <Style x:Key="StitchAuthInnerPasswordBoxStyle" TargetType="PasswordBox">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Padding" Value="44,10,16,10"/>
+        <Setter Property="Padding" Value="48,14,16,14"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceBrush}"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="MinHeight" Value="40"/>
+        <Setter Property="MinHeight" Value="48"/>
     </Style>
 
     <Style x:Key="StitchAuthComboBoxStyle" TargetType="ComboBox">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Padding" Value="44,10,32,10"/>
+        <Setter Property="Padding" Value="48,14,40,14"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="MinHeight" Value="40"/>
+        <Setter Property="MinHeight" Value="48"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceBrush}"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -152,11 +172,81 @@
         </Setter>
     </Style>
 
-    <Style x:Key="StitchAuthOutlineButtonStyle" TargetType="Button">
+    <!-- Botón primario Stitch (degradado) -->
+    <Style x:Key="StitchPrimaryButtonStyle" TargetType="Button">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Padding" Value="16,10"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd" CornerRadius="8" Padding="{TemplateBinding Padding}">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <GradientStop Color="#9E00B5" Offset="0"/>
+                                <GradientStop Color="#C028D7" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Opacity" Value="0.92"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Bd" Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="StitchAuthPrimaryButtonLargeStyle" TargetType="Button" BasedOn="{StaticResource StitchPrimaryButtonStyle}">
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Padding" Value="16,16"/>
+    </Style>
+
+    <Style x:Key="StitchAuthSecondaryButtonStyle" TargetType="Button">
+        <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceBrush}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Padding" Value="16,16"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd"
+                            Background="#F6F2FF"
+                            BorderBrush="#33D6C0D3"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="#EFEBFF"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Bd" Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="StitchAuthCancelButtonStyle" TargetType="Button">
         <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceBrush}"/>
         <Setter Property="FontWeight" Value="Medium"/>
         <Setter Property="FontSize" Value="13"/>
-        <Setter Property="Padding" Value="16,12"/>
+        <Setter Property="Padding" Value="16,16"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="Template">
@@ -183,29 +273,27 @@
         </Setter>
     </Style>
 
-    <!-- Botón primario Stitch (degradado) -->
-    <Style x:Key="StitchPrimaryButtonStyle" TargetType="Button">
-        <Setter Property="Foreground" Value="White"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
+    <Style x:Key="StitchAuthOutlineButtonStyle" TargetType="Button">
+        <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceBrush}"/>
+        <Setter Property="FontWeight" Value="Medium"/>
         <Setter Property="FontSize" Value="13"/>
-        <Setter Property="Padding" Value="16,10"/>
+        <Setter Property="Padding" Value="16,12"/>
         <Setter Property="Cursor" Value="Hand"/>
-        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="Bd" CornerRadius="10" Padding="{TemplateBinding Padding}">
-                        <Border.Background>
-                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
-                                <GradientStop Color="#9E00B5" Offset="0"/>
-                                <GradientStop Color="#C028D7" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Border.Background>
+                    <Border x:Name="Bd"
+                            Background="#33FFFFFF"
+                            BorderBrush="#33D6C0D3"
+                            BorderThickness="1"
+                            CornerRadius="10"
+                            Padding="{TemplateBinding Padding}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="Bd" Property="Opacity" Value="0.92"/>
+                            <Setter TargetName="Bd" Property="Background" Value="#66FFFFFF"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="Bd" Property="Opacity" Value="0.5"/>

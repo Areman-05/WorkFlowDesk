@@ -6,10 +6,12 @@
         xmlns:views="clr-namespace:WorkFlowDesk.UI.Views"
         mc:Ignorable="d"
         Title="Iniciar sesión - WorkFlowDesk"
-        Width="532"
-        Height="680"
+        Width="548"
+        Height="780"
+        MinWidth="360"
+        MinHeight="560"
         WindowStartupLocation="CenterScreen"
-        ResizeMode="CanMinimize"
+        ResizeMode="CanResize"
         Background="{StaticResource StitchFogBackgroundBrush}">
     <Grid>
         <Ellipse Width="500" Height="500" HorizontalAlignment="Left" VerticalAlignment="Top"
