@@ -63,6 +63,7 @@
     <!-- Controles -->
     <!-- TextBox Style -->
     <Style x:Key="ModernTextBoxStyle" TargetType="TextBox">
+        <Setter Property="FlowDirection" Value="LeftToRight"/>
         <Setter Property="Padding" Value="10,8"/>
         <Setter Property="BorderBrush" Value="#BDC3C7"/>
         <Setter Property="BorderThickness" Value="1"/>

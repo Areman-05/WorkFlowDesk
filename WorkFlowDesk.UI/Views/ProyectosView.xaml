@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:WorkFlowDesk.UI.Controls"
+             xmlns:local="clr-namespace:WorkFlowDesk.UI.Behaviors"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Margin="20">
@@ -28,7 +29,7 @@
                     Command="{Binding ExportarCommand}"
                     Visibility="{Binding CanExport, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Padding="15,8"/>
-            <TextBox Text="{Binding TextoBusqueda, UpdateSourceTrigger=PropertyChanged}"
+            <TextBox local:TextBoxBindingHelper.BoundText="{Binding TextoBusqueda, UpdateSourceTrigger=PropertyChanged}"
                      Width="200"
                      Margin="10,0,0,0"
                      Padding="5"

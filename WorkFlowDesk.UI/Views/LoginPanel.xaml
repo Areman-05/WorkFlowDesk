@@ -66,8 +66,10 @@
                                                    VerticalAlignment="Center"
                                                    Margin="16,0,0,0"
                                                    IsHitTestVisible="False"/>
-                                        <TextBox Text="{Binding NombreUsuario, UpdateSourceTrigger=PropertyChanged}"
-                                                 Style="{StaticResource StitchAuthInnerTextBoxStyle}"/>
+                                        <TextBox x:Name="NombreUsuarioBox"
+                                                 local:TextBoxBindingHelper.BoundText="{Binding NombreUsuario, UpdateSourceTrigger=PropertyChanged}"
+                                                 Style="{StaticResource StitchAuthInnerTextBoxStyle}"
+                                                 KeyDown="OnLoginFieldKeyDown"/>
                                     </Grid>
                                 </Border>
                             </StackPanel>
@@ -87,8 +89,8 @@
                                                    Margin="16,0,0,0"
                                                    IsHitTestVisible="False"/>
                                         <PasswordBox x:Name="PasswordBox"
-                                                     local:PasswordBoxHelper.Password="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
-                                                     Style="{StaticResource StitchAuthInnerPasswordBoxStyle}"/>
+                                                     Style="{StaticResource StitchAuthInnerPasswordBoxStyle}"
+                                                     KeyDown="OnLoginFieldKeyDown"/>
                                     </Grid>
                                 </Border>
                             </StackPanel>

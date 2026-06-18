@@ -20,7 +20,7 @@ public partial class AvatarImage : UserControl
             nameof(FallbackInitials),
             typeof(string),
             typeof(AvatarImage),
-            new PropertyMetadata(string.Empty));
+            new PropertyMetadata(string.Empty, OnFallbackInitialsChanged));
 
     public static readonly DependencyProperty SizeProperty =
         DependencyProperty.Register(
@@ -82,10 +82,18 @@ public partial class AvatarImage : UserControl
         set => SetValue(InitialsFontSizeProperty, value);
     }
 
+    public void Refresh() => _ = LoadAvatarAsync();
+
     private static void OnAvatarIndexChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is AvatarImage control && control.IsLoaded)
             _ = control.LoadAvatarAsync();
+    }
+
+    private static void OnFallbackInitialsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is AvatarImage control)
+            control.UpdateFallbackText();
     }
 
     private static void OnSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -97,6 +105,7 @@ public partial class AvatarImage : UserControl
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
         ApplySize();
+        UpdateFallbackText();
         _ = LoadAvatarAsync();
     }
 
@@ -113,21 +122,49 @@ public partial class AvatarImage : UserControl
         InitialsFontSize = Math.Max(8, size * 0.3);
     }
 
+    private void UpdateFallbackText()
+    {
+        var index = Math.Clamp(AvatarIndex, 0, AvatarCatalog.Count - 1);
+        InitialsText.Text = string.IsNullOrWhiteSpace(FallbackInitials)
+            ? (index + 1).ToString()
+            : FallbackInitials;
+    }
+
     private async Task LoadAvatarAsync()
     {
         var version = ++_loadVersion;
-        AvatarImg.Source = null;
-        Placeholder.Visibility = Visibility.Visible;
-
         var index = Math.Clamp(AvatarIndex, 0, AvatarCatalog.Count - 1);
-        var image = await AvatarImageLoader.LoadAsync(AvatarCatalog.GetUrl(index));
+        var url = AvatarCatalog.GetUrl(index);
+
+        await Dispatcher.InvokeAsync(() =>
+        {
+            if (version != _loadVersion)
+                return;
+
+            AvatarImg.Source = null;
+            Placeholder.Visibility = Visibility.Visible;
+            UpdateFallbackText();
+        });
+
+        var image = await AvatarImageLoader.LoadAsync(url);
         if (version != _loadVersion)
             return;
 
-        if (image != null)
+        await Dispatcher.InvokeAsync(() =>
         {
-            AvatarImg.Source = image;
-            Placeholder.Visibility = Visibility.Collapsed;
-        }
+            if (version != _loadVersion)
+                return;
+
+            if (image != null)
+            {
+                AvatarImg.Source = image;
+                Placeholder.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                AvatarImg.Source = null;
+                Placeholder.Visibility = Visibility.Visible;
+            }
+        });
     }
 }

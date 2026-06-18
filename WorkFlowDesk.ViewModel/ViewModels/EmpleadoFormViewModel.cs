@@ -36,22 +36,18 @@ public class EmpleadoFormViewModel : ViewModelBase
             Enumerable.Range(0, AvatarCatalog.Count)
                 .Select(i => new AvatarOption { Index = i, Url = AvatarCatalog.GetUrl(i) }));
 
-        EstadosDisponibles = Enum.GetValues<EstadoEmpleado>();
-
         GuardarCommand = new AsyncRelayCommand(GuardarAsync, CanGuardar);
         CancelarCommand = new RelayCommand(Cancelar);
         SelectAvatarCommand = new RelayCommand<int>(index => SelectedAvatarIndex = index);
     }
 
-    public string Titulo => _esNuevo ? "Nuevo empleado" : "Editar empleado";
+    public string Titulo => _esNuevo ? "Nuevo Empleado" : "Editar Empleado";
 
     public string Subtitulo => _esNuevo
-        ? "Añade un miembro al equipo y asigna su avatar."
-        : "Actualiza los datos y el avatar del empleado.";
+        ? "Registra un nuevo miembro en el equipo"
+        : "Actualiza la información del empleado";
 
     public ObservableCollection<AvatarOption> Avatares { get; }
-
-    public Array EstadosDisponibles { get; }
 
     public int SelectedAvatarIndex
     {
@@ -72,6 +68,28 @@ public class EmpleadoFormViewModel : ViewModelBase
             var n = string.IsNullOrWhiteSpace(Nombre) ? "?" : Nombre.Trim()[0].ToString();
             var a = string.IsNullOrWhiteSpace(Apellidos) ? string.Empty : Apellidos.Trim()[0].ToString();
             return $"{n}{a}".ToUpperInvariant();
+        }
+    }
+
+    public bool EstadoActivo
+    {
+        get => Estado == EstadoEmpleado.Activo;
+        set
+        {
+            if (!value) return;
+            Estado = EstadoEmpleado.Activo;
+            OnPropertyChanged(nameof(EstadoAusente));
+        }
+    }
+
+    public bool EstadoAusente
+    {
+        get => Estado is EstadoEmpleado.Vacaciones or EstadoEmpleado.Inactivo or EstadoEmpleado.Baja;
+        set
+        {
+            if (!value) return;
+            Estado = EstadoEmpleado.Vacaciones;
+            OnPropertyChanged(nameof(EstadoActivo));
         }
     }
 
@@ -158,6 +176,8 @@ public class EmpleadoFormViewModel : ViewModelBase
         {
             _empleado.Estado = value;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(EstadoActivo));
+            OnPropertyChanged(nameof(EstadoAusente));
         }
     }
 

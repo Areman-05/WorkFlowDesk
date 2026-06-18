@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:helpers="clr-namespace:WorkFlowDesk.UI.Helpers"
+             xmlns:local="clr-namespace:WorkFlowDesk.UI.Behaviors"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="700">
     <Grid Margin="20">
@@ -22,13 +23,13 @@
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <StackPanel>
                 <TextBlock Text="Título *" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding TituloTarea, UpdateSourceTrigger=PropertyChanged}"
+                <TextBox local:TextBoxBindingHelper.BoundText="{Binding TituloTarea, UpdateSourceTrigger=PropertyChanged}"
                          ToolTip="{x:Static helpers:FormTooltips.TituloTarea}"
                          Style="{StaticResource ModernTextBoxStyle}"
                          Margin="0,0,0,15"/>
 
                 <TextBlock Text="Descripción" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding Descripcion, UpdateSourceTrigger=PropertyChanged}"
+                <TextBox local:TextBoxBindingHelper.BoundText="{Binding Descripcion, UpdateSourceTrigger=PropertyChanged}"
                          ToolTip="{x:Static helpers:FormTooltips.DescripcionTarea}"
                          Style="{StaticResource ModernTextBoxStyle}"
                          TextWrapping="Wrap"
@@ -128,7 +129,7 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
 
-                        <TextBox Text="{Binding NuevoComentario, UpdateSourceTrigger=PropertyChanged}"
+                        <TextBox local:TextBoxBindingHelper.BoundText="{Binding NuevoComentario, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource ModernTextBoxStyle}"
                                  TextWrapping="Wrap"
                                  AcceptsReturn="True"
