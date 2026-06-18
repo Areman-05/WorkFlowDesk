@@ -48,11 +48,12 @@ public static class NavigationViewFactory
     private static UserControl CreateProyectos(IServiceProvider services)
     {
         var proyectoService = services.GetRequiredService<IProyectoService>();
+        var exportService = services.GetRequiredService<IExportService>();
+        var tareaService = services.GetRequiredService<ITareaService>();
         var clienteService = services.GetRequiredService<IClienteService>();
         var empleadoService = services.GetRequiredService<IEmpleadoService>();
-        var exportService = services.GetRequiredService<IExportService>();
         return new ProyectosView(
-            new ProyectosViewModel(proyectoService, exportService),
+            new ProyectosViewModel(proyectoService, exportService, tareaService),
             proyectoService,
             clienteService,
             empleadoService);

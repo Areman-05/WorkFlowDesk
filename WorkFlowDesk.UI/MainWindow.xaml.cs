@@ -32,7 +32,8 @@ public partial class MainWindow : Window
 
     private async void OnLoaded(object sender, RoutedEventArgs e)
     {
-        await LoadAvatarAsync();
+        _mainViewModel.RefreshAvatarUrl();
+        await AvatarImageLoader.PreloadCatalogAsync();
     }
 
     private void OnSectionRequested(string section)
@@ -43,24 +44,7 @@ public partial class MainWindow : Window
     private void OnAvatarChanged(object? sender, int userId)
     {
         if (SessionService.CurrentUser?.Id == userId)
-        {
-            Dispatcher.Invoke(async () =>
-            {
-                _mainViewModel.RefreshAvatarUrl();
-                await LoadAvatarAsync();
-            });
-        }
-    }
-
-    private async Task LoadAvatarAsync()
-    {
-        _mainViewModel.RefreshAvatarUrl();
-        if (string.IsNullOrEmpty(_mainViewModel.AvatarUrl))
-            return;
-
-        var image = await AvatarImageLoader.LoadAsync(_mainViewModel.AvatarUrl);
-        if (image != null)
-            TopBarAvatar.Source = image;
+            Dispatcher.Invoke(() => _mainViewModel.RefreshAvatarUrl());
     }
 
     private void OnAvatarClick(object sender, MouseButtonEventArgs e)

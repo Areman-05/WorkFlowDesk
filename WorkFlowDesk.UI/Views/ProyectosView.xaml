@@ -6,95 +6,375 @@
              xmlns:controls="clr-namespace:WorkFlowDesk.UI.Controls"
              xmlns:local="clr-namespace:WorkFlowDesk.UI.Behaviors"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+             d:DesignHeight="900" d:DesignWidth="1100">
+    <UserControl.Resources>
+        <Style x:Key="StitchProgresoBarStyle" TargetType="ProgressBar">
+            <Setter Property="Height" Value="6"/>
+            <Setter Property="Background" Value="{StaticResource StitchSurfaceContainerBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
+    </UserControl.Resources>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
-            <TextBlock Text="Proyectos" 
-                       FontSize="24" 
-                       FontWeight="Bold" 
-                       VerticalAlignment="Center"
-                       Margin="0,0,20,0"/>
-            <Button Content="Nuevo Proyecto" 
-                    Command="{Binding CrearProyectoCommand}"
-                    Visibility="{Binding CanManage, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    Padding="15,8"
-                    Margin="0,0,10,0"/>
-            <Button Content="Exportar CSV"
-                    Command="{Binding ExportarCommand}"
-                    Visibility="{Binding CanExport, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    Padding="15,8"/>
-            <TextBox local:TextBoxBindingHelper.BoundText="{Binding TextoBusqueda, UpdateSourceTrigger=PropertyChanged}"
-                     Width="200"
-                     Margin="10,0,0,0"
-                     Padding="5"
-                     ToolTip="Buscar por nombre o descripción"/>
-        </StackPanel>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="24" MaxWidth="1200" HorizontalAlignment="Center">
 
-        <Grid Grid.Row="1">
-        <DataGrid ItemsSource="{Binding Proyectos}"
-                  Visibility="{Binding HayElementos, Converter={StaticResource BooleanToVisibilityConverter}}"
-                  SelectedItem="{Binding ProyectoSeleccionado}"
-                  AutoGenerateColumns="False"
-                  IsReadOnly="True"
-                  GridLinesVisibility="All"
-                  HeadersVisibility="Column">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" Width="*"/>
-                <DataGridTextColumn Header="Descripción" Binding="{Binding Descripcion}" Width="2*"/>
-                <DataGridTemplateColumn Header="Estado" Width="120">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock>
-                                <TextBlock.Text>
-                                    <Binding Path="Estado" Converter="{StaticResource EnumToStringConverter}"/>
-                                </TextBlock.Text>
-                            </TextBlock>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Fecha Inicio" Binding="{Binding FechaInicio, StringFormat=dd/MM/yyyy}" Width="120"/>
-                <DataGridTextColumn Header="Fecha Fin" Binding="{Binding FechaFin, StringFormat=dd/MM/yyyy}" Width="120"/>
-                <DataGridTemplateColumn Width="Auto">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
+            <!-- Cabecera -->
+            <Grid Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="Proyectos" Style="{StaticResource StitchH1TextStyle}"/>
+                    <TextBlock Text="Gestión de la cartera de proyectos activa y seguimiento de progreso."
+                               Style="{StaticResource StitchBodyTextStyle}" Margin="0,4,0,0"/>
+                    <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorMessageStyle}" Margin="0,8,0,0"
+                               Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0">
+                        <Border Background="{StaticResource StitchSurfaceContainerLowBrush}"
+                                BorderBrush="{StaticResource StitchOutlineVariantBrush}"
+                                BorderThickness="1" CornerRadius="12" Padding="4,2">
                             <StackPanel Orientation="Horizontal">
-                                <Button Content="Editar" 
-                                        Command="{Binding DataContext.EditarProyectoCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                        CommandParameter="{Binding}"
-                                        Visibility="{Binding DataContext.CanManage, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                        Margin="5,0"
-                                        Padding="10,5"/>
-                                <Button Content="Eliminar" 
-                                        Command="{Binding DataContext.EliminarProyectoCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                        CommandParameter="{Binding}"
-                                        Visibility="{Binding DataContext.CanManage, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                        Margin="5,0"
-                                        Padding="10,5"/>
+                                <Button Content="Todos" Command="{Binding FiltrarTodosCommand}" Padding="14,6" Margin="2"
+                                        Cursor="Hand" BorderThickness="0" FontSize="13">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceVariantBrush}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding FiltroTodosActivo}" Value="True">
+                                                    <Setter Property="Background" Value="{StaticResource StitchSurfaceBrush}"/>
+                                                    <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                                <Button Content="Activos" Command="{Binding FiltrarActivosCommand}" Padding="14,6" Margin="2"
+                                        Cursor="Hand" BorderThickness="0" FontSize="13">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceVariantBrush}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding FiltroActivosActivo}" Value="True">
+                                                    <Setter Property="Background" Value="{StaticResource StitchSurfaceBrush}"/>
+                                                    <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                                <Button Content="Completados" Command="{Binding FiltrarCompletadosCommand}" Padding="14,6" Margin="2"
+                                        Cursor="Hand" BorderThickness="0" FontSize="13">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceVariantBrush}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding FiltroCompletadosActivo}" Value="True">
+                                                    <Setter Property="Background" Value="{StaticResource StitchSurfaceBrush}"/>
+                                                    <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
+                                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
                             </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-        <controls:EmptyStateView Title="Sin proyectos"
-                                 Message="No hay proyectos registrados o ninguno coincide con la búsqueda."
-                                 Visibility="{Binding MostrarEstadoVacio, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        <controls:LoadingIndicator Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        </Grid>
+                        </Border>
+                    </StackPanel>
+                    <Button Style="{StaticResource StitchAuthOutlineButtonStyle}"
+                            Command="{Binding ExportarCommand}"
+                            Visibility="{Binding CanExport, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Padding="16,10" Margin="0,0,12,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE896;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"/>
+                            <TextBlock Text="Exportar CSV" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource StitchPrimaryButtonStyle}"
+                            Command="{Binding CrearProyectoCommand}"
+                            Visibility="{Binding CanManage, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Padding="20,10">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"/>
+                            <TextBlock Text="Nuevo proyecto" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
-            <TextBlock Text="{Binding InfoPaginacion}"
-                       VerticalAlignment="Center"
-                       Foreground="#7F8C8D"
-                       Margin="0,0,15,0"/>
-            <Button Content="Anterior" Command="{Binding PaginaAnteriorCommand}" Padding="12,6" Margin="0,0,8,0"/>
-            <Button Content="Siguiente" Command="{Binding PaginaSiguienteCommand}" Padding="12,6"/>
+            <!-- Búsqueda -->
+            <Border Style="{StaticResource StitchModalFieldBorderStyle}" Margin="0,0,0,20" MaxWidth="420" HorizontalAlignment="Left">
+                <Grid>
+                    <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                               Foreground="#66524251" VerticalAlignment="Center" Margin="12,0,0,0" IsHitTestVisible="False"/>
+                    <TextBox local:TextBoxBindingHelper.BoundText="{Binding TextoBusqueda, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource StitchModalInnerTextBoxStyle}"
+                             Tag="Buscar proyectos, clientes..."/>
+                </Grid>
+            </Border>
+
+            <!-- Stats -->
+            <UniformGrid Columns="4" Margin="0,0,0,24">
+                <Border Style="{StaticResource GlassCardBorderStyle}" Margin="0,0,10,0" Padding="16">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="48" Height="48" CornerRadius="24" Background="#1A9E00B5" Margin="0,0,12,0">
+                            <TextBlock Text="&#xE8B7;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                                       Foreground="{StaticResource StitchPrimaryBrush}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Total Proyectos" Style="{StaticResource StitchCaptionTextStyle}"/>
+                            <TextBlock Text="{Binding TotalProyectos}" Style="{StaticResource StitchStatNumberStyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource GlassCardBorderStyle}" Margin="5,0" Padding="16">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="48" Height="48" CornerRadius="24" Background="#1AFD933D" Margin="0,0,12,0">
+                            <TextBlock Text="&#xE7C4;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                                       Foreground="{StaticResource StitchSecondaryBrush}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="En Progreso" Style="{StaticResource StitchCaptionTextStyle}"/>
+                            <TextBlock Text="{Binding EnProgreso}" Style="{StaticResource StitchStatNumberStyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource GlassCardBorderStyle}" Margin="5,0" Padding="16">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="48" Height="48" CornerRadius="24" Background="#1AA45E86" Margin="0,0,12,0">
+                            <TextBlock Text="&#xE823;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                                       Foreground="{StaticResource StitchTertiaryBrush}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Próximos a Vencer" Style="{StaticResource StitchCaptionTextStyle}"/>
+                            <TextBlock Text="{Binding ProximosVencer}" Style="{StaticResource StitchStatNumberStyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource GlassCardBorderStyle}" Margin="10,0,0,0" Padding="16">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="48" Height="48" CornerRadius="24" Background="#1ABA1A1A" Margin="0,0,12,0">
+                            <TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                                       Foreground="{StaticResource StitchErrorBrush}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Retrasados" Style="{StaticResource StitchCaptionTextStyle}"/>
+                            <TextBlock Text="{Binding Retrasados}" Style="{StaticResource StitchStatNumberStyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- Tabla -->
+            <Border Style="{StaticResource GlassCardBorderStyle}" Padding="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Background="#80F6F2FF" BorderBrush="#1AD6C0D3" BorderThickness="0,0,0,1" Padding="24,14">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="1.4*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="NOMBRE DEL PROYECTO" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="1" Text="CLIENTE" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="2" Text="FECHA INICIO" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="3" Text="ESTADO" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="4" Text="PROGRESO" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="5" Text="ACCIONES" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                        </Grid>
+                    </Border>
+
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding Proyectos}"
+                                  Visibility="{Binding HayElementos, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="#0DD6C0D3" BorderThickness="0,0,0,1" Padding="24,14" Background="Transparent">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#0D9E00B5"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="1.2*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="1.4*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <Border Width="40" Height="40" CornerRadius="8"
+                                                    Background="{StaticResource StitchSurfaceContainerBrush}"
+                                                    Margin="0,0,12,0">
+                                                <TextBlock Text="{Binding Iniciales}" FontWeight="Bold" FontSize="13"
+                                                           Foreground="{StaticResource StitchPrimaryBrush}"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Proyecto.Nombre}" FontWeight="SemiBold" FontSize="14"
+                                                           Foreground="{StaticResource StitchOnSurfaceBrush}"/>
+                                                <TextBlock Text="{Binding CodigoId}" Style="{StaticResource StitchCaptionTextStyle}" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <TextBlock Grid.Column="1" Text="{Binding NombreCliente}" Style="{StaticResource StitchBodyTextStyle}" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding FechaInicioTexto}" Style="{StaticResource StitchBodyTextStyle}" VerticalAlignment="Center"/>
+
+                                        <Border Grid.Column="3" CornerRadius="10" Padding="10,4" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                Background="{Binding EstadoFondo, Converter={StaticResource HexToBrushConverter}}">
+                                            <TextBlock Text="{Binding EstadoTexto}" FontSize="12" FontWeight="SemiBold"
+                                                       Foreground="{Binding EstadoTextoColor, Converter={StaticResource HexToBrushConverter}}"/>
+                                        </Border>
+
+                                        <StackPanel Grid.Column="4" VerticalAlignment="Center" Margin="0,0,8,0">
+                                            <TextBlock Text="{Binding Progreso, StringFormat={}{0}%}" FontSize="11" FontWeight="Medium"
+                                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
+                                            <ProgressBar Value="{Binding Progreso}" Maximum="100" Style="{StaticResource StitchProgresoBarStyle}"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="5" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                            <Button Command="{Binding DataContext.EditarProyectoCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"
+                                                    Visibility="{Binding DataContext.CanManage, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                    Width="32" Height="32" Margin="0,0,4,0" Cursor="Hand">
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Setter Property="BorderThickness" Value="0"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="Button">
+                                                                    <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="8" Padding="6">
+                                                                        <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                                                                   Foreground="{StaticResource StitchPrimaryBrush}" HorizontalAlignment="Center"/>
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter TargetName="Bd" Property="Background" Value="#1A9E00B5"/>
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+                                            <Button Command="{Binding DataContext.EliminarProyectoCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"
+                                                    Visibility="{Binding DataContext.CanManage, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                    Width="32" Height="32" Cursor="Hand">
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Setter Property="BorderThickness" Value="0"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="Button">
+                                                                    <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="8" Padding="6">
+                                                                        <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                                                                   Foreground="{StaticResource StitchErrorBrush}" HorizontalAlignment="Center"/>
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter TargetName="Bd" Property="Background" Value="#1ABA1A1A"/>
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <controls:EmptyStateView Grid.Row="1" Title="Sin proyectos"
+                                             Message="No hay proyectos registrados o ninguno coincide con la búsqueda."
+                                             Visibility="{Binding MostrarEstadoVacio, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                             Margin="24"/>
+                    <controls:LoadingIndicator Grid.Row="1"
+                                               Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                    <Border Grid.Row="2" BorderBrush="#1AD6C0D3" BorderThickness="0,1,0,0" Padding="24,14">
+                        <Grid>
+                            <TextBlock Text="{Binding InfoPaginacion}" Style="{StaticResource StitchCaptionTextStyle}" VerticalAlignment="Center"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button Command="{Binding PaginaAnteriorCommand}" Width="32" Height="32" Margin="0,0,8,0" Cursor="Hand">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource StitchOutlineVariantBrush}"/>
+                                            <Setter Property="BorderThickness" Value="1"/>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8">
+                                                            <TextBlock Text="&#xE76B;" FontFamily="Segoe MDL2 Assets" FontSize="12"
+                                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                                <Button Command="{Binding PaginaSiguienteCommand}" Width="32" Height="32" Cursor="Hand">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="Transparent"/>
+                                            <Setter Property="BorderBrush" Value="{StaticResource StitchOutlineVariantBrush}"/>
+                                            <Setter Property="BorderThickness" Value="1"/>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8">
+                                                            <TextBlock Text="&#xE76C;" FontFamily="Segoe MDL2 Assets" FontSize="12"
+                                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
         </StackPanel>
-    </Grid>
+    </ScrollViewer>
 </UserControl>

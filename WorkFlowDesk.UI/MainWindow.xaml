@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:WorkFlowDesk.UI.Controls"
         mc:Ignorable="d"
         Title="WorkFlowDesk"
         Height="720"
@@ -30,14 +31,14 @@
                 <Button Style="{StaticResource StitchSidebarNavButtonStyle}" Command="{Binding NavigateToDashboardCommand}"
                         Visibility="{Binding IsDashboardActive, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" Width="24"/>
                         <TextBlock Text="Dashboard" Margin="12,0,0,0"/>
                     </StackPanel>
                 </Button>
                 <Button Style="{StaticResource StitchSidebarNavActiveButtonStyle}" Command="{Binding NavigateToDashboardCommand}"
                         Visibility="{Binding IsDashboardActive, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xE80F;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="&#xE9D9;" FontFamily="Segoe MDL2 Assets" Width="24"/>
                         <TextBlock Text="Dashboard" Margin="12,0,0,0"/>
                     </StackPanel>
                 </Button>
@@ -66,14 +67,14 @@
                 <Button Style="{StaticResource StitchSidebarNavButtonStyle}" Command="{Binding NavigateToProyectosCommand}"
                         Visibility="{Binding IsProyectosActive, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xE8B7;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="&#xE838;" FontFamily="Segoe MDL2 Assets" Width="24"/>
                         <TextBlock Text="Proyectos" Margin="12,0,0,0"/>
                     </StackPanel>
                 </Button>
                 <Button Style="{StaticResource StitchSidebarNavActiveButtonStyle}" Command="{Binding NavigateToProyectosCommand}"
                         Visibility="{Binding IsProyectosActive, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xE8B7;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="&#xE838;" FontFamily="Segoe MDL2 Assets" Width="24"/>
                         <TextBlock Text="Proyectos" Margin="12,0,0,0"/>
                     </StackPanel>
                 </Button>
@@ -84,14 +85,14 @@
                 <Button Style="{StaticResource StitchSidebarNavButtonStyle}" Command="{Binding NavigateToTareasCommand}"
                         Visibility="{Binding IsTareasActive, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xE7C3;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="&#xE9D5;" FontFamily="Segoe MDL2 Assets" Width="24"/>
                         <TextBlock Text="Tareas" Margin="12,0,0,0"/>
                     </StackPanel>
                 </Button>
                 <Button Style="{StaticResource StitchSidebarNavActiveButtonStyle}" Command="{Binding NavigateToTareasCommand}"
                         Visibility="{Binding IsTareasActive, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xE7C3;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="&#xE9D5;" FontFamily="Segoe MDL2 Assets" Width="24"/>
                         <TextBlock Text="Tareas" Margin="12,0,0,0"/>
                     </StackPanel>
                 </Button>
@@ -102,14 +103,14 @@
                 <Button Style="{StaticResource StitchSidebarNavButtonStyle}" Command="{Binding NavigateToClientesCommand}"
                         Visibility="{Binding IsClientesActive, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="&#xE8CB;" FontFamily="Segoe MDL2 Assets" Width="24"/>
                         <TextBlock Text="Clientes" Margin="12,0,0,0"/>
                     </StackPanel>
                 </Button>
                 <Button Style="{StaticResource StitchSidebarNavActiveButtonStyle}" Command="{Binding NavigateToClientesCommand}"
                         Visibility="{Binding IsClientesActive, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="&#xE8CB;" FontFamily="Segoe MDL2 Assets" Width="24"/>
                         <TextBlock Text="Clientes" Margin="12,0,0,0"/>
                     </StackPanel>
                 </Button>
@@ -120,14 +121,14 @@
                 <Button Style="{StaticResource StitchSidebarNavButtonStyle}" Command="{Binding NavigateToReportesCommand}"
                         Visibility="{Binding IsReportesActive, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xE9D2;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="&#xE9F9;" FontFamily="Segoe MDL2 Assets" Width="24"/>
                         <TextBlock Text="Reportes" Margin="12,0,0,0"/>
                     </StackPanel>
                 </Button>
                 <Button Style="{StaticResource StitchSidebarNavActiveButtonStyle}" Command="{Binding NavigateToReportesCommand}"
                         Visibility="{Binding IsReportesActive, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xE9D2;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="&#xE9F9;" FontFamily="Segoe MDL2 Assets" Width="24"/>
                         <TextBlock Text="Reportes" Margin="12,0,0,0"/>
                     </StackPanel>
                 </Button>
@@ -138,14 +139,14 @@
                 <Button Style="{StaticResource StitchSidebarNavButtonStyle}" Command="{Binding NavigateToConfiguracionCommand}"
                         Visibility="{Binding IsConfiguracionActive, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="&#xE115;" FontFamily="Segoe MDL2 Assets" Width="24"/>
                         <TextBlock Text="Configuración" Margin="12,0,0,0"/>
                     </StackPanel>
                 </Button>
                 <Button Style="{StaticResource StitchSidebarNavActiveButtonStyle}" Command="{Binding NavigateToConfiguracionCommand}"
                         Visibility="{Binding IsConfiguracionActive, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="&#xE115;" FontFamily="Segoe MDL2 Assets" Width="24"/>
                         <TextBlock Text="Configuración" Margin="12,0,0,0"/>
                     </StackPanel>
                 </Button>
@@ -259,11 +260,11 @@
                                            Foreground="{StaticResource StitchOnSurfaceBrush}" HorizontalAlignment="Right"/>
                                 <TextBlock Text="{Binding UserRole}" Style="{StaticResource StitchCaptionTextStyle}" HorizontalAlignment="Right"/>
                             </StackPanel>
-                            <Border Width="40" Height="40" CornerRadius="20"
-                                    BorderBrush="#339E00B5" BorderThickness="2" Padding="2"
-                                    Cursor="Hand" MouseLeftButtonUp="OnAvatarClick">
-                                <Image x:Name="TopBarAvatar" Stretch="UniformToFill"/>
-                            </Border>
+                            <controls:AvatarImage AvatarIndex="{Binding AvatarIndex}"
+                                                  FallbackInitials="{Binding UserInitials}"
+                                                  Size="36"
+                                                  Cursor="Hand"
+                                                  MouseLeftButtonUp="OnAvatarClick"/>
                         </StackPanel>
                     </Grid>
                 </Border>

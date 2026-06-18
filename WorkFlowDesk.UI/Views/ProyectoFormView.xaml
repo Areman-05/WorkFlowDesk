@@ -3,103 +3,215 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:helpers="clr-namespace:WorkFlowDesk.UI.Helpers"
              xmlns:local="clr-namespace:WorkFlowDesk.UI.Behaviors"
+             xmlns:helpers="clr-namespace:WorkFlowDesk.UI.Helpers"
+             xmlns:controls="clr-namespace:WorkFlowDesk.UI.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="500" d:DesignWidth="700">
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+             d:DesignHeight="720" d:DesignWidth="900"
+             KeyDown="OnKeyDown">
+    <Grid>
+        <Border Background="Transparent" MouseLeftButtonUp="OnOverlayClick"/>
 
-        <TextBlock Grid.Row="0"
-                   Text="{Binding Titulo}"
-                   FontSize="20"
-                   FontWeight="Bold"
-                   Margin="0,0,0,20"/>
+        <Border Style="{StaticResource StitchModalGlassPanelStyle}"
+                MaxWidth="600"
+                Width="600"
+                MaxHeight="720"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Margin="16"
+                MouseLeftButtonUp="OnModalClick">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-                <TextBlock Text="Nombre *" Margin="0,0,0,5"/>
-                <TextBox local:TextBoxBindingHelper.BoundText="{Binding Nombre, UpdateSourceTrigger=PropertyChanged}"
-                         ToolTip="{x:Static helpers:FormTooltips.NombreProyecto}"
-                         Style="{StaticResource ModernTextBoxStyle}"
-                         Margin="0,0,0,15"/>
+                <Border Grid.Row="0"
+                        BorderBrush="{StaticResource StitchOutlineVariantBrush}"
+                        BorderThickness="0,0,0,1"
+                        Padding="24,16">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Border Width="40" Height="40" CornerRadius="8" Background="#1A9E00B5" Margin="0,0,12,0">
+                                <TextBlock Text="&#xE838;" FontFamily="Segoe MDL2 Assets" FontSize="18"
+                                           Foreground="{StaticResource StitchPrimaryBrush}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Titulo}" Style="{StaticResource StitchH2TextStyle}"/>
+                                <TextBlock Text="{Binding Subtitulo}" Style="{StaticResource StitchCaptionTextStyle}" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <Button Grid.Column="1" Command="{Binding CancelarCommand}"
+                                Width="36" Height="36" Cursor="Hand" ToolTip="Cerrar">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="18" Padding="6">
+                                                    <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                                               Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                                               HorizontalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="Bd" Property="Background" Value="#33E3DFFF"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Grid>
+                </Border>
 
-                <TextBlock Text="Descripción" Margin="0,0,0,5"/>
-                <TextBox local:TextBoxBindingHelper.BoundText="{Binding Descripcion, UpdateSourceTrigger=PropertyChanged}"
-                         ToolTip="{x:Static helpers:FormTooltips.DescripcionProyecto}"
-                         Style="{StaticResource ModernTextBoxStyle}"
-                         TextWrapping="Wrap"
-                         AcceptsReturn="True"
-                         Height="60"
-                         Margin="0,0,0,15"/>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="24,16,24,0">
+                    <StackPanel>
+                        <StackPanel Margin="0,0,0,16">
+                            <TextBlock Text="Nombre del proyecto" Style="{StaticResource StitchLabelTextStyle}"
+                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
+                            <Border Style="{StaticResource StitchModalFieldBorderStyle}">
+                                <Grid>
+                                    <TextBlock Text="&#xE8B7;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                               Foreground="#66524251" VerticalAlignment="Center" Margin="12,0,0,0" IsHitTestVisible="False"/>
+                                    <TextBox local:TextBoxBindingHelper.BoundText="{Binding Nombre, UpdateSourceTrigger=PropertyChanged}"
+                                             ToolTip="{x:Static helpers:FormTooltips.NombreProyecto}"
+                                             Style="{StaticResource StitchModalInnerTextBoxStyle}"
+                                             Tag="Ej. Rediseño web"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
 
-                <TextBlock Text="Estado" Margin="0,0,0,5"/>
-                <ComboBox ItemsSource="{Binding EstadosProyecto}"
-                          SelectedItem="{Binding Estado}"
-                          Style="{StaticResource ModernComboBoxStyle}"
-                          Margin="0,0,0,15">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock>
-                                <TextBlock.Text>
-                                    <Binding Path="."
-                                             Converter="{StaticResource EnumToStringConverter}"/>
-                                </TextBlock.Text>
-                            </TextBlock>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
+                        <StackPanel Margin="0,0,0,16">
+                            <TextBlock Text="Descripción" Style="{StaticResource StitchLabelTextStyle}"
+                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
+                            <Border Style="{StaticResource StitchModalFieldBorderStyle}" Padding="4">
+                                <TextBox local:TextBoxBindingHelper.BoundText="{Binding Descripcion, UpdateSourceTrigger=PropertyChanged}"
+                                         ToolTip="{x:Static helpers:FormTooltips.DescripcionProyecto}"
+                                         Background="Transparent" BorderThickness="0"
+                                         Padding="12,10" FontSize="14" MinHeight="72"
+                                         TextWrapping="Wrap" AcceptsReturn="True"
+                                         VerticalScrollBarVisibility="Auto"
+                                         Foreground="{StaticResource StitchOnSurfaceBrush}"/>
+                            </Border>
+                        </StackPanel>
 
-                <TextBlock Text="Fecha inicio" Margin="0,0,0,5"/>
-                <DatePicker SelectedDate="{Binding FechaInicio}"
-                            ToolTip="{x:Static helpers:FormTooltips.FechaInicio}"
-                            Style="{StaticResource ModernDatePickerStyle}"
-                            Margin="0,0,0,15"/>
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Estado" Style="{StaticResource StitchLabelTextStyle}"
+                                           Foreground="{StaticResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
+                                <Border Style="{StaticResource StitchModalFieldBorderStyle}">
+                                    <Grid>
+                                        <TextBlock Text="&#xE9D5;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                                   Foreground="#66524251" VerticalAlignment="Center" Margin="12,0,0,0" IsHitTestVisible="False"/>
+                                        <ComboBox ItemsSource="{Binding EstadosProyecto}"
+                                                  SelectedItem="{Binding Estado}"
+                                                  Style="{StaticResource StitchModalComboBoxStyle}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Converter={StaticResource EnumToStringConverter}}"/>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                                   Foreground="#66524251" HorizontalAlignment="Right"
+                                                   VerticalAlignment="Center" Margin="0,0,12,0" IsHitTestVisible="False"/>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Cliente" Style="{StaticResource StitchLabelTextStyle}"
+                                           Foreground="{StaticResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
+                                <Border Style="{StaticResource StitchModalFieldBorderStyle}">
+                                    <Grid>
+                                        <TextBlock Text="&#xE8CB;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                                   Foreground="#66524251" VerticalAlignment="Center" Margin="12,0,0,0" IsHitTestVisible="False"/>
+                                        <ComboBox ItemsSource="{Binding Clientes}"
+                                                  SelectedValue="{Binding ClienteId}"
+                                                  SelectedValuePath="Id"
+                                                  DisplayMemberPath="Nombre"
+                                                  Style="{StaticResource StitchModalComboBoxStyle}"/>
+                                        <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                                   Foreground="#66524251" HorizontalAlignment="Right"
+                                                   VerticalAlignment="Center" Margin="0,0,12,0" IsHitTestVisible="False"/>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
 
-                <TextBlock Text="Fecha fin (opcional)" Margin="0,0,0,5"/>
-                <DatePicker SelectedDate="{Binding FechaFin}"
-                            ToolTip="{x:Static helpers:FormTooltips.FechaFin}"
-                            Style="{StaticResource ModernDatePickerStyle}"
-                            Margin="0,0,0,15"/>
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="16"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Fecha de inicio" Style="{StaticResource StitchLabelTextStyle}"
+                                           Foreground="{StaticResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
+                                <controls:StitchDateField SelectedDate="{Binding FechaInicio, Mode=TwoWay}"
+                                                          ToolTip="{x:Static helpers:FormTooltips.FechaInicio}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Fecha fin (opcional)" Style="{StaticResource StitchLabelTextStyle}"
+                                           Foreground="{StaticResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
+                                <controls:StitchDateField SelectedDate="{Binding FechaFinEditable, Mode=TwoWay}"
+                                                          ToolTip="{x:Static helpers:FormTooltips.FechaFin}"/>
+                            </StackPanel>
+                        </Grid>
 
-                <TextBlock Text="Cliente" Margin="0,0,0,5"/>
-                <ComboBox ItemsSource="{Binding Clientes}"
-                          SelectedValue="{Binding ClienteId}"
-                          SelectedValuePath="Id"
-                          DisplayMemberPath="Nombre"
-                          Style="{StaticResource ModernComboBoxStyle}"
-                          Margin="0,0,0,15"/>
+                        <StackPanel Margin="0,0,0,16">
+                            <TextBlock Text="Responsable" Style="{StaticResource StitchLabelTextStyle}"
+                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
+                            <Border Style="{StaticResource StitchModalFieldBorderStyle}">
+                                <Grid>
+                                    <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                               Foreground="#66524251" VerticalAlignment="Center" Margin="12,0,0,0" IsHitTestVisible="False"/>
+                                    <ComboBox ItemsSource="{Binding Empleados}"
+                                              SelectedValue="{Binding ResponsableId}"
+                                              SelectedValuePath="Id"
+                                              DisplayMemberPath="Nombre"
+                                              Style="{StaticResource StitchModalComboBoxStyle}"/>
+                                    <TextBlock Text="&#xE70D;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                               Foreground="#66524251" HorizontalAlignment="Right"
+                                               VerticalAlignment="Center" Margin="0,0,12,0" IsHitTestVisible="False"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
 
-                <TextBlock Text="Responsable" Margin="0,0,0,5"/>
-                <ComboBox ItemsSource="{Binding Empleados}"
-                          SelectedValue="{Binding ResponsableId}"
-                          SelectedValuePath="Id"
-                          DisplayMemberPath="Nombre"
-                          Style="{StaticResource ModernComboBoxStyle}"
-                          Margin="0,0,0,15"/>
+                        <TextBlock Text="{Binding ErrorMessage}"
+                                   Style="{StaticResource ErrorMessageStyle}"
+                                   Margin="0,0,0,8"
+                                   Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
 
-                <TextBlock Text="{Binding ErrorMessage}"
-                           Style="{StaticResource ErrorMessageStyle}"
-                           Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
-            </StackPanel>
-        </ScrollViewer>
-
-        <StackPanel Grid.Row="2"
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    Margin="0,20,0,0">
-            <Button Content="Guardar"
-                    Command="{Binding GuardarCommand}"
-                    Style="{StaticResource PrimaryButtonStyle}"
-                    Margin="0,0,10,0"
-                    Padding="20,8"/>
-            <Button Content="Cancelar"
-                    Command="{Binding CancelarCommand}"
-                    Padding="20,8"/>
-        </StackPanel>
+                        <Border BorderBrush="{StaticResource StitchOutlineVariantBrush}" BorderThickness="0,1,0,0" Padding="0,16,0,16" Margin="0,8,0,0">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <Button Content="Cancelar"
+                                        Command="{Binding CancelarCommand}"
+                                        Style="{StaticResource StitchModalCancelButtonStyle}"
+                                        Margin="0,0,16,0"/>
+                                <Button Content="Guardar Proyecto"
+                                        Command="{Binding GuardarCommand}"
+                                        Style="{StaticResource StitchPrimaryButtonStyle}"
+                                        Padding="32,10"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

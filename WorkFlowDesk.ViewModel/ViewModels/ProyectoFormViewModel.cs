@@ -43,6 +43,10 @@ public class ProyectoFormViewModel : ViewModelBase
 
     public string Titulo => _esNuevo ? "Nuevo Proyecto" : "Editar Proyecto";
 
+    public string Subtitulo => _esNuevo
+        ? "Registra un nuevo proyecto en la cartera"
+        : "Actualiza la información del proyecto";
+
     public string Nombre
     {
         get => _proyecto.Nombre;
@@ -91,7 +95,14 @@ public class ProyectoFormViewModel : ViewModelBase
         {
             _proyecto.FechaFin = value;
             OnPropertyChanged();
+            OnPropertyChanged(nameof(FechaFinEditable));
         }
+    }
+
+    public DateTime FechaFinEditable
+    {
+        get => FechaFin ?? DateTime.Today;
+        set => FechaFin = value;
     }
 
     public IEnumerable<Cliente> Clientes

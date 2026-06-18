@@ -52,6 +52,31 @@ public class MainViewModel : ViewModelBase
         set => SetProperty(ref _avatarUrl, value);
     }
 
+    public int AvatarIndex
+    {
+        get
+        {
+            var user = SessionService.CurrentUser;
+            return user == null ? 0 : UserPreferencesService.GetAvatarIndex(user.Id);
+        }
+    }
+
+    public string UserInitials
+    {
+        get
+        {
+            var user = SessionService.CurrentUser;
+            if (user == null || string.IsNullOrWhiteSpace(user.NombreCompleto))
+                return "?";
+
+            var parts = user.NombreCompleto.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length >= 2)
+                return $"{parts[0][0]}{parts[^1][0]}".ToUpperInvariant();
+
+            return parts[0][0].ToString().ToUpperInvariant();
+        }
+    }
+
     public bool ShowEmpleados => RolePermissions.CanAccessEmpleados;
     public bool ShowProyectos => RolePermissions.CanAccessProyectos;
     public bool ShowClientes => RolePermissions.CanAccessClientes;
@@ -92,6 +117,8 @@ public class MainViewModel : ViewModelBase
 
         var index = UserPreferencesService.GetAvatarIndex(user.Id);
         AvatarUrl = AvatarCatalog.GetUrl(index);
+        OnPropertyChanged(nameof(AvatarIndex));
+        OnPropertyChanged(nameof(UserInitials));
     }
 
     private void Navigate(string section)
