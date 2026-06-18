@@ -192,15 +192,7 @@
 
                     <!-- Paginación -->
                     <Border Grid.Row="2" BorderBrush="#1AD6C0D3" BorderThickness="0,1,0,0" Padding="24,14">
-                        <Grid>
-                            <TextBlock Text="{Binding InfoPaginacion}" Style="{StaticResource StitchCaptionTextStyle}" VerticalAlignment="Center"/>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <Button Content="Anterior" Command="{Binding PaginaAnteriorCommand}"
-                                        Style="{StaticResource StitchAuthOutlineButtonStyle}" Padding="12,6" Margin="0,0,8,0"/>
-                                <Button Content="Siguiente" Command="{Binding PaginaSiguienteCommand}"
-                                        Style="{StaticResource StitchAuthOutlineButtonStyle}" Padding="12,6"/>
-                            </StackPanel>
-                        </Grid>
+                        <TextBlock Text="{Binding InfoPaginacion}" Style="{StaticResource StitchCaptionTextStyle}" VerticalAlignment="Center"/>
                     </Border>
                 </Grid>
             </Border>

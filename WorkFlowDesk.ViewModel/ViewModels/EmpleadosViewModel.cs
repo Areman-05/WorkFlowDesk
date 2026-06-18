@@ -48,7 +48,7 @@ public class EmpleadosViewModel : ListViewModelBase
 
     public string InfoPaginacion => _paginacion.TotalItems == 0
         ? "Sin empleados"
-        : $"Mostrando {Empleados.Count()} de {_paginacion.TotalItems} empleados";
+        : $"{_paginacion.TotalItems} empleados";
 
     public int TotalEquipo
     {
@@ -242,7 +242,7 @@ public class EmpleadosViewModel : ListViewModelBase
 
     private void AplicarPaginacion()
     {
-        _paginacion.TamañoPagina = Math.Max(1, AppConfig.Settings.DefaultPageSize);
+        _paginacion.TamañoPagina = Math.Max(1, _resultadoFiltrado.Count);
         var pagina = _paginacion.Aplicar(_resultadoFiltrado).Select(MapToListItem).ToList();
         Empleados = pagina;
         OnPropertyChanged(nameof(InfoPaginacion));

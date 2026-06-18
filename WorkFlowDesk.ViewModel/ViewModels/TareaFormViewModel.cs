@@ -48,6 +48,10 @@ public class TareaFormViewModel : ViewModelBase
     }
 
     public string Titulo => _esNuevo ? "Nueva Tarea" : "Editar Tarea";
+
+    public string Subtitulo => _esNuevo
+        ? "Registra una nueva tarea para el equipo"
+        : "Actualiza el estado y los detalles de la tarea";
     public bool EsNuevo => _esNuevo;
     public bool MuestraComentarios => !_esNuevo;
 

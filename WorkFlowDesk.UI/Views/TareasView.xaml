@@ -1,121 +1,452 @@
 <UserControl x:Class="WorkFlowDesk.UI.Views.TareasView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:WorkFlowDesk.UI.Controls"
              xmlns:local="clr-namespace:WorkFlowDesk.UI.Behaviors"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+             mc:Ignorable="d"
+             d:DesignHeight="900" d:DesignWidth="1100">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="24" MaxWidth="1200" HorizontalAlignment="Center">
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
-            <TextBlock Text="Tareas" 
-                       FontSize="24" 
-                       FontWeight="Bold" 
-                       VerticalAlignment="Center"
-                       Margin="0,0,20,0"/>
-            <Button Content="Nueva Tarea" 
-                    Command="{Binding CrearTareaCommand}"
-                    Visibility="{Binding CanManage, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    Padding="15,8"
-                    Margin="0,0,10,0"/>
-            <Button Content="Exportar CSV"
-                    Command="{Binding ExportarCommand}"
-                    Visibility="{Binding CanExport, Converter={StaticResource BooleanToVisibilityConverter}}"
-                    Padding="15,8"
-                    Margin="0,0,10,0"/>
-            <TextBox local:TextBoxBindingHelper.BoundText="{Binding TextoBusqueda, UpdateSourceTrigger=PropertyChanged}"
-                     Width="180"
-                     Margin="0,0,10,0"
-                     Padding="5"
-                     ToolTip="Buscar por título o descripción"/>
-            <ComboBox ItemsSource="{Binding FiltrosEstado}"
-                      SelectedItem="{Binding FiltroEstadoSeleccionado}"
-                      DisplayMemberPath="Etiqueta"
-                      Width="150"
-                      Margin="10,0,0,0"/>
+            <!-- Cabecera -->
+            <Grid Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel>
+                    <TextBlock Text="Tareas" Style="{StaticResource StitchH1TextStyle}"/>
+                    <TextBlock Text="Gestione y supervise el flujo de trabajo de su equipo en tiempo real."
+                               Style="{StaticResource StitchBodyTextStyle}" Margin="0,4,0,0"/>
+                    <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorMessageStyle}" Margin="0,8,0,0"
+                               Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
+                    <Border Background="{StaticResource StitchSurfaceContainerLowBrush}"
+                            BorderBrush="{StaticResource StitchOutlineVariantBrush}"
+                            BorderThickness="1" CornerRadius="12" Padding="4,2" Margin="0,0,16,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="Todas" Command="{Binding FiltrarTodasCommand}" Padding="14,6" Margin="2"
+                                    Cursor="Hand" BorderThickness="0" FontSize="13">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceVariantBrush}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding FiltroTodasActivo}" Value="True">
+                                                <Setter Property="Background" Value="{StaticResource StitchSurfaceBrush}"/>
+                                                <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            <Button Content="Pendientes" Command="{Binding FiltrarPendientesCommand}" Padding="14,6" Margin="2"
+                                    Cursor="Hand" BorderThickness="0" FontSize="13">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceVariantBrush}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding FiltroPendientesActivo}" Value="True">
+                                                <Setter Property="Background" Value="{StaticResource StitchSurfaceBrush}"/>
+                                                <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            <Button Content="En curso" Command="{Binding FiltrarEnCursoCommand}" Padding="14,6" Margin="2"
+                                    Cursor="Hand" BorderThickness="0" FontSize="13">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceVariantBrush}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding FiltroEnCursoActivo}" Value="True">
+                                                <Setter Property="Background" Value="{StaticResource StitchSurfaceBrush}"/>
+                                                <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            <Button Content="Completadas" Command="{Binding FiltrarCompletadasCommand}" Padding="14,6" Margin="2"
+                                    Cursor="Hand" BorderThickness="0" FontSize="13">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceVariantBrush}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding FiltroCompletadasActivo}" Value="True">
+                                                <Setter Property="Background" Value="{StaticResource StitchSurfaceBrush}"/>
+                                                <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                    <Button Style="{StaticResource StitchAuthOutlineButtonStyle}"
+                            Command="{Binding ExportarCommand}"
+                            Visibility="{Binding CanExport, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Padding="16,10" Margin="0,0,12,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE896;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"/>
+                            <TextBlock Text="Exportar CSV" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource StitchPrimaryButtonStyle}"
+                            Command="{Binding CrearTareaCommand}"
+                            Visibility="{Binding CanManage, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Padding="20,10">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"/>
+                            <TextBlock Text="Nueva tarea" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+
+            <!-- Búsqueda -->
+            <Border Style="{StaticResource StitchModalFieldBorderStyle}" Margin="0,0,0,20" MaxWidth="420" HorizontalAlignment="Left">
+                <Grid>
+                    <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                               Foreground="#66524251" VerticalAlignment="Center" Margin="12,0,0,0" IsHitTestVisible="False"/>
+                    <TextBox local:TextBoxBindingHelper.BoundText="{Binding TextoBusqueda, UpdateSourceTrigger=PropertyChanged}"
+                             Style="{StaticResource StitchModalInnerTextBoxStyle}"
+                             Tag="Buscar tareas..."/>
+                </Grid>
+            </Border>
+
+            <!-- Stats -->
+            <UniformGrid Columns="4" Margin="0,0,0,24">
+                <Border Style="{StaticResource GlassCardBorderStyle}" Margin="0,0,10,0" Padding="16">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="48" Height="48" CornerRadius="24" Background="#1A9E00B5" Margin="0,0,12,0">
+                            <TextBlock Text="&#xE8FD;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                                       Foreground="{StaticResource StitchPrimaryBrush}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="TOTAL" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding TotalTareas}" Style="{StaticResource StitchStatNumberStyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource GlassCardBorderStyle}" Margin="5,0" Padding="16">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="48" Height="48" CornerRadius="24" Background="#1AFD933D" Margin="0,0,12,0">
+                            <TextBlock Text="&#xE823;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                                       Foreground="{StaticResource StitchSecondaryBrush}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="PENDIENTES" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding Pendientes}" Style="{StaticResource StitchStatNumberStyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource GlassCardBorderStyle}" Margin="5,0" Padding="16">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="48" Height="48" CornerRadius="24" Background="#1AA45E86" Margin="0,0,12,0">
+                            <TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                                       Foreground="{StaticResource StitchTertiaryBrush}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="EN CURSO" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding EnCurso}" Style="{StaticResource StitchStatNumberStyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource GlassCardBorderStyle}" Margin="10,0,0,0" Padding="16"
+                        BorderBrush="#4CAF50" BorderThickness="0,0,0,2">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="48" Height="48" CornerRadius="24" Background="#1A4CAF50" Margin="0,0,12,0">
+                            <TextBlock Text="&#xE73E;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                                       Foreground="#15803D"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="COMPLETADAS" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding Completadas}" Style="{StaticResource StitchStatNumberStyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- Tabla -->
+            <Border Style="{StaticResource GlassCardBorderStyle}" Padding="0" MinHeight="320" Margin="0,0,0,24">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Background="#80F6F2FF" BorderBrush="#1AD6C0D3" BorderThickness="0,0,0,1" Padding="24,14">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1.4*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="PRIORIDAD" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="1" Text="TAREA" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="2" Text="ASIGNADO A" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="3" Text="FECHA LÍMITE" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="4" Text="ESTADO" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="5" Text="ACCIONES" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                        </Grid>
+                    </Border>
+
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding Tareas}"
+                                  Visibility="{Binding HayElementos, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="#0DD6C0D3" BorderThickness="0,0,0,1" Padding="24,14" Background="Transparent">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#0D9E00B5"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="1.4*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Border CornerRadius="10" Padding="10,4" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                Background="{Binding PrioridadFondo, Converter={StaticResource HexToBrushConverter}}">
+                                            <TextBlock Text="{Binding PrioridadTexto}" FontSize="12" FontWeight="SemiBold"
+                                                       Foreground="{Binding PrioridadTextoColor, Converter={StaticResource HexToBrushConverter}}"/>
+                                        </Border>
+
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock FontWeight="SemiBold" FontSize="14"
+                                                       Foreground="{StaticResource StitchOnSurfaceBrush}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Text" Value="{Binding Tarea.Titulo}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding TituloTachado}" Value="True">
+                                                                <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                                                <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceVariantBrush}"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                            <TextBlock Text="{Binding NombreProyecto}" Style="{StaticResource StitchCaptionTextStyle}" Margin="0,2,0,0"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                            <controls:AvatarImage Size="24" AvatarIndex="{Binding AvatarIndex}"
+                                                                  FallbackInitials="{Binding AsignadoIniciales}" Margin="0,0,8,0"/>
+                                            <TextBlock Text="{Binding AsignadoNombre}" Style="{StaticResource StitchBodyTextStyle}" VerticalAlignment="Center"/>
+                                        </StackPanel>
+
+                                        <TextBlock Grid.Column="3" Text="{Binding FechaLimiteTexto}" Style="{StaticResource StitchBodyTextStyle}" VerticalAlignment="Center"/>
+
+                                        <Border Grid.Column="4" CornerRadius="10" Padding="10,4" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                Background="{Binding EstadoFondo, Converter={StaticResource HexToBrushConverter}}">
+                                            <TextBlock Text="{Binding EstadoTexto}" FontSize="12" FontWeight="SemiBold"
+                                                       Foreground="{Binding EstadoTextoColor, Converter={StaticResource HexToBrushConverter}}"/>
+                                        </Border>
+
+                                        <StackPanel Grid.Column="5" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                            <Button Command="{Binding DataContext.EditarTareaCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"
+                                                    Visibility="{Binding DataContext.CanManage, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                    Width="32" Height="32" Margin="0,0,4,0" Cursor="Hand">
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Setter Property="BorderThickness" Value="0"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="Button">
+                                                                    <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="8" Padding="6">
+                                                                        <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                                                                   Foreground="{StaticResource StitchPrimaryBrush}" HorizontalAlignment="Center"/>
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter TargetName="Bd" Property="Background" Value="#1A9E00B5"/>
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+                                            <Button Command="{Binding DataContext.EliminarTareaCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"
+                                                    Visibility="{Binding DataContext.CanManage, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                    Width="32" Height="32" Cursor="Hand">
+                                                <Button.Style>
+                                                    <Style TargetType="Button">
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Setter Property="BorderThickness" Value="0"/>
+                                                        <Setter Property="Template">
+                                                            <Setter.Value>
+                                                                <ControlTemplate TargetType="Button">
+                                                                    <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="8" Padding="6">
+                                                                        <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                                                                   Foreground="{StaticResource StitchErrorBrush}" HorizontalAlignment="Center"/>
+                                                                    </Border>
+                                                                    <ControlTemplate.Triggers>
+                                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                                            <Setter TargetName="Bd" Property="Background" Value="#1ABA1A1A"/>
+                                                                        </Trigger>
+                                                                    </ControlTemplate.Triggers>
+                                                                </ControlTemplate>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Button.Style>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <!-- Empty state -->
+                    <StackPanel Grid.Row="1" Visibility="{Binding MostrarEstadoVacio, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                VerticalAlignment="Center" HorizontalAlignment="Center" Margin="48">
+                        <Border Width="96" Height="96" CornerRadius="48"
+                                Background="{StaticResource StitchSurfaceContainerBrush}"
+                                HorizontalAlignment="Center" Margin="0,0,0,16">
+                            <TextBlock Text="&#xE783;" FontFamily="Segoe MDL2 Assets" FontSize="48"
+                                       Foreground="#4D524251" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="No hay tareas pendientes" Style="{StaticResource StitchH2TextStyle}"
+                                   HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                        <TextBlock Text="Parece que tu equipo está al día. ¡Buen trabajo! O quizás es momento de planificar el siguiente paso."
+                                   Style="{StaticResource StitchBodyTextStyle}" TextWrapping="Wrap" TextAlignment="Center"
+                                   MaxWidth="360" HorizontalAlignment="Center" Margin="0,0,0,16"/>
+                        <Button Style="{StaticResource StitchPrimaryButtonStyle}"
+                                Command="{Binding CrearTareaCommand}"
+                                Visibility="{Binding CanManage, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                Padding="24,12" HorizontalAlignment="Center">
+                            <TextBlock Text="Crear mi primera tarea" FontWeight="SemiBold"/>
+                        </Button>
+                    </StackPanel>
+
+                    <controls:LoadingIndicator Grid.Row="1"
+                                               Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                    <Border Grid.Row="2" BorderBrush="#1AD6C0D3" BorderThickness="0,1,0,0" Padding="24,14">
+                        <TextBlock Text="{Binding InfoPaginacion}" Style="{StaticResource StitchCaptionTextStyle}" VerticalAlignment="Center"/>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- Actividad semanal + Rendimiento -->
+            <Grid Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource GlassCardBorderStyle}" Padding="24" MinHeight="220">
+                    <Grid>
+                        <StackPanel>
+                            <TextBlock Text="Actividad Semanal" Style="{StaticResource StitchH3TextStyle}" Margin="0,0,0,16"/>
+                            <Grid Height="120" VerticalAlignment="Bottom">
+                                <ItemsControl ItemsSource="{Binding ActividadSemanal}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Rows="1"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="4,0">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Border Grid.Row="0" VerticalAlignment="Bottom" CornerRadius="6,6,0,0"
+                                                        Height="{Binding AlturaPixeles}" HorizontalAlignment="Stretch">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="#1A9E00B5"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding EsDiaActual}" Value="True">
+                                                                    <Setter Property="Background" Value="{StaticResource StitchPrimaryBrush}"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Border.Style>
+                                                </Border>
+                                                <TextBlock Grid.Row="1" Text="{Binding Etiqueta}" FontSize="11"
+                                                           Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                                           HorizontalAlignment="Center" Margin="0,6,0,0"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Column="2" Style="{StaticResource GlassCardBorderStyle}" Padding="24" MinHeight="220">
+                    <StackPanel VerticalAlignment="Stretch">
+                        <StackPanel>
+                            <TextBlock Text="Rendimiento" Style="{StaticResource StitchH3TextStyle}"/>
+                            <TextBlock Text="Basado en tareas completadas del total activo."
+                                       Style="{StaticResource StitchCaptionTextStyle}" Margin="0,4,0,0"/>
+                        </StackPanel>
+                        <Grid HorizontalAlignment="Center" Margin="0,16,0,8">
+                            <Viewbox Width="96" Height="96">
+                                <Grid Width="96" Height="96">
+                                    <Ellipse Width="80" Height="80" Stroke="{StaticResource StitchSurfaceContainerBrush}"
+                                             StrokeThickness="8" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <Ellipse Width="80" Height="80" Stroke="{StaticResource StitchSecondaryBrush}"
+                                             StrokeThickness="8" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                             StrokeDashArray="251.2"
+                                             StrokeDashOffset="{Binding RendimientoArcoOffset}"
+                                             RenderTransformOrigin="0.5,0.5">
+                                        <Ellipse.RenderTransform>
+                                            <RotateTransform Angle="-90"/>
+                                        </Ellipse.RenderTransform>
+                                    </Ellipse>
+                                </Grid>
+                            </Viewbox>
+                            <TextBlock Text="{Binding RendimientoPorcentaje, StringFormat={}{0}%}"
+                                       Style="{StaticResource StitchH2TextStyle}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                        <TextBlock Text="{Binding RendimientoVariacion}" Style="{StaticResource StitchCaptionTextStyle}"
+                                   TextWrapping="Wrap" TextAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
         </StackPanel>
-
-        <Grid Grid.Row="1">
-        <DataGrid ItemsSource="{Binding Tareas}"
-                  Visibility="{Binding HayElementos, Converter={StaticResource BooleanToVisibilityConverter}}"
-                  SelectedItem="{Binding TareaSeleccionada}"
-                  AutoGenerateColumns="False"
-                  IsReadOnly="True"
-                  GridLinesVisibility="All"
-                  HeadersVisibility="Column">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Título" Binding="{Binding Titulo}" Width="*"/>
-                <DataGridTextColumn Header="Descripción" Binding="{Binding Descripcion}" Width="2*"/>
-                <DataGridTemplateColumn Header="Prioridad" Width="100">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock>
-                                <TextBlock.Text>
-                                    <Binding Path="Prioridad" Converter="{StaticResource EnumToStringConverter}"/>
-                                </TextBlock.Text>
-                            </TextBlock>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Estado" Width="100">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock>
-                                <TextBlock.Text>
-                                    <Binding Path="Estado" Converter="{StaticResource EnumToStringConverter}"/>
-                                </TextBlock.Text>
-                            </TextBlock>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Fecha Vencimiento" Binding="{Binding FechaVencimiento, StringFormat=dd/MM/yyyy}" Width="120"/>
-                <DataGridTemplateColumn Width="Auto">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Button Content="Editar" 
-                                        Command="{Binding DataContext.EditarTareaCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                        CommandParameter="{Binding}"
-                                        Visibility="{Binding DataContext.CanManage, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                        Margin="5,0"
-                                        Padding="10,5"/>
-                                <Button Content="Eliminar" 
-                                        Command="{Binding DataContext.EliminarTareaCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                        CommandParameter="{Binding}"
-                                        Visibility="{Binding DataContext.CanManage, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                        Margin="5,0"
-                                        Padding="10,5"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-        <controls:EmptyStateView Title="Sin tareas"
-                                 Message="No hay tareas registradas o ninguna coincide con los filtros aplicados."
-                                 Visibility="{Binding MostrarEstadoVacio, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        <controls:LoadingIndicator Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-        </Grid>
-
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
-            <TextBlock Text="{Binding InfoPaginacion}"
-                       VerticalAlignment="Center"
-                       Foreground="#7F8C8D"
-                       Margin="0,0,15,0"/>
-            <Button Content="Anterior"
-                    Command="{Binding PaginaAnteriorCommand}"
-                    Padding="12,6"
-                    Margin="0,0,8,0"/>
-            <Button Content="Siguiente"
-                    Command="{Binding PaginaSiguienteCommand}"
-                    Padding="12,6"/>
-        </StackPanel>
-    </Grid>
+    </ScrollViewer>
 </UserControl>

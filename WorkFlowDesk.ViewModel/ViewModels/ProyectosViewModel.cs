@@ -56,7 +56,7 @@ public class ProyectosViewModel : ListViewModelBase
 
     public string InfoPaginacion => _paginacion.TotalItems == 0
         ? "Sin proyectos"
-        : $"Mostrando {Proyectos.Count()} de {_paginacion.TotalItems} proyectos";
+        : $"{_paginacion.TotalItems} proyectos";
 
     public int TotalProyectos
     {
@@ -293,7 +293,7 @@ public class ProyectosViewModel : ListViewModelBase
 
     private void AplicarPaginacion()
     {
-        _paginacion.TamañoPagina = Math.Max(1, AppConfig.Settings.DefaultPageSize);
+        _paginacion.TamañoPagina = Math.Max(1, _resultadoFiltrado.Count);
         var pagina = _paginacion.Aplicar(_resultadoFiltrado).Select(MapToListItem).ToList();
         Proyectos = pagina;
         OnPropertyChanged(nameof(InfoPaginacion));
