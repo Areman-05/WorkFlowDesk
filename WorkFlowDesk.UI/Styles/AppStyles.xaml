@@ -192,5 +192,6 @@
     <local:AvatarIndexToImageConverter x:Key="AvatarIndexToImageConverter"/>
     <local:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter"/>
     <local:CapWidthConverter x:Key="CapWidthConverter"/>
+    <local:HexToBrushConverter x:Key="HexToBrushConverter"/>
 
 </ResourceDictionary>

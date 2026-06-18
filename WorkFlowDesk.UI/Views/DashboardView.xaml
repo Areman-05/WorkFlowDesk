@@ -5,11 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:WorkFlowDesk.UI.Controls"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="900">
+             d:DesignHeight="900" d:DesignWidth="1100">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-        <StackPanel Margin="24"
-                    MaxWidth="1200"
-                    HorizontalAlignment="Center">
+        <StackPanel Margin="24" MaxWidth="1200" HorizontalAlignment="Center">
+
             <!-- Cabecera -->
             <Grid Margin="0,0,0,24">
                 <Grid.ColumnDefinitions>
@@ -19,15 +18,11 @@
                 <StackPanel>
                     <TextBlock Text="Dashboard" Style="{StaticResource StitchH1TextStyle}"/>
                     <TextBlock Text="{Binding SubtituloBienvenida}" Style="{StaticResource StitchBodyTextStyle}" Margin="0,4,0,0"/>
-                    <TextBlock Text="{Binding ErrorMessage}"
-                               Style="{StaticResource ErrorMessageStyle}"
-                               Margin="0,8,0,0"
+                    <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorMessageStyle}" Margin="0,8,0,0"
                                Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
                 </StackPanel>
-                <Button Grid.Column="1"
-                        Style="{StaticResource StitchPrimaryButtonStyle}"
-                        Command="{Binding CargarEstadisticasCommand}"
-                        VerticalAlignment="Bottom">
+                <Button Grid.Column="1" Style="{StaticResource StitchPrimaryButtonStyle}"
+                        Command="{Binding CargarEstadisticasCommand}" VerticalAlignment="Bottom" Padding="16,10">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" Margin="0,0,8,0"/>
                         <TextBlock Text="Actualizar"/>
@@ -35,72 +30,98 @@
                 </Button>
             </Grid>
 
-            <!-- Stats principales -->
+            <!-- Stats -->
             <UniformGrid Columns="4" Margin="0,0,0,24">
-                <Border Style="{StaticResource GlassCardBorderStyle}" Margin="0,0,12,0">
+                <!-- Empleados -->
+                <Border Style="{StaticResource GlassCardBorderStyle}" Margin="0,0,8,0" Padding="16"
+                        Visibility="{Binding MostrarStatsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel>
-                        <Border Background="#1A9E00B5" CornerRadius="8" Padding="8" HorizontalAlignment="Left" Margin="0,0,0,12">
-                            <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource StitchPrimaryBrush}"/>
-                        </Border>
+                        <Grid Margin="0,0,0,12">
+                            <Border Background="#1A9E00B5" CornerRadius="8" Padding="8" HorizontalAlignment="Left" Width="36" Height="36">
+                                <TextBlock Text="&#xE716;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource StitchPrimaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <Border HorizontalAlignment="Right" Background="#DCFCE7" CornerRadius="10" Padding="8,4">
+                                <TextBlock Text="{Binding BadgeEmpleados}" FontSize="11" Foreground="#15803D"/>
+                            </Border>
+                        </Grid>
                         <TextBlock Text="{Binding TotalEmpleados}" Style="{StaticResource StitchStatNumberStyle}"/>
-                        <TextBlock Text="TOTAL EMPLEADOS" Style="{StaticResource StitchLabelTextStyle}" Margin="0,4,0,0"/>
+                        <TextBlock Text="TOTAL EMPLEADOS" Style="{StaticResource StitchLabelTextStyle}" Margin="0,4,0,0" FontSize="11"/>
                     </StackPanel>
                 </Border>
-                <Border Style="{StaticResource GlassCardBorderStyle}" Margin="6,0,6,0">
+
+                <!-- Proyectos -->
+                <Border Style="{StaticResource GlassCardBorderStyle}" Margin="4,0,4,0" Padding="16">
                     <StackPanel>
-                        <Border Background="#1AFD933D" CornerRadius="8" Padding="8" HorizontalAlignment="Left" Margin="0,0,0,12">
-                            <TextBlock Text="&#xE8B7;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource StitchSecondaryContainerBrush}"/>
-                        </Border>
+                        <Grid Margin="0,0,0,12">
+                            <Border Background="#1AFD933D" CornerRadius="8" Padding="8" HorizontalAlignment="Left" Width="36" Height="36">
+                                <TextBlock Text="&#xE8B7;" FontFamily="Segoe MDL2 Assets" Foreground="{StaticResource StitchSecondaryBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <Border HorizontalAlignment="Right" Background="#FFEBCC" CornerRadius="10" Padding="8,4">
+                                <TextBlock Text="{Binding BadgeProyectos}" FontSize="11" Foreground="{StaticResource StitchSecondaryBrush}"/>
+                            </Border>
+                        </Grid>
                         <TextBlock Text="{Binding TotalProyectos}" Style="{StaticResource StitchStatNumberStyle}"/>
-                        <TextBlock Text="TOTAL PROYECTOS" Style="{StaticResource StitchLabelTextStyle}" Margin="0,4,0,0"/>
+                        <TextBlock Text="TOTAL PROYECTOS" Style="{StaticResource StitchLabelTextStyle}" Margin="0,4,0,0" FontSize="11"/>
                     </StackPanel>
                 </Border>
-                <Border Style="{StaticResource GlassCardBorderStyle}" Margin="6,0,6,0">
+
+                <!-- Tareas -->
+                <Border Style="{StaticResource GlassCardBorderStyle}" Margin="4,0,4,0" Padding="16">
                     <StackPanel>
-                        <Border Background="#1AA45E86" CornerRadius="8" Padding="8" HorizontalAlignment="Left" Margin="0,0,0,12">
-                            <TextBlock Text="&#xE7C3;" FontFamily="Segoe MDL2 Assets" Foreground="#87466D"/>
-                        </Border>
+                        <Grid Margin="0,0,0,12">
+                            <Border Background="#1AA45E86" CornerRadius="8" Padding="8" HorizontalAlignment="Left" Width="36" Height="36">
+                                <TextBlock Text="&#xE7C3;" FontFamily="Segoe MDL2 Assets" Foreground="#87466D" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <Border HorizontalAlignment="Right" Background="{StaticResource StitchSurfaceContainerBrush}" CornerRadius="10" Padding="8,4">
+                                <TextBlock Text="{Binding BadgeTareas}" FontSize="11" Foreground="{StaticResource StitchOnSurfaceVariantBrush}"/>
+                            </Border>
+                        </Grid>
                         <TextBlock Text="{Binding TotalTareas}" Style="{StaticResource StitchStatNumberStyle}"/>
-                        <TextBlock Text="TOTAL TAREAS" Style="{StaticResource StitchLabelTextStyle}" Margin="0,4,0,0"/>
+                        <TextBlock Text="TOTAL TAREAS" Style="{StaticResource StitchLabelTextStyle}" Margin="0,4,0,0" FontSize="11"/>
                     </StackPanel>
                 </Border>
-                <Border Style="{StaticResource GlassCardBorderStyle}" Margin="12,0,0,0">
+
+                <!-- Clientes -->
+                <Border Style="{StaticResource GlassCardBorderStyle}" Margin="8,0,0,0" Padding="16"
+                        Visibility="{Binding MostrarStatsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel>
-                        <Border Background="#1A6F3157" CornerRadius="8" Padding="8" HorizontalAlignment="Left" Margin="0,0,0,12">
-                            <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" Foreground="#6F3157"/>
-                        </Border>
+                        <Grid Margin="0,0,0,12">
+                            <Border Background="#1A6F3157" CornerRadius="8" Padding="8" HorizontalAlignment="Left" Width="36" Height="36">
+                                <TextBlock Text="&#xE8F4;" FontFamily="Segoe MDL2 Assets" Foreground="#6F3157" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <Border HorizontalAlignment="Right" Background="#DCFCE7" CornerRadius="10" Padding="8,4">
+                                <TextBlock Text="{Binding BadgeClientes}" FontSize="11" Foreground="#15803D"/>
+                            </Border>
+                        </Grid>
                         <TextBlock Text="{Binding TotalClientes}" Style="{StaticResource StitchStatNumberStyle}"/>
-                        <TextBlock Text="TOTAL CLIENTES" Style="{StaticResource StitchLabelTextStyle}" Margin="0,4,0,0"/>
+                        <TextBlock Text="TOTAL CLIENTES" Style="{StaticResource StitchLabelTextStyle}" Margin="0,4,0,0" FontSize="11"/>
                     </StackPanel>
                 </Border>
             </UniformGrid>
 
-            <!-- Sección secundaria -->
-            <Grid Margin="0,0,0,0">
+            <!-- Tareas pendientes + En progreso -->
+            <Grid Margin="0,0,0,24">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Tareas pendientes -->
                 <Border Grid.Column="0" Style="{StaticResource GlassCardBorderStyle}" Margin="0,0,12,0" Padding="24">
                     <StackPanel>
                         <Grid Margin="0,0,0,16">
                             <TextBlock Text="Tareas pendientes" Style="{StaticResource StitchH2TextStyle}"/>
-                            <Button Style="{StaticResource StitchGhostButtonStyle}"
-                                    Command="{Binding VerTareasCommand}"
-                                    HorizontalAlignment="Right"
-                                    Content="Ver todas"/>
+                            <Button Style="{StaticResource StitchGhostButtonStyle}" Command="{Binding VerTareasCommand}"
+                                    HorizontalAlignment="Right" Content="Ver todas"/>
                         </Grid>
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Grid Width="120" Height="120" Margin="0,0,24,0">
+                            <Grid Width="128" Height="128" Margin="0,0,24,0">
                                 <Ellipse Stroke="#E9E5FF" StrokeThickness="8"/>
                                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                    <TextBlock Text="{Binding TareasPendientes}" FontSize="20" FontWeight="SemiBold"
+                                    <TextBlock Text="{Binding TareasPendientes}" FontSize="22" FontWeight="SemiBold"
                                                Foreground="{StaticResource StitchOnSurfaceBrush}" HorizontalAlignment="Center"/>
                                     <TextBlock Text="Quedan" Style="{StaticResource StitchCaptionTextStyle}" HorizontalAlignment="Center"/>
                                     <TextBlock Text="{Binding PorcentajePendientes, StringFormat={}{0}% del total}"
@@ -108,20 +129,20 @@
                                 </StackPanel>
                             </Grid>
                             <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <Grid Margin="0,0,0,8">
-                                    <TextBlock Text="Urgentes (alta/crítica)" Style="{StaticResource StitchBodyTextStyle}"/>
+                                <Grid Margin="0,0,0,10">
+                                    <TextBlock Text="Urgentes" Style="{StaticResource StitchBodyTextStyle}"/>
                                     <Border HorizontalAlignment="Right" Background="#FFEBEE" CornerRadius="8" Padding="8,4">
                                         <TextBlock Text="{Binding TareasUrgentes}" FontWeight="SemiBold" FontSize="12" Foreground="#93000A"/>
                                     </Border>
                                 </Grid>
-                                <Grid Margin="0,0,0,8">
-                                    <TextBlock Text="En progreso" Style="{StaticResource StitchBodyTextStyle}"/>
+                                <Grid Margin="0,0,0,10">
+                                    <TextBlock Text="Esta semana" Style="{StaticResource StitchBodyTextStyle}"/>
                                     <Border HorizontalAlignment="Right" Background="{StaticResource StitchSurfaceContainerBrush}" CornerRadius="8" Padding="8,4">
-                                        <TextBlock Text="{Binding TareasEnProgreso}" FontWeight="SemiBold" FontSize="12"/>
+                                        <TextBlock Text="{Binding TareasEstaSemana}" FontWeight="SemiBold" FontSize="12"/>
                                     </Border>
                                 </Grid>
                                 <Grid>
-                                    <TextBlock Text="Sin fecha de vencimiento" Style="{StaticResource StitchBodyTextStyle}"/>
+                                    <TextBlock Text="Pendientes sin fecha" Style="{StaticResource StitchBodyTextStyle}"/>
                                     <Border HorizontalAlignment="Right" Background="{StaticResource StitchSurfaceContainerBrush}" CornerRadius="8" Padding="8,4">
                                         <TextBlock Text="{Binding TareasSinFecha}" FontWeight="SemiBold" FontSize="12"/>
                                     </Border>
@@ -131,7 +152,6 @@
                     </StackPanel>
                 </Border>
 
-                <!-- Proyectos en progreso -->
                 <Border Grid.Column="1" Style="{StaticResource GlassCardBorderStyle}" Padding="24">
                     <StackPanel>
                         <Grid Margin="0,0,0,8">
@@ -152,13 +172,14 @@
                                             <TextBlock Text="{Binding ProgresoPorcentaje, StringFormat={}{0}%}"
                                                        HorizontalAlignment="Right" Style="{StaticResource StitchCaptionTextStyle}"/>
                                         </Grid>
-                                        <ProgressBar Value="{Binding ProgresoPorcentaje}" Maximum="100" Height="6" Margin="0,4,0,0"/>
+                                        <ProgressBar Value="{Binding ProgresoPorcentaje}" Maximum="100" Height="6" Margin="0,4,0,0"
+                                                     Foreground="{Binding BarColor, Converter={StaticResource HexToBrushConverter}}"
+                                                     Background="#E9E5FF" BorderThickness="0"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <TextBlock Text="No hay proyectos en progreso."
-                                   Margin="0,8,0,0">
+                        <TextBlock Text="No hay proyectos en progreso." Margin="0,8,0,0">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource StitchCaptionTextStyle}">
                                     <Setter Property="Visibility" Value="Collapsed"/>
@@ -170,14 +191,123 @@
                                 </Style>
                             </TextBlock.Style>
                         </TextBlock>
-                        <Button Style="{StaticResource StitchGhostButtonStyle}"
-                                Command="{Binding VerProyectosCommand}"
-                                Content="Ver proyectos"
-                                HorizontalAlignment="Left"
-                                Margin="0,8,0,0"/>
+                        <Button Style="{StaticResource StitchGhostButtonStyle}" Command="{Binding VerProyectosCommand}"
+                                Content="Ver proyectos" HorizontalAlignment="Left" Margin="0,8,0,0"/>
                     </StackPanel>
                 </Border>
             </Grid>
+
+            <!-- Actividad + CTA -->
+            <Grid Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource GlassCardBorderStyle}" Margin="0,0,12,0" Padding="0">
+                    <StackPanel>
+                        <Border BorderBrush="#1AD6C0D3" BorderThickness="0,0,0,1" Padding="24,16">
+                            <TextBlock Text="Actividad reciente" Style="{StaticResource StitchH3TextStyle}"/>
+                        </Border>
+                        <ItemsControl ItemsSource="{Binding ActividadesRecientes}" Margin="24,16,24,20">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,0,0,16">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Width="32" Height="32" CornerRadius="16"
+                                                Background="{Binding IconoFondo, Converter={StaticResource HexToBrushConverter}}"
+                                                Margin="0,0,12,0">
+                                            <TextBlock Text="{Binding Icono}" FontFamily="Segoe MDL2 Assets"
+                                                       Foreground="{Binding IconoColor, Converter={StaticResource HexToBrushConverter}}"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14"/>
+                                        </Border>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="{Binding Texto}" Style="{StaticResource StitchBodyTextStyle}" TextWrapping="Wrap"/>
+                                            <TextBlock Text="{Binding TiempoRelativo}" Style="{StaticResource StitchCaptionTextStyle}" Margin="0,2,0,0"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" CornerRadius="12" ClipToBounds="True">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
+                            <GradientStop Color="#36003E" Offset="0"/>
+                            <GradientStop Color="#9E00B5" Offset="0.55"/>
+                            <GradientStop Color="#C028D7" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                    <StackPanel VerticalAlignment="Bottom" Margin="24">
+                        <TextBlock Text="Optimiza tu flujo" Style="{StaticResource StitchH2TextStyle}" Foreground="White"/>
+                        <TextBlock Text="Revisa las nuevas herramientas de automatización para tus proyectos."
+                                   Style="{StaticResource StitchBodyTextStyle}" Foreground="#E9E5FF" TextWrapping="Wrap" Margin="0,8,0,16"/>
+                        <Button Style="{StaticResource StitchAuthOutlineButtonStyle}" Content="Explorar ahora"
+                                Foreground="White" BorderBrush="#66FFFFFF"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Tabla proyectos prioritarios -->
+            <Border Style="{StaticResource GlassCardBorderStyle}" Padding="0" Margin="0,0,0,16">
+                <StackPanel>
+                    <Border BorderBrush="#1AD6C0D3" BorderThickness="0,0,0,1" Padding="24,16" Background="#80FFFFFF">
+                        <TextBlock Text="Proyectos prioritarios" Style="{StaticResource StitchH3TextStyle}"/>
+                    </Border>
+                    <Border Background="#F6F2FF" Padding="24,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="PROYECTO" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="1" Text="CLIENTE" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="2" Text="ESTADO" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                        </Grid>
+                    </Border>
+                    <ItemsControl ItemsSource="{Binding ProyectosPrioritarios}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="#0DD6C0D3" BorderThickness="0,0,0,1" Padding="24,14">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Border Width="40" Height="40" CornerRadius="8"
+                                                    Background="{Binding AvatarFondo, Converter={StaticResource HexToBrushConverter}}"
+                                                    Margin="0,0,12,0">
+                                                <TextBlock Text="{Binding Inicial}" FontWeight="Bold"
+                                                           Foreground="{StaticResource StitchPrimaryBrush}"
+                                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <StackPanel VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Nombre}" FontWeight="SemiBold" FontSize="14"/>
+                                                <TextBlock Text="{Binding Subtitulo}" Style="{StaticResource StitchCaptionTextStyle}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <TextBlock Grid.Column="1" Text="{Binding Cliente}" Style="{StaticResource StitchBodyTextStyle}" VerticalAlignment="Center"/>
+                                        <Border Grid.Column="2" HorizontalAlignment="Left" CornerRadius="10" Padding="10,4"
+                                                Background="{Binding EstadoFondo, Converter={StaticResource HexToBrushConverter}}"
+                                                VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding EstadoTexto}" FontSize="11" FontWeight="SemiBold"
+                                                       Foreground="{Binding EstadoTextoColor, Converter={StaticResource HexToBrushConverter}}"/>
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
 
             <controls:LoadingIndicator Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
         </StackPanel>

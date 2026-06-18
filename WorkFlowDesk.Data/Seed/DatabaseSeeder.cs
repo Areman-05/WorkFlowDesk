@@ -24,6 +24,8 @@ public static class DatabaseSeeder
         await SeedDemoUserAsync(context, DefaultSupervisorUserName, "supervisor@workflowdesk.local", "Supervisor Demo", TipoRol.Supervisor, DefaultSupervisorPassword);
         await SeedDemoUserAsync(context, DefaultEmpleadoUserName, "empleado@workflowdesk.local", "Empleado Demo", TipoRol.Empleado, DefaultEmpleadoPassword);
         await context.SaveChangesAsync();
+
+        await DemoDataSeeder.SeedAsync(context);
     }
 
     /// <summary>Crea el usuario administrador por defecto si no existe.</summary>
