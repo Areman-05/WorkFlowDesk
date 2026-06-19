@@ -81,9 +81,12 @@ public static class NavigationViewFactory
 
     private static UserControl CreateReportes(IServiceProvider services)
     {
-        var reporteService = services.GetRequiredService<IReporteService>();
-        var exportService = services.GetRequiredService<IExportService>();
-        return new ReportesView(new ReportesViewModel(reporteService, exportService));
+        return new ReportesView(new ReportesViewModel(
+            services.GetRequiredService<IReporteService>(),
+            services.GetRequiredService<IExportService>(),
+            services.GetRequiredService<IEmpleadoService>(),
+            services.GetRequiredService<IProyectoService>(),
+            services.GetRequiredService<ITareaService>()));
     }
 
     private static UserControl CreateConfiguracion(IServiceProvider services)

@@ -7,5 +7,6 @@ public class ActividadDiaItem
     public int Valor { get; init; }
     public double AlturaPorcentaje { get; init; }
     public double AlturaPixeles => AlturaPorcentaje * 1.2;
+    public double AlturaPixelesReporte => AlturaPorcentaje * 2;
     public bool EsDiaActual { get; init; }
 }
