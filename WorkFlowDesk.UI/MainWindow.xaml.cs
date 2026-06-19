@@ -93,6 +93,7 @@ public partial class MainWindow : Window
         "Tareas" => RolePermissions.CanAccessTareas,
         "Clientes" => RolePermissions.CanAccessClientes,
         "Reportes" => RolePermissions.CanAccessReportes,
+        "Optimizacion" => RolePermissions.CanAccessOptimizacion,
         "Configuracion" => RolePermissions.CanAccessConfiguracion,
         "Perfil" => SessionService.IsAuthenticated,
         _ => false

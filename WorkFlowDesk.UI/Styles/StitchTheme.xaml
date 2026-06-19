@@ -400,6 +400,34 @@
         </Setter>
     </Style>
 
+    <Style x:Key="StitchToggleSwitchStyle" TargetType="CheckBox">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <Border x:Name="Track" Width="44" Height="24" CornerRadius="12"
+                            Background="{StaticResource StitchOutlineVariantBrush}" HorizontalAlignment="Right">
+                        <Ellipse x:Name="Thumb" Width="20" Height="20" Fill="White" Margin="2"
+                                 HorizontalAlignment="Left" VerticalAlignment="Center">
+                            <Ellipse.Effect>
+                                <DropShadowEffect BlurRadius="4" ShadowDepth="1" Opacity="0.15"/>
+                            </Ellipse.Effect>
+                        </Ellipse>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Track" Property="Background" Value="{StaticResource StitchPrimaryBrush}"/>
+                            <Setter TargetName="Thumb" Property="HorizontalAlignment" Value="Right"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Track" Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="StitchExportPillButtonStyle" TargetType="Button">
         <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceBrush}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>

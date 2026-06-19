@@ -22,6 +22,7 @@
         <KeyBinding Key="D4" Modifiers="Control" Command="{Binding NavigateToTareasCommand}"/>
         <KeyBinding Key="D5" Modifiers="Control" Command="{Binding NavigateToClientesCommand}"/>
         <KeyBinding Key="D6" Modifiers="Control" Command="{Binding NavigateToReportesCommand}"/>
+        <KeyBinding Key="D8" Modifiers="Control" Command="{Binding NavigateToOptimizacionCommand}"/>
         <KeyBinding Key="D7" Modifiers="Control" Command="{Binding NavigateToConfiguracionCommand}"/>
         <KeyBinding Key="L" Modifiers="Control" Command="{Binding LogoutCommand}"/>
     </Window.InputBindings>
@@ -135,6 +136,24 @@
                 </Button>
             </Grid>
         </DataTemplate>
+        <DataTemplate x:Key="NavItemOptimizacionTemplate">
+            <Grid>
+                <Button Style="{StaticResource StitchSidebarNavButtonStyle}" Command="{Binding NavigateToOptimizacionCommand}"
+                        Visibility="{Binding IsOptimizacionActive, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE945;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="Optimización" Margin="12,0,0,0"/>
+                    </StackPanel>
+                </Button>
+                <Button Style="{StaticResource StitchSidebarNavActiveButtonStyle}" Command="{Binding NavigateToOptimizacionCommand}"
+                        Visibility="{Binding IsOptimizacionActive, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE945;" FontFamily="Segoe MDL2 Assets" Width="24"/>
+                        <TextBlock Text="Optimización" Margin="12,0,0,0"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </DataTemplate>
         <DataTemplate x:Key="NavItemConfiguracionTemplate">
             <Grid>
                 <Button Style="{StaticResource StitchSidebarNavButtonStyle}" Command="{Binding NavigateToConfiguracionCommand}"
@@ -224,6 +243,8 @@
                                         Visibility="{Binding ShowClientes, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         <ContentControl Content="{Binding}" ContentTemplate="{StaticResource NavItemReportesTemplate}"
                                         Visibility="{Binding ShowReportes, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                        <ContentControl Content="{Binding}" ContentTemplate="{StaticResource NavItemOptimizacionTemplate}"
+                                        Visibility="{Binding ShowOptimizacion, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                         <ContentControl Content="{Binding}" ContentTemplate="{StaticResource NavItemConfiguracionTemplate}"
                                         Visibility="{Binding ShowConfiguracion, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                     </StackPanel>

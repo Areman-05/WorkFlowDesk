@@ -54,6 +54,7 @@ public class DashboardViewModel : ViewModelBase
         CargarEstadisticasCommand = new AsyncRelayCommand(CargarEstadisticasAsync);
         VerTareasCommand = new RelayCommand(() => AppNavigationService.RequestSection("Tareas"));
         VerProyectosCommand = new RelayCommand(() => AppNavigationService.RequestSection("Proyectos"));
+        IrOptimizacionCommand = new RelayCommand(() => AppNavigationService.RequestSection("Optimizacion"));
         EditarProyectoCommand = new RelayCommand<DashboardProyectoPrioritarioItem>(p =>
         {
             if (p != null) AppNavigationService.RequestSection("Proyectos");
@@ -98,12 +99,18 @@ public class DashboardViewModel : ViewModelBase
     public IAsyncRelayCommand CargarEstadisticasCommand { get; }
     public IRelayCommand VerTareasCommand { get; }
     public IRelayCommand VerProyectosCommand { get; }
+    public IRelayCommand IrOptimizacionCommand { get; }
     public IRelayCommand<DashboardProyectoPrioritarioItem> EditarProyectoCommand { get; }
+
+    public event EventHandler? DatosActualizados;
+
+    private bool _cargaInicialCompleta;
 
     private async Task CargarEstadisticasAsync()
     {
         IsLoading = true;
         ErrorMessage = null;
+        var exito = false;
 
         try
         {
@@ -162,6 +169,7 @@ public class DashboardViewModel : ViewModelBase
             ActualizarActividad(tareas, clientes, empleados);
 
             TieneProyectosActivos = ProyectosActivos.Count > 0;
+            exito = true;
         }
         catch (Exception ex)
         {
@@ -171,6 +179,12 @@ public class DashboardViewModel : ViewModelBase
         finally
         {
             IsLoading = false;
+            if (exito)
+            {
+                if (_cargaInicialCompleta)
+                    DatosActualizados?.Invoke(this, EventArgs.Empty);
+                _cargaInicialCompleta = true;
+            }
         }
     }
 

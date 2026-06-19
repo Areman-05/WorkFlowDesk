@@ -22,6 +22,9 @@ public static class RolePermissions
     public static bool CanAccessReportes =>
         SessionService.IsAdmin() || SessionService.IsSupervisor();
 
+    public static bool CanAccessOptimizacion =>
+        SessionService.IsAdmin() || SessionService.IsSupervisor();
+
     public static bool CanAccessConfiguracion => SessionService.IsAdmin();
 
     public static bool CanManageEmpleados =>

@@ -21,6 +21,7 @@ public static class NavigationViewFactory
             "Tareas" => CreateTareas(services),
             "Clientes" => CreateClientes(services),
             "Reportes" => CreateReportes(services),
+            "Optimizacion" => CreateOptimizacion(services),
             "Configuracion" => CreateConfiguracion(services),
             "Perfil" => CreatePerfil(),
             _ => throw new ArgumentException($"Vista desconocida: {viewName}", nameof(viewName))
@@ -87,6 +88,13 @@ public static class NavigationViewFactory
             services.GetRequiredService<IEmpleadoService>(),
             services.GetRequiredService<IProyectoService>(),
             services.GetRequiredService<ITareaService>()));
+    }
+
+    private static UserControl CreateOptimizacion(IServiceProvider services)
+    {
+        return new OptimizacionView(new OptimizacionViewModel(
+            services.GetRequiredService<ITareaService>(),
+            services.GetRequiredService<IProyectoService>()));
     }
 
     private static UserControl CreateConfiguracion(IServiceProvider services)

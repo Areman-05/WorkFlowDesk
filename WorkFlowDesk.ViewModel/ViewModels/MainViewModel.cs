@@ -28,6 +28,7 @@ public class MainViewModel : ViewModelBase
         NavigateToTareasCommand = new RelayCommand(() => Navigate("Tareas"));
         NavigateToClientesCommand = new RelayCommand(() => Navigate("Clientes"));
         NavigateToReportesCommand = new RelayCommand(() => Navigate("Reportes"));
+        NavigateToOptimizacionCommand = new RelayCommand(() => Navigate("Optimizacion"));
         NavigateToConfiguracionCommand = new RelayCommand(() => Navigate("Configuracion"));
         NavigateToPerfilCommand = new RelayCommand(() => Navigate("Perfil"));
         LogoutCommand = new RelayCommand(() => LogoutRequested?.Invoke(this, EventArgs.Empty));
@@ -86,6 +87,7 @@ public class MainViewModel : ViewModelBase
     public bool ShowProyectos => RolePermissions.CanAccessProyectos;
     public bool ShowClientes => RolePermissions.CanAccessClientes;
     public bool ShowReportes => RolePermissions.CanAccessReportes;
+    public bool ShowOptimizacion => RolePermissions.CanAccessOptimizacion;
     public bool ShowConfiguracion => RolePermissions.CanAccessConfiguracion;
 
     public bool IsDashboardActive => CurrentSection == "Dashboard";
@@ -94,6 +96,7 @@ public class MainViewModel : ViewModelBase
     public bool IsTareasActive => CurrentSection == "Tareas";
     public bool IsClientesActive => CurrentSection == "Clientes";
     public bool IsReportesActive => CurrentSection == "Reportes";
+    public bool IsOptimizacionActive => CurrentSection == "Optimizacion";
     public bool IsConfiguracionActive => CurrentSection == "Configuracion";
     public bool IsPerfilActive => CurrentSection == "Perfil";
 
@@ -105,6 +108,7 @@ public class MainViewModel : ViewModelBase
         "Proyectos" => "Buscar proyectos, clientes...",
         "Tareas" => "Buscar tareas...",
         "Clientes" => "Buscar clientes...",
+        "Optimizacion" => "Buscar procesos o flujos...",
         _ => "Buscar..."
     };
 
@@ -129,6 +133,7 @@ public class MainViewModel : ViewModelBase
     public IRelayCommand NavigateToTareasCommand { get; }
     public IRelayCommand NavigateToClientesCommand { get; }
     public IRelayCommand NavigateToReportesCommand { get; }
+    public IRelayCommand NavigateToOptimizacionCommand { get; }
     public IRelayCommand NavigateToConfiguracionCommand { get; }
     public IRelayCommand NavigateToPerfilCommand { get; }
     public IRelayCommand LogoutCommand { get; }
@@ -209,6 +214,7 @@ public class MainViewModel : ViewModelBase
         OnPropertyChanged(nameof(IsTareasActive));
         OnPropertyChanged(nameof(IsClientesActive));
         OnPropertyChanged(nameof(IsReportesActive));
+        OnPropertyChanged(nameof(IsOptimizacionActive));
         OnPropertyChanged(nameof(IsConfiguracionActive));
         OnPropertyChanged(nameof(IsPerfilActive));
     }

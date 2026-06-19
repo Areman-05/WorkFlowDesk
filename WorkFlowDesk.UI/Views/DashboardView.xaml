@@ -21,11 +21,16 @@
                     <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorMessageStyle}" Margin="0,8,0,0"
                                Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
                 </StackPanel>
-                <Button Grid.Column="1" Style="{StaticResource StitchPrimaryButtonStyle}"
-                        Command="{Binding CargarEstadisticasCommand}" VerticalAlignment="Bottom" Padding="16,10">
+                <Button Grid.Column="1" Style="{StaticResource StitchPrimaryButtonXlStyle}"
+                        Command="{Binding CargarEstadisticasCommand}" VerticalAlignment="Bottom">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" Margin="0,0,8,0"/>
-                        <TextBlock Text="Actualizar"/>
+                        <TextBlock x:Name="RefreshIcon" Text="&#xE72C;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"
+                                   RenderTransformOrigin="0.5,0.5">
+                            <TextBlock.RenderTransform>
+                                <RotateTransform x:Name="RefreshIconRotation" Angle="0"/>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                        <TextBlock Text="Actualizar" FontWeight="SemiBold"/>
                     </StackPanel>
                 </Button>
             </Grid>
@@ -247,8 +252,11 @@
                         <TextBlock Text="Optimiza tu flujo" Style="{StaticResource StitchH2TextStyle}" Foreground="White"/>
                         <TextBlock Text="Revisa las nuevas herramientas de automatización para tus proyectos."
                                    Style="{StaticResource StitchBodyTextStyle}" Foreground="#E9E5FF" TextWrapping="Wrap" Margin="0,8,0,16"/>
-                        <Button Style="{StaticResource StitchAuthOutlineButtonStyle}" Content="Explorar ahora"
-                                Foreground="White" BorderBrush="#66FFFFFF"/>
+                        <Button Style="{StaticResource StitchAuthOutlineButtonStyle}"
+                                Command="{Binding IrOptimizacionCommand}"
+                                Foreground="White" BorderBrush="#66FFFFFF" Padding="20,10">
+                            <TextBlock Text="Explorar ahora" FontWeight="SemiBold"/>
+                        </Button>
                     </StackPanel>
                 </Border>
             </Grid>
