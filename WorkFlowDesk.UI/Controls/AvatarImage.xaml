@@ -11,7 +11,7 @@
     <Grid Width="{Binding Size, ElementName=Root}"
           Height="{Binding Size, ElementName=Root}">
         <Border x:Name="Placeholder"
-                Background="{StaticResource StitchSurfaceContainerBrush}"
+                Background="{DynamicResource StitchSurfaceContainerBrush}"
                 CornerRadius="{Binding CornerRadius, ElementName=Root}">
             <TextBlock x:Name="InitialsText"
                        Text="{Binding FallbackInitials, ElementName=Root}"

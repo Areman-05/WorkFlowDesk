@@ -55,13 +55,12 @@ public class DashboardViewModel : ViewModelBase
         VerTareasCommand = new RelayCommand(() => AppNavigationService.RequestSection("Tareas"));
         VerProyectosCommand = new RelayCommand(() => AppNavigationService.RequestSection("Proyectos"));
         IrOptimizacionCommand = new RelayCommand(() => AppNavigationService.RequestSection("Optimizacion"));
-        EditarProyectoCommand = new RelayCommand<DashboardProyectoPrioritarioItem>(p =>
-        {
-            if (p != null) AppNavigationService.RequestSection("Proyectos");
-        });
+        EditarProyectoCommand = new RelayCommand<DashboardProyectoPrioritarioItem>(EditarProyecto);
 
         CargarEstadisticasCommand.ExecuteAsync(null);
     }
+
+    public event EventHandler<int>? ProyectoEdicionSolicitado;
 
     public ObservableCollection<DashboardProyectoItem> ProyectosActivos { get; }
     public ObservableCollection<DashboardProyectoPrioritarioItem> ProyectosPrioritarios { get; }
@@ -103,6 +102,12 @@ public class DashboardViewModel : ViewModelBase
     public IRelayCommand<DashboardProyectoPrioritarioItem> EditarProyectoCommand { get; }
 
     public event EventHandler? DatosActualizados;
+
+    private void EditarProyecto(DashboardProyectoPrioritarioItem? proyecto)
+    {
+        if (proyecto != null)
+            ProyectoEdicionSolicitado?.Invoke(this, proyecto.Id);
+    }
 
     private bool _cargaInicialCompleta;
 

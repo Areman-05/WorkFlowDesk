@@ -6,6 +6,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/StitchThemeColorsLight.xaml"/>
                 <ResourceDictionary Source="Styles/AppStyles.xaml"/>
                 <ResourceDictionary Source="Styles/StitchTheme.xaml"/>
                 <ResourceDictionary Source="Styles/TooltipStyles.xaml"/>

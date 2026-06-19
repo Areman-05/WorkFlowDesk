@@ -1,0 +1,76 @@
+<UserControl x:Class="WorkFlowDesk.UI.Controls.CityAutocompleteBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="44"
+             d:DesignWidth="320"
+             x:Name="Root">
+    <Grid>
+        <Border Background="{DynamicResource StitchInputBackgroundBrush}"
+                BorderBrush="{DynamicResource StitchInputBorderBrush}" BorderThickness="1" CornerRadius="10" Padding="12,10">
+            <Grid>
+                <TextBlock Text="&#xE81D;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                           Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
+                           VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <TextBox x:Name="InputBox"
+                         Text="{Binding Text, ElementName=Root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         BorderThickness="0" Background="Transparent" FontSize="14" Padding="24,0,0,0"
+                         VerticalContentAlignment="Center"
+                         TextChanged="OnInputTextChanged"
+                         PreviewKeyDown="OnInputPreviewKeyDown"
+                         GotFocus="OnInputGotFocus"
+                         LostFocus="OnInputLostFocus"/>
+            </Grid>
+        </Border>
+
+        <Popup x:Name="SuggestionsPopup"
+               PlacementTarget="{Binding ElementName=Root}"
+               Placement="Bottom"
+               StaysOpen="False"
+               AllowsTransparency="True"
+               PopupAnimation="Fade">
+            <Border Background="{DynamicResource StitchSurfaceBrush}"
+                    BorderBrush="{DynamicResource StitchOutlineVariantBrush}"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    Margin="0,4,0,0"
+                    MinWidth="{Binding ActualWidth, ElementName=Root}"
+                    MaxHeight="220">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="16" ShadowDepth="2" Opacity="0.12" Color="#2E1065"/>
+                </Border.Effect>
+                <ListBox x:Name="SuggestionsList"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         SelectionChanged="OnSuggestionSelected"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Padding" Value="12,8"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border x:Name="Bd" Background="Transparent" Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource StitchSurfaceContainerLowBrush}"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Bd" Property="Background" Value="#1A9E00B5"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </Border>
+        </Popup>
+    </Grid>
+</UserControl>

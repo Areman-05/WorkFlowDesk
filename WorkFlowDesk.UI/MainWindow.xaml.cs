@@ -1,5 +1,7 @@
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using WorkFlowDesk.Common.Authorization;
 using WorkFlowDesk.Common.Services;
 using WorkFlowDesk.UI.Helpers;
@@ -12,6 +14,7 @@ public partial class MainWindow : Window
 {
     private readonly NavigationService _navigationService;
     private readonly MainViewModel _mainViewModel;
+    private DispatcherTimer? _toastTimer;
 
     public MainWindow()
     {
@@ -26,6 +29,7 @@ public partial class MainWindow : Window
 
         AppNavigationService.SectionRequested += OnSectionRequested;
         UserPreferencesService.AvatarChanged += OnAvatarChanged;
+        NotificationService.NotificationShown += OnAppNotificationShown;
 
         NavigateTo("Dashboard");
     }
@@ -63,6 +67,7 @@ public partial class MainWindow : Window
 
         AppNavigationService.SectionRequested -= OnSectionRequested;
         UserPreferencesService.AvatarChanged -= OnAvatarChanged;
+        NotificationService.NotificationShown -= OnAppNotificationShown;
         AuthFlowService.LogoutAndShowLogin(this);
     }
 
@@ -98,4 +103,31 @@ public partial class MainWindow : Window
         "Perfil" => SessionService.IsAuthenticated,
         _ => false
     };
+
+    private void OnAppNotificationShown(object? sender, string message)
+    {
+        if (DesktopNotificationService.IsEnabled)
+            ShowDesktopToast("WorkFlowDesk", message);
+    }
+
+    public void ShowDesktopToast(string title, string message)
+    {
+        ToastTitle.Text = title;
+        ToastMessage.Text = message;
+        DesktopToast.Visibility = Visibility.Visible;
+
+        var fadeIn = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(220));
+        DesktopToast.BeginAnimation(OpacityProperty, fadeIn);
+
+        _toastTimer?.Stop();
+        _toastTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(4) };
+        _toastTimer.Tick += (_, _) =>
+        {
+            _toastTimer.Stop();
+            var fadeOut = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(220));
+            fadeOut.Completed += (_, _) => DesktopToast.Visibility = Visibility.Collapsed;
+            DesktopToast.BeginAnimation(OpacityProperty, fadeOut);
+        };
+        _toastTimer.Start();
+    }
 }

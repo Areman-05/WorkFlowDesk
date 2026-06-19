@@ -1,3 +1,4 @@
+using System.Windows;
 using System.Windows.Controls;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.UI.Helpers;
@@ -22,6 +23,13 @@ public partial class ClientesView : UserControl
         _viewModel.ClienteCreado += OnClienteCreado;
         _viewModel.ClienteEditado += OnClienteEditado;
         _viewModel.ExportacionCompletada += OnExportacionCompletada;
+        _viewModel.MensajePreparado += OnMensajePreparado;
+    }
+
+    private void OnMensajePreparado(object? sender, string mensaje)
+    {
+        Clipboard.SetText(mensaje);
+        NotificationService.ShowSuccess("Mensaje copiado al portapapeles. Pégalo en tu cliente de correo.");
     }
 
     private void OnExportacionCompletada(object? sender, string path)

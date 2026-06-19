@@ -91,7 +91,18 @@ public class EmpleadoService : IEmpleadoService
             throw new ValidationException($"Ya existe otro empleado con el email {empleado.Email}");
         }
 
-        _context.Empleados.Update(empleado);
+        existing.Nombre = empleado.Nombre;
+        existing.Apellidos = empleado.Apellidos;
+        existing.Email = empleado.Email;
+        existing.Telefono = empleado.Telefono;
+        existing.Departamento = empleado.Departamento;
+        existing.Cargo = empleado.Cargo;
+        existing.Estado = empleado.Estado;
+        existing.FechaContratacion = empleado.FechaContratacion;
+        existing.FechaBaja = empleado.FechaBaja;
+        existing.UsuarioId = empleado.UsuarioId;
+        existing.AvatarIndex = empleado.AvatarIndex;
+
         await _context.SaveChangesAsync();
     }
 

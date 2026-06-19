@@ -53,7 +53,7 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Border Background="{StaticResource StitchSurfaceContainerLowBrush}"
+                                <Border Background="{DynamicResource StitchSurfaceContainerLowBrush}"
                                         BorderBrush="#4DD6C0D3" BorderThickness="1" CornerRadius="8" Padding="12,10" Margin="0,0,8,0">
                                     <TextBox Text="{Binding RutaSqlite, Mode=OneWay}" IsReadOnly="True" BorderThickness="0"
                                              Background="Transparent" FontSize="14"/>
@@ -130,7 +130,7 @@
                             </Button.Template>
                             <StackPanel HorizontalAlignment="Center">
                                 <TextBlock Text="&#xE753;" FontFamily="Segoe MDL2 Assets" FontSize="22"
-                                           Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                           Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
                                            HorizontalAlignment="Center" Margin="0,0,0,8"/>
                                 <TextBlock Text="Crear backup" Style="{StaticResource StitchH3TextStyle}" HorizontalAlignment="Center"/>
                                 <TextBlock Text="{Binding UltimoBackupTexto, StringFormat=Último backup: {0}}"
@@ -176,7 +176,7 @@
 
                         <StackPanel Grid.Column="0">
                             <TextBlock Text="Contraseña actual" Style="{StaticResource StitchLabelTextStyle}" Margin="0,0,0,6"/>
-                            <Border Background="{StaticResource StitchSurfaceContainerLowBrush}"
+                            <Border Background="{DynamicResource StitchSurfaceContainerLowBrush}"
                                     BorderBrush="#4DD6C0D3" BorderThickness="1" CornerRadius="8">
                                 <Grid>
                                     <PasswordBox x:Name="PasswordActualBox"
@@ -189,7 +189,7 @@
                                             Background="Transparent" BorderThickness="0" Cursor="Hand"
                                             Click="OnTogglePasswordActualVisibility" ToolTip="Mostrar/ocultar">
                                         <TextBlock x:Name="PasswordActualEye" Text="&#xE890;" FontFamily="Segoe MDL2 Assets"
-                                                   Foreground="{StaticResource StitchOnSurfaceVariantBrush}"/>
+                                                   Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"/>
                                     </Button>
                                 </Grid>
                             </Border>
@@ -197,7 +197,7 @@
 
                         <StackPanel Grid.Column="2">
                             <TextBlock Text="Nueva contraseña" Style="{StaticResource StitchLabelTextStyle}" Margin="0,0,0,6"/>
-                            <Border Background="{StaticResource StitchSurfaceContainerLowBrush}"
+                            <Border Background="{DynamicResource StitchSurfaceContainerLowBrush}"
                                     BorderBrush="#4DD6C0D3" BorderThickness="1" CornerRadius="8">
                                 <PasswordBox local:PasswordBoxHelper.Password="{Binding PasswordNuevo, UpdateSourceTrigger=PropertyChanged}"
                                              Style="{StaticResource StitchModalInnerPasswordBoxStyle}" Padding="12,12"/>
@@ -206,7 +206,7 @@
 
                         <StackPanel Grid.Column="4">
                             <TextBlock Text="Confirmar contraseña" Style="{StaticResource StitchLabelTextStyle}" Margin="0,0,0,6"/>
-                            <Border Background="{StaticResource StitchSurfaceContainerLowBrush}"
+                            <Border Background="{DynamicResource StitchSurfaceContainerLowBrush}"
                                     BorderBrush="#4DD6C0D3" BorderThickness="1" CornerRadius="8">
                                 <PasswordBox local:PasswordBoxHelper.Password="{Binding PasswordConfirmacion, UpdateSourceTrigger=PropertyChanged}"
                                              Style="{StaticResource StitchModalInnerPasswordBoxStyle}" Padding="12,12"/>
@@ -227,7 +227,8 @@
             <!-- Actividad del sistema -->
             <Border Style="{StaticResource GlassCardBorderStyle}" Padding="0">
                 <StackPanel>
-                    <Border Background="#80F6F2FF" Padding="24,16" BorderBrush="#1AD6C0D3" BorderThickness="0,0,0,1">
+                    <Border Background="{DynamicResource StitchFilterBarBackgroundBrush}" Padding="24,16"
+                            BorderBrush="{DynamicResource StitchRowDividerBrush}" BorderThickness="0,0,0,1">
                         <Grid>
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                 <TextBlock Text="&#xE756;" FontFamily="Segoe MDL2 Assets" FontSize="16"
@@ -248,7 +249,7 @@
                                     <TextBlock Text="{Binding Mensaje}" FontFamily="Consolas" FontSize="12" TextWrapping="Wrap">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
-                                                <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceVariantBrush}"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource StitchOnSurfaceVariantBrush}"/>
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding EsAdvertencia}" Value="True">
                                                         <Setter Property="Foreground" Value="{StaticResource StitchSecondaryBrush}"/>

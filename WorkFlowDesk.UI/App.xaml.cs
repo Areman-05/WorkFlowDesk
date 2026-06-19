@@ -27,11 +27,13 @@ namespace WorkFlowDesk.UI
             AppRuntimeInfo.MarkStarted();
             DatabasePaths.GetDataDirectory();
             ServiceLocator.ConfigureServices();
+            AppThemeService.Apply(AppThemeService.TemaClaro);
             base.OnStartup(e);
         }
 
         protected override void OnExit(ExitEventArgs e)
         {
+            DesktopNotificationService.Dispose();
             ServiceLocator.Dispose();
             base.OnExit(e);
         }

@@ -23,7 +23,7 @@ public static class NavigationViewFactory
             "Reportes" => CreateReportes(services),
             "Optimizacion" => CreateOptimizacion(services),
             "Configuracion" => CreateConfiguracion(services),
-            "Perfil" => CreatePerfil(),
+            "Perfil" => CreatePerfil(services),
             _ => throw new ArgumentException($"Vista desconocida: {viewName}", nameof(viewName))
         };
     }
@@ -35,7 +35,11 @@ public static class NavigationViewFactory
             services.GetRequiredService<IProyectoService>(),
             services.GetRequiredService<ITareaService>(),
             services.GetRequiredService<IClienteService>());
-        return new DashboardView(viewModel);
+        return new DashboardView(
+            viewModel,
+            services.GetRequiredService<IProyectoService>(),
+            services.GetRequiredService<IClienteService>(),
+            services.GetRequiredService<IEmpleadoService>());
     }
 
     private static UserControl CreateEmpleados(IServiceProvider services)
@@ -94,7 +98,8 @@ public static class NavigationViewFactory
     {
         return new OptimizacionView(new OptimizacionViewModel(
             services.GetRequiredService<ITareaService>(),
-            services.GetRequiredService<IProyectoService>()));
+            services.GetRequiredService<IProyectoService>(),
+            services.GetRequiredService<IExportService>()));
     }
 
     private static UserControl CreateConfiguracion(IServiceProvider services)
@@ -105,6 +110,9 @@ public static class NavigationViewFactory
             services.GetRequiredService<IAuthenticationService>()));
     }
 
-    private static UserControl CreatePerfil() =>
-        new ProfileView(new ProfileViewModel());
+    private static UserControl CreatePerfil(IServiceProvider services) =>
+        new ProfileView(new ProfileViewModel(
+            services.GetRequiredService<IEmpleadoService>(),
+            services.GetRequiredService<IUsuarioService>(),
+            services.GetRequiredService<IExportService>()));
 }

@@ -2,6 +2,7 @@ using System.Globalization;
 using CommunityToolkit.Mvvm.Input;
 using WorkFlowDesk.Common.Authorization;
 using WorkFlowDesk.Common.Helpers;
+using WorkFlowDesk.Common.Services;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.ViewModel.Base;
@@ -38,6 +39,8 @@ public class ClientesViewModel : ListViewModelBase, ISearchableViewModel
         EditarClienteCommand = new RelayCommand<ClienteListItem>(EditarCliente, CanEditarCliente);
         EliminarClienteCommand = new AsyncRelayCommand<ClienteListItem>(EliminarClienteAsync, CanEliminarCliente);
         ExportarCommand = new AsyncRelayCommand(ExportarAsync);
+        VerReporteDetalladoCommand = new RelayCommand(() => AppNavigationService.RequestSection("Reportes"));
+        PrepararMensajeCommand = new RelayCommand(PrepararMensaje, () => !string.IsNullOrWhiteSpace(AccionSugerida));
 
         CargarClientesCommand.ExecuteAsync(null);
     }
@@ -124,10 +127,13 @@ public class ClientesViewModel : ListViewModelBase, ISearchableViewModel
     public IRelayCommand<ClienteListItem> EditarClienteCommand { get; }
     public IAsyncRelayCommand<ClienteListItem> EliminarClienteCommand { get; }
     public IAsyncRelayCommand ExportarCommand { get; }
+    public IRelayCommand VerReporteDetalladoCommand { get; }
+    public IRelayCommand PrepararMensajeCommand { get; }
 
     public event EventHandler<Cliente>? ClienteCreado;
     public event EventHandler<Cliente>? ClienteEditado;
     public event EventHandler<string>? ExportacionCompletada;
+    public event EventHandler<string>? MensajePreparado;
 
     private async Task CargarClientesAsync()
     {
@@ -188,6 +194,8 @@ public class ClientesViewModel : ListViewModelBase, ISearchableViewModel
         AccionSugerida = clientePausado != null
             ? $"{ObtenerNombreDisplay(clientePausado)} tiene un proyecto pausado. Considera enviar una propuesta de reactivación."
             : "No hay acciones urgentes. Tu cartera de clientes está al día.";
+
+        PrepararMensajeCommand.NotifyCanExecuteChanged();
     }
 
     private void CrearCliente()
@@ -236,6 +244,12 @@ public class ClientesViewModel : ListViewModelBase, ISearchableViewModel
     }
 
     private bool CanEliminarCliente(ClienteListItem? item) => item != null;
+
+    private void PrepararMensaje()
+    {
+        var cuerpo = $"Hola,\n\n{AccionSugerida}\n\nQuedo atento/a.\nSaludos.";
+        MensajePreparado?.Invoke(this, cuerpo);
+    }
 
     private async Task ExportarAsync()
     {

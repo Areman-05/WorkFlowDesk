@@ -13,7 +13,7 @@
         MinWidth="1000"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResize"
-        Background="{StaticResource StitchBackgroundGradientBrush}"
+        Background="{DynamicResource StitchBackgroundGradientBrush}"
         Loaded="OnLoaded">
     <Window.InputBindings>
         <KeyBinding Key="D1" Modifiers="Control" Command="{Binding NavigateToDashboardCommand}"/>
@@ -196,8 +196,8 @@
             </Grid.ColumnDefinitions>
 
             <!-- Sidebar -->
-            <Border Grid.Column="0" Background="{StaticResource StitchSidebarBrush}"
-                    BorderBrush="#33D6C0D3" BorderThickness="0,0,1,0">
+            <Border Grid.Column="0" Background="{DynamicResource StitchSidebarBrush}"
+                    BorderBrush="{DynamicResource StitchInputBorderBrush}" BorderThickness="0,0,1,0">
                 <DockPanel LastChildFill="True" Margin="0,24,0,16">
                     <StackPanel DockPanel.Dock="Top" Margin="24,0,24,24">
                         <TextBlock Text="WorkFlowDesk" FontSize="20" FontWeight="SemiBold" Foreground="White"/>
@@ -259,18 +259,19 @@
                 </Grid.RowDefinitions>
 
                 <!-- Top bar -->
-                <Border Grid.Row="0" Background="#D9FCF8FF" BorderBrush="#1AD6C0D3" BorderThickness="0,0,0,1">
+                <Border Grid.Row="0" Background="{DynamicResource StitchTopBarBackgroundBrush}"
+                        BorderBrush="{DynamicResource StitchTopBarBorderBrush}" BorderThickness="0,0,0,1">
                     <Grid Margin="24,0">
                         <Border HorizontalAlignment="Left" VerticalAlignment="Center"
-                                Background="{StaticResource StitchSurfaceContainerBrush}"
-                                BorderBrush="#33D6C0D3" BorderThickness="1" CornerRadius="12" Padding="12,6"
+                                Background="{DynamicResource StitchSurfaceContainerBrush}"
+                                BorderBrush="{DynamicResource StitchInputBorderBrush}" BorderThickness="1" CornerRadius="12" Padding="12,6"
                                 Visibility="{Binding IsSearchVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Grid MinWidth="280">
                                 <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets"
-                                           Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                           Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
                                            VerticalAlignment="Center" HorizontalAlignment="Left" IsHitTestVisible="False"/>
                                 <TextBox BorderThickness="0" Background="Transparent"
-                                         Foreground="{StaticResource StitchOnSurfaceBrush}"
+                                         Foreground="{DynamicResource StitchOnSurfaceBrush}"
                                          FlowDirection="LeftToRight"
                                          VerticalAlignment="Center" Padding="28,4,8,4"
                                          Text="{Binding TextoBusqueda, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
@@ -294,7 +295,7 @@
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                             <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
                                 <TextBlock Text="{Binding UserName}" FontWeight="SemiBold" FontSize="13"
-                                           Foreground="{StaticResource StitchOnSurfaceBrush}" HorizontalAlignment="Right"/>
+                                           Foreground="{DynamicResource StitchOnSurfaceBrush}" HorizontalAlignment="Right"/>
                                 <TextBlock Text="{Binding UserRole}" Style="{StaticResource StitchCaptionTextStyle}" HorizontalAlignment="Right"/>
                             </StackPanel>
                             <controls:AvatarImage AvatarIndex="{Binding AvatarIndex}"
@@ -310,5 +311,30 @@
                 <ContentControl x:Name="ContentArea" Grid.Row="1"/>
             </Grid>
         </Grid>
+
+        <!-- Toast de notificaciones de escritorio -->
+        <Border x:Name="DesktopToast"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="24"
+                MaxWidth="360"
+                Padding="16,14"
+                CornerRadius="12"
+                Background="{DynamicResource StitchGlassCardBackgroundBrush}"
+                BorderBrush="{DynamicResource StitchPrimaryBrush}"
+                BorderThickness="1"
+                Visibility="Collapsed"
+                Opacity="0"
+                Panel.ZIndex="100">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="24" ShadowDepth="4" Opacity="0.18" Color="#2E1065"/>
+            </Border.Effect>
+            <StackPanel>
+                <TextBlock x:Name="ToastTitle" FontWeight="SemiBold" FontSize="14"
+                           Foreground="{DynamicResource StitchOnSurfaceBrush}"/>
+                <TextBlock x:Name="ToastMessage" Margin="0,4,0,0" TextWrapping="Wrap"
+                           Style="{StaticResource StitchCaptionTextStyle}"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>

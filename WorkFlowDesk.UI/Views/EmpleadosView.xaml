@@ -67,7 +67,8 @@
                     </Grid.RowDefinitions>
 
                     <!-- Cabecera columnas -->
-                    <Border Grid.Row="0" Background="#80F6F2FF" BorderBrush="#1AD6C0D3" BorderThickness="0,0,0,1" Padding="24,14">
+                    <Border Grid.Row="0" Background="{DynamicResource StitchFilterBarBackgroundBrush}"
+                            BorderBrush="{DynamicResource StitchRowDividerBrush}" BorderThickness="0,0,0,1" Padding="24,14">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2.2*"/>
@@ -118,7 +119,7 @@
                                                                   Margin="0,0,16,0"/>
                                             <StackPanel VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding NombreCompleto}" FontWeight="SemiBold" FontSize="14"
-                                                           Foreground="{StaticResource StitchOnSurfaceBrush}"/>
+                                                           Foreground="{DynamicResource StitchOnSurfaceBrush}"/>
                                                 <TextBlock Text="{Binding CodigoId}" Style="{StaticResource StitchCaptionTextStyle}" Margin="0,2,0,0"/>
                                             </StackPanel>
                                         </StackPanel>
@@ -128,7 +129,7 @@
                                         <TextBlock Grid.Column="2" Text="{Binding Email}" Style="{StaticResource StitchBodyTextStyle}"
                                                    VerticalAlignment="Center"/>
                                         <TextBlock Grid.Column="3" Text="{Binding Rol}" FontWeight="Medium" FontSize="14"
-                                                   Foreground="{StaticResource StitchOnSurfaceBrush}" VerticalAlignment="Center"/>
+                                                   Foreground="{DynamicResource StitchOnSurfaceBrush}" VerticalAlignment="Center"/>
 
                                         <Border Grid.Column="4" CornerRadius="10" Padding="10,4" HorizontalAlignment="Left" VerticalAlignment="Center"
                                                 Background="{Binding EstadoFondo, Converter={StaticResource HexToBrushConverter}}">
@@ -204,7 +205,7 @@
                                                Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
                     <!-- Paginación -->
-                    <Border Grid.Row="2" BorderBrush="#1AD6C0D3" BorderThickness="0,1,0,0" Padding="24,14">
+                    <Border Grid.Row="2" BorderBrush="{DynamicResource StitchRowDividerBrush}" BorderThickness="0,1,0,0" Padding="24,14">
                         <TextBlock Text="{Binding InfoPaginacion}" Style="{StaticResource StitchCaptionTextStyle}" VerticalAlignment="Center"/>
                     </Border>
                 </Grid>

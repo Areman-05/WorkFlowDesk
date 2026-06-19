@@ -1,0 +1,92 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Paleta Stitch clara -->
+    <Color x:Key="StitchPrimaryColor">#9E00B5</Color>
+    <Color x:Key="StitchPrimaryContainerColor">#C028D7</Color>
+    <Color x:Key="StitchSecondaryColor">#944A00</Color>
+    <Color x:Key="StitchSecondaryContainerColor">#FD933D</Color>
+    <Color x:Key="StitchBackgroundColor">#FCF8FF</Color>
+    <Color x:Key="StitchSurfaceColor">#FCF8FF</Color>
+    <Color x:Key="StitchSurfaceContainerLowColor">#F6F2FF</Color>
+    <Color x:Key="StitchSurfaceContainerColor">#EFEBFF</Color>
+    <Color x:Key="StitchOnSurfaceColor">#181445</Color>
+    <Color x:Key="StitchOnSurfaceVariantColor">#524251</Color>
+    <Color x:Key="StitchSidebarColor">#36003E</Color>
+    <Color x:Key="StitchOutlineVariantColor">#D6C0D3</Color>
+    <Color x:Key="StitchErrorColor">#BA1A1A</Color>
+    <Color x:Key="StitchSuccessColor">#22C55E</Color>
+    <Color x:Key="StitchTertiaryColor">#87466D</Color>
+    <Color x:Key="StitchTertiaryContainerColor">#A45E86</Color>
+    <Color x:Key="StitchOnTertiaryContainerColor">#FFFBFF</Color>
+    <Color x:Key="StitchOnPrimaryContainerColor">#FFFBFF</Color>
+    <Color x:Key="StitchOnSecondaryContainerColor">#693300</Color>
+
+    <SolidColorBrush x:Key="StitchPrimaryBrush" Color="{StaticResource StitchPrimaryColor}"/>
+    <SolidColorBrush x:Key="StitchPrimaryContainerBrush" Color="{StaticResource StitchPrimaryContainerColor}"/>
+    <SolidColorBrush x:Key="StitchSecondaryBrush" Color="{StaticResource StitchSecondaryColor}"/>
+    <SolidColorBrush x:Key="StitchSecondaryContainerBrush" Color="{StaticResource StitchSecondaryContainerColor}"/>
+    <SolidColorBrush x:Key="StitchBackgroundBrush" Color="{StaticResource StitchBackgroundColor}"/>
+    <SolidColorBrush x:Key="StitchSurfaceBrush" Color="{StaticResource StitchSurfaceColor}"/>
+    <SolidColorBrush x:Key="StitchSurfaceContainerBrush" Color="{StaticResource StitchSurfaceContainerColor}"/>
+    <SolidColorBrush x:Key="StitchSurfaceContainerLowBrush" Color="{StaticResource StitchSurfaceContainerLowColor}"/>
+    <SolidColorBrush x:Key="StitchOnSurfaceBrush" Color="{StaticResource StitchOnSurfaceColor}"/>
+    <SolidColorBrush x:Key="StitchOnSurfaceVariantBrush" Color="{StaticResource StitchOnSurfaceVariantColor}"/>
+    <SolidColorBrush x:Key="StitchSidebarBrush" Color="{StaticResource StitchSidebarColor}"/>
+    <SolidColorBrush x:Key="StitchOutlineVariantBrush" Color="{StaticResource StitchOutlineVariantColor}"/>
+    <SolidColorBrush x:Key="StitchErrorBrush" Color="{StaticResource StitchErrorColor}"/>
+    <SolidColorBrush x:Key="StitchSuccessBrush" Color="{StaticResource StitchSuccessColor}"/>
+    <SolidColorBrush x:Key="StitchTertiaryBrush" Color="{StaticResource StitchTertiaryColor}"/>
+    <SolidColorBrush x:Key="StitchTertiaryContainerBrush" Color="{StaticResource StitchTertiaryContainerColor}"/>
+    <SolidColorBrush x:Key="StitchOnTertiaryContainerBrush" Color="{StaticResource StitchOnTertiaryContainerColor}"/>
+    <SolidColorBrush x:Key="StitchOnPrimaryContainerBrush" Color="{StaticResource StitchOnPrimaryContainerColor}"/>
+    <SolidColorBrush x:Key="StitchOnSecondaryContainerBrush" Color="{StaticResource StitchOnSecondaryContainerColor}"/>
+    <SolidColorBrush x:Key="StitchWhiteBrush" Color="White"/>
+
+    <SolidColorBrush x:Key="StitchInputBackgroundBrush" Color="#80FFFFFF"/>
+    <SolidColorBrush x:Key="StitchInputBorderBrush" Color="#33D6C0D3"/>
+    <SolidColorBrush x:Key="StitchGlassCardBackgroundBrush" Color="#D9FFFFFF"/>
+    <SolidColorBrush x:Key="StitchGlassCardBorderBrush" Color="#66FFFFFF"/>
+    <SolidColorBrush x:Key="StitchTopBarBackgroundBrush" Color="#D9FCF8FF"/>
+    <SolidColorBrush x:Key="StitchTopBarBorderBrush" Color="#1AD6C0D3"/>
+    <SolidColorBrush x:Key="StitchSubtleOverlayBrush" Color="#66FFFFFF"/>
+    <SolidColorBrush x:Key="StitchListHoverBrush" Color="#66FFFFFF"/>
+    <SolidColorBrush x:Key="StitchThemeOptionBackgroundBrush" Color="#33FFFFFF"/>
+    <SolidColorBrush x:Key="StitchThemeOptionBorderBrush" Color="#33D6C0D3"/>
+    <SolidColorBrush x:Key="StitchThemeOptionSelectedBrush" Color="#0D9E00B5"/>
+    <SolidColorBrush x:Key="StitchPrimaryTintBrush" Color="#1A9E00B5"/>
+    <SolidColorBrush x:Key="StitchSecondaryButtonBackgroundBrush" Color="#F6F2FF"/>
+    <SolidColorBrush x:Key="StitchSecondaryButtonHoverBrush" Color="#EFEBFF"/>
+    <SolidColorBrush x:Key="StitchAuthGlassBackgroundBrush" Color="#D9FFFFFF"/>
+    <SolidColorBrush x:Key="StitchAuthSubtleBackgroundBrush" Color="#33FFFFFF"/>
+    <SolidColorBrush x:Key="StitchFilterBarBackgroundBrush" Color="#80F6F2FF"/>
+    <SolidColorBrush x:Key="StitchRowDividerBrush" Color="#1AD6C0D3"/>
+    <SolidColorBrush x:Key="StitchRowHoverBrush" Color="#0D9E00B5"/>
+    <SolidColorBrush x:Key="StitchExportPillBackgroundBrush" Color="White"/>
+    <SolidColorBrush x:Key="StitchExportPillBorderBrush" Color="#E2E8F0"/>
+    <SolidColorBrush x:Key="StitchExportPillHoverBackgroundBrush" Color="#FAFAFA"/>
+    <SolidColorBrush x:Key="StitchExportPillHoverBorderBrush" Color="#CBD5E1"/>
+    <SolidColorBrush x:Key="StitchRecommendationCardBrush" Color="#CCFFFFFF"/>
+
+    <DrawingBrush x:Key="StitchFlowDotGridBrush" TileMode="Tile" Viewport="0,0,24,24" ViewportUnits="Absolute">
+        <DrawingBrush.Drawing>
+            <GeometryDrawing Brush="#D6C0D3">
+                <GeometryDrawing.Geometry>
+                    <EllipseGeometry Center="12,12" RadiusX="1" RadiusY="1"/>
+                </GeometryDrawing.Geometry>
+            </GeometryDrawing>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+
+    <LinearGradientBrush x:Key="StitchBackgroundGradientBrush" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FDF4FF" Offset="0"/>
+        <GradientStop Color="#EDE9FE" Offset="0.5"/>
+        <GradientStop Color="#FCF8FF" Offset="1"/>
+    </LinearGradientBrush>
+
+    <RadialGradientBrush x:Key="StitchFogBackgroundBrush" GradientOrigin="0.5,0.5" Center="0.5,0.5" RadiusX="0.85" RadiusY="0.85">
+        <GradientStop Color="#FCF8FF" Offset="0"/>
+        <GradientStop Color="#E9E5FF" Offset="1"/>
+    </RadialGradientBrush>
+
+</ResourceDictionary>

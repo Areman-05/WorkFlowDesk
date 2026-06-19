@@ -6,19 +6,8 @@
              xmlns:controls="clr-namespace:WorkFlowDesk.UI.Controls"
              mc:Ignorable="d"
              d:DesignHeight="1200" d:DesignWidth="1100">
-    <UserControl.Resources>
-        <DrawingBrush x:Key="FlowDotGridBrush" TileMode="Tile" Viewport="0,0,24,24" ViewportUnits="Absolute">
-            <DrawingBrush.Drawing>
-                <GeometryDrawing Brush="#D6C0D3">
-                    <GeometryDrawing.Geometry>
-                        <EllipseGeometry Center="12,12" RadiusX="1" RadiusY="1"/>
-                    </GeometryDrawing.Geometry>
-                </GeometryDrawing>
-            </DrawingBrush.Drawing>
-        </DrawingBrush>
-    </UserControl.Resources>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+    <ScrollViewer x:Name="MainScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
         <StackPanel Margin="24" MaxWidth="1200" HorizontalAlignment="Center">
 
             <!-- Cabecera -->
@@ -47,21 +36,22 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border Margin="0,0,12,0" Padding="24" CornerRadius="16"
-                                    Background="#CCFFFFFF" BorderThickness="1">
+                                    BorderThickness="1">
                                 <Border.Effect>
                                     <DropShadowEffect BlurRadius="16" ShadowDepth="0" Opacity="0.08" Color="#2E0A65"/>
                                 </Border.Effect>
                                 <Border.Style>
                                     <Style TargetType="Border">
-                                        <Setter Property="Background" Value="#CCFFFFFF"/>
-                                        <Setter Property="BorderBrush" Value="#33D6C0D3"/>
+                                        <Setter Property="Background" Value="{DynamicResource StitchRecommendationCardBrush}"/>
+                                        <Setter Property="BorderBrush" Value="{DynamicResource StitchGlassCardBorderBrush}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ResaltadoFucsia}" Value="False">
                                                 <Setter Property="Background" Value="{Binding ResaltadoFondo, Converter={StaticResource HexToBrushConverter}}"/>
                                                 <Setter Property="BorderBrush" Value="{Binding ResaltadoBorde, Converter={StaticResource HexToBrushConverter}}"/>
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding ResaltadoFucsia}" Value="True">
-                                                <Setter Property="BorderBrush" Value="#339E00B5"/>
+                                                <Setter Property="Background" Value="{DynamicResource StitchThemeOptionSelectedBrush}"/>
+                                                <Setter Property="BorderBrush" Value="{DynamicResource StitchPrimaryBrush}"/>
                                                 <Setter Property="Effect">
                                                     <Setter.Value>
                                                         <DropShadowEffect BlurRadius="16" ShadowDepth="0" Opacity="0.2" Color="#9E00B5"/>
@@ -89,10 +79,10 @@
                                                 Cursor="Hand" Background="Transparent" BorderThickness="0" HorizontalAlignment="Left"
                                                 Padding="0">
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="Configurar ahora" Foreground="{StaticResource StitchPrimaryBrush}"
+                                                <TextBlock Text="Configurar ahora" Foreground="{DynamicResource StitchPrimaryBrush}"
                                                            FontWeight="Bold" FontSize="13"/>
                                                 <TextBlock Text="&#xE72A;" FontFamily="Segoe MDL2 Assets" FontSize="12"
-                                                           Foreground="{StaticResource StitchPrimaryBrush}" Margin="6,0,0,0"/>
+                                                           Foreground="{DynamicResource StitchPrimaryBrush}" Margin="6,0,0,0"/>
                                             </StackPanel>
                                         </Button>
                                     </StackPanel>
@@ -108,10 +98,19 @@
                 <Grid Margin="0,0,0,16">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <TextBlock Text="Constructor de Flujos: " Style="{StaticResource StitchH2TextStyle}"/>
-                        <TextBlock Text="Nuevo Proceso" FontStyle="Italic" FontSize="20"
-                                   Foreground="{StaticResource StitchOnSurfaceVariantBrush}"/>
+                        <Border Background="{DynamicResource StitchInputBackgroundBrush}"
+                                BorderBrush="{DynamicResource StitchInputBorderBrush}"
+                                BorderThickness="1" CornerRadius="8" Padding="10,4" MinWidth="180">
+                            <TextBox Text="{Binding NombreFlujo, UpdateSourceTrigger=PropertyChanged}"
+                                     FontStyle="Italic" FontSize="16" BorderThickness="0" Background="Transparent"
+                                     Foreground="{DynamicResource StitchOnSurfaceBrush}"/>
+                        </Border>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Style="{StaticResource StitchAuthOutlineButtonStyle}" Content="Nuevo flujo"
+                                Command="{Binding NuevoFlujoCommand}" Padding="14,10" Margin="0,0,8,0"/>
+                        <Button Style="{StaticResource StitchAuthOutlineButtonStyle}" Content="Exportar"
+                                Command="{Binding ExportarFlujosCommand}" Padding="14,10" Margin="0,0,8,0"/>
                         <Button Style="{StaticResource StitchAuthCancelButtonStyle}" Content="Limpiar lienzo"
                                 Command="{Binding LimpiarLienzoCommand}" Padding="16,10" Margin="0,0,8,0"/>
                         <Button Style="{StaticResource StitchPrimaryButtonStyle}" Content="Guardar Flujo"
@@ -119,104 +118,102 @@
                     </StackPanel>
                 </Grid>
 
-                <Border Style="{StaticResource GlassCardBorderStyle}" Height="400" Background="{StaticResource FlowDotGridBrush}"
+                <Border Style="{StaticResource GlassCardBorderStyle}" Height="400"
+                        Background="{DynamicResource StitchFlowDotGridBrush}"
                         CornerRadius="16" ClipToBounds="True">
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                    <ScrollViewer x:Name="FlowBuilderScrollViewer"
+                                  HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Disabled"
+                                  Focusable="False"
+                                  PreviewMouseWheel="OnNestedScrollViewerPreviewMouseWheel">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="32">
-                            <!-- Trigger -->
-                            <Grid Width="224">
-                                <Border Style="{StaticResource GlassCardBorderStyle}" Padding="16" CornerRadius="12"
-                                        BorderBrush="{StaticResource StitchPrimaryBrush}" BorderThickness="2">
-                                    <StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                            <Ellipse Width="8" Height="8" Fill="{StaticResource StitchPrimaryBrush}" Margin="0,0,6,0"/>
-                                            <TextBlock Text="TRIGGER" Style="{StaticResource StitchCaptionTextStyle}"
-                                                       Foreground="{StaticResource StitchPrimaryBrush}" FontWeight="Bold"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="&#xE823;" FontFamily="Segoe MDL2 Assets" FontSize="28"
-                                                       Foreground="{StaticResource StitchPrimaryBrush}" Margin="0,0,12,0"/>
-                                            <StackPanel>
-                                                <TextBlock Text="Cada vez que..." FontWeight="SemiBold" FontSize="13"/>
-                                                <TextBlock Text="Se crea una nueva tarea" Style="{StaticResource StitchCaptionTextStyle}"/>
+                            <TextBlock Text="Añade pasos para construir tu flujo. Haz clic en una tarjeta para editarla."
+                                       Style="{StaticResource StitchBodyTextStyle}"
+                                       VerticalAlignment="Center" Margin="0,0,24,0"
+                                       Visibility="{Binding ConteoPasos, Converter={StaticResource IntZeroToVisibilityConverter}}"/>
+
+                            <ItemsControl ItemsSource="{Binding PasosFlujo}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0"
+                                                        Visibility="{Binding MostrarConectorPrevio, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <Rectangle Width="6" Height="2" Fill="#C028D7" Margin="0,0,2,0"/>
+                                                <Rectangle Width="6" Height="2" Fill="#C028D7" Margin="0,0,2,0"/>
+                                                <Rectangle Width="6" Height="2" Fill="#C028D7" Margin="0,0,2,0"/>
+                                                <Rectangle Width="6" Height="2" Fill="#C028D7"/>
                                             </StackPanel>
+
+                                            <Grid Width="224">
+                                                <Button Command="{Binding DataContext.EditarPasoCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}"
+                                                        Style="{StaticResource StitchGhostButtonStyle}"
+                                                        Cursor="Hand" Padding="0" ToolTip="Clic para editar paso">
+                                                    <Border Padding="16" CornerRadius="12"
+                                                            Background="{Binding FondoCard, Converter={StaticResource HexToBrushConverter}}"
+                                                            BorderBrush="{Binding BordeCard, Converter={StaticResource HexToBrushConverter}}"
+                                                            BorderThickness="1">
+                                                        <Border.Style>
+                                                            <Style TargetType="Border">
+                                                                <Setter Property="Padding" Value="16"/>
+                                                                <Setter Property="CornerRadius" Value="12"/>
+                                                                <Setter Property="Background" Value="{Binding FondoCard, Converter={StaticResource HexToBrushConverter}}"/>
+                                                                <Setter Property="BorderBrush" Value="{Binding BordeCard, Converter={StaticResource HexToBrushConverter}}"/>
+                                                                <Setter Property="BorderThickness" Value="1"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding EsTrigger}" Value="True">
+                                                                        <Setter Property="BorderBrush" Value="{Binding BordeCardGrueso, Converter={StaticResource HexToBrushConverter}}"/>
+                                                                        <Setter Property="BorderThickness" Value="2"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Border.Style>
+                                                        <StackPanel>
+                                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                                <Ellipse Width="8" Height="8"
+                                                                         Fill="{Binding IconoColor, Converter={StaticResource HexToBrushConverter}}" Margin="0,0,6,0"/>
+                                                                <TextBlock Text="{Binding TipoLabel}" Style="{StaticResource StitchCaptionTextStyle}"
+                                                                           Foreground="{Binding IconoColor, Converter={StaticResource HexToBrushConverter}}" FontWeight="Bold"/>
+                                                            </StackPanel>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="{Binding Icono}" FontFamily="Segoe MDL2 Assets" FontSize="28"
+                                                                           Foreground="{Binding IconoColor, Converter={StaticResource HexToBrushConverter}}" Margin="0,0,12,0"/>
+                                                                <StackPanel>
+                                                                    <TextBlock Text="{Binding EtiquetaCorta}" FontWeight="SemiBold" FontSize="13"/>
+                                                                    <TextBlock Text="{Binding Descripcion}" Style="{StaticResource StitchCaptionTextStyle}" TextWrapping="Wrap"/>
+                                                                </StackPanel>
+                                                            </StackPanel>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </Button>
+                                                <Border Width="24" Height="24" CornerRadius="12"
+                                                        Background="{StaticResource StitchPrimaryBrush}"
+                                                        HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-4,-4"
+                                                        Visibility="{Binding EsTrigger, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                    <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="White"
+                                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </Grid>
                                         </StackPanel>
-                                    </StackPanel>
-                                </Border>
-                                <Border Width="24" Height="24" CornerRadius="12" Background="{StaticResource StitchPrimaryBrush}"
-                                        HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-4,-4">
-                                    <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets" FontSize="11" Foreground="White"
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <Button Command="{Binding AnadirPasoCommand}"
+                                    Style="{StaticResource StitchGhostButtonStyle}"
+                                    Margin="32,0,0,0" Cursor="Hand" ToolTip="Añadir paso" Padding="0">
+                                <Border Width="48" Height="48" CornerRadius="24" Style="{StaticResource GlassCardBorderStyle}"
+                                        BorderBrush="#669E00B5" BorderThickness="2">
+                                    <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="18"
+                                               Foreground="{StaticResource StitchPrimaryContainerBrush}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
-                            </Grid>
-
-                            <!-- Conector -->
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0">
-                                <Rectangle Width="6" Height="2" Fill="#C028D7" Margin="0,0,2,0"/>
-                                <Rectangle Width="6" Height="2" Fill="#C028D7" Margin="0,0,2,0"/>
-                                <Rectangle Width="6" Height="2" Fill="#C028D7" Margin="0,0,2,0"/>
-                                <Rectangle Width="6" Height="2" Fill="#C028D7"/>
-                            </StackPanel>
-
-                            <!-- Condición -->
-                            <Border Width="224" Style="{StaticResource GlassCardBorderStyle}" Padding="16" CornerRadius="12"
-                                    Background="#1AFD933D" BorderBrush="#4DFD933D" BorderThickness="1">
-                                <StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                        <Ellipse Width="8" Height="8" Fill="{StaticResource StitchSecondaryBrush}" Margin="0,0,6,0"/>
-                                        <TextBlock Text="CONDICIÓN" Style="{StaticResource StitchCaptionTextStyle}"
-                                                   Foreground="{StaticResource StitchSecondaryBrush}" FontWeight="Bold"/>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="&#xE71C;" FontFamily="Segoe MDL2 Assets" FontSize="28"
-                                                   Foreground="{StaticResource StitchSecondaryBrush}" Margin="0,0,12,0"/>
-                                        <StackPanel>
-                                            <TextBlock Text="Si..." FontWeight="SemiBold" FontSize="13"/>
-                                            <TextBlock Text="Prioridad es &quot;Alta&quot;" Style="{StaticResource StitchCaptionTextStyle}"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Border>
-
-                            <!-- Conector -->
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0">
-                                <Rectangle Width="6" Height="2" Fill="#C028D7" Margin="0,0,2,0"/>
-                                <Rectangle Width="6" Height="2" Fill="#C028D7" Margin="0,0,2,0"/>
-                                <Rectangle Width="6" Height="2" Fill="#C028D7" Margin="0,0,2,0"/>
-                                <Rectangle Width="6" Height="2" Fill="#C028D7"/>
-                            </StackPanel>
-
-                            <!-- Acción -->
-                            <Border Width="224" Style="{StaticResource GlassCardBorderStyle}" Padding="16" CornerRadius="12"
-                                    BorderBrush="{StaticResource StitchTertiaryBrush}" BorderThickness="1">
-                                <Border.Effect>
-                                    <DropShadowEffect BlurRadius="12" ShadowDepth="0" Opacity="0.12" Color="#87466D"/>
-                                </Border.Effect>
-                                <StackPanel>
-                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                                        <Ellipse Width="8" Height="8" Fill="{StaticResource StitchTertiaryBrush}" Margin="0,0,6,0"/>
-                                        <TextBlock Text="ACCIÓN" Style="{StaticResource StitchCaptionTextStyle}"
-                                                   Foreground="{StaticResource StitchTertiaryBrush}" FontWeight="Bold"/>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" FontSize="28"
-                                                   Foreground="{StaticResource StitchTertiaryBrush}" Margin="0,0,12,0"/>
-                                        <StackPanel>
-                                            <TextBlock Text="Entonces..." FontWeight="SemiBold" FontSize="13"/>
-                                            <TextBlock Text="Asignar a PM Senior" Style="{StaticResource StitchCaptionTextStyle}"/>
-                                        </StackPanel>
-                                    </StackPanel>
-                                </StackPanel>
-                            </Border>
-
-                            <!-- Añadir -->
-                            <Border Width="48" Height="48" CornerRadius="24" Style="{StaticResource GlassCardBorderStyle}"
-                                    Margin="32,0,0,0" Cursor="Hand" BorderBrush="#669E00B5" BorderThickness="2"
-                                    ToolTip="Añadir paso">
-                                <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="18"
-                                           Foreground="{StaticResource StitchPrimaryContainerBrush}"
-                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
+                            </Button>
                         </StackPanel>
                     </ScrollViewer>
                 </Border>
@@ -226,15 +223,16 @@
             <StackPanel Margin="0,0,0,24">
                 <Grid Margin="0,0,0,16">
                     <TextBlock Text="Automatizaciones Activas" Style="{StaticResource StitchH2TextStyle}"/>
-                    <Border HorizontalAlignment="Right" Background="#1A9E00B5" CornerRadius="12" Padding="12,4">
+                    <Border HorizontalAlignment="Right" Background="{DynamicResource StitchThemeOptionSelectedBrush}" CornerRadius="12" Padding="12,4">
                         <TextBlock Text="{Binding AutomatizacionesActivas, StringFormat={}{0} Activas}"
-                                   Foreground="{StaticResource StitchPrimaryBrush}" FontSize="12" FontWeight="Bold"/>
+                                   Foreground="{DynamicResource StitchPrimaryBrush}" FontSize="12" FontWeight="Bold"/>
                     </Border>
                 </Grid>
 
                 <Border Style="{StaticResource GlassCardBorderStyle}" Padding="0">
                     <StackPanel>
-                        <Border Background="#80F6F2FF" Padding="24,14" BorderBrush="#1AD6C0D3" BorderThickness="0,0,0,1">
+                        <Border Background="{DynamicResource StitchFilterBarBackgroundBrush}" Padding="24,14"
+                                BorderBrush="{DynamicResource StitchRowDividerBrush}" BorderThickness="0,0,0,1">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2.2*"/>
@@ -252,7 +250,14 @@
                         <ItemsControl ItemsSource="{Binding AutomatizacionesFiltradas}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Border BorderBrush="#0DD6C0D3" BorderThickness="0,0,0,1" Padding="24,14">
+                                    <Border BorderBrush="{DynamicResource StitchRowDividerBrush}" BorderThickness="0,0,0,1"
+                                            Padding="24,14" Cursor="Hand"
+                                            ToolTip="Clic para cargar y editar este flujo">
+                                        <Border.InputBindings>
+                                            <MouseBinding MouseAction="LeftClick"
+                                                          Command="{Binding DataContext.EditarAutomatizacionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                          CommandParameter="{Binding}"/>
+                                        </Border.InputBindings>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="2.2*"/>
@@ -265,14 +270,16 @@
                                                            Foreground="{Binding IconoColor, Converter={StaticResource HexToBrushConverter}}"
                                                            VerticalAlignment="Center" Margin="0,0,12,0"/>
                                                 <StackPanel VerticalAlignment="Center">
-                                                    <TextBlock Text="{Binding Nombre}" FontWeight="SemiBold" FontSize="14"/>
+                                                    <TextBlock Text="{Binding Nombre}" FontWeight="SemiBold" FontSize="14"
+                                                               Foreground="{DynamicResource StitchOnSurfaceBrush}"/>
                                                     <TextBlock Text="{Binding Descripcion}" Style="{StaticResource StitchCaptionTextStyle}"/>
                                                 </StackPanel>
                                             </StackPanel>
                                             <TextBlock Grid.Column="1" Text="{Binding Trigger}" Style="{StaticResource StitchBodyTextStyle}" VerticalAlignment="Center"/>
                                             <TextBlock Grid.Column="2" Text="{Binding UltimaEjecucion}" Style="{StaticResource StitchBodyTextStyle}" VerticalAlignment="Center"/>
                                             <CheckBox Grid.Column="3" IsChecked="{Binding Activa}" Style="{StaticResource StitchToggleSwitchStyle}"
-                                                      HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                                      HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                      PreviewMouseLeftButtonDown="OnAutomatizacionToggleClick"/>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>

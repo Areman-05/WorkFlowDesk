@@ -55,14 +55,14 @@
                             <StackPanel Margin="0,0,0,16">
                                 <TextBlock Text="Nombre de usuario"
                                            Style="{StaticResource StitchLabelTextStyle}"
-                                           Foreground="{StaticResource StitchOnSurfaceBrush}"
+                                           Foreground="{DynamicResource StitchOnSurfaceBrush}"
                                            Margin="4,0,0,4"/>
                                 <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
                                     <Grid>
                                         <TextBlock Text="&#xE77B;"
                                                    FontFamily="Segoe MDL2 Assets"
                                                    FontSize="20"
-                                                   Foreground="{StaticResource StitchOutlineVariantBrush}"
+                                                   Foreground="{DynamicResource StitchOutlineVariantBrush}"
                                                    VerticalAlignment="Center"
                                                    Margin="16,0,0,0"
                                                    IsHitTestVisible="False"/>
@@ -77,14 +77,14 @@
                             <StackPanel>
                                 <TextBlock Text="Contraseña"
                                            Style="{StaticResource StitchLabelTextStyle}"
-                                           Foreground="{StaticResource StitchOnSurfaceBrush}"
+                                           Foreground="{DynamicResource StitchOnSurfaceBrush}"
                                            Margin="4,0,0,4"/>
                                 <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
                                     <Grid>
                                         <TextBlock Text="&#xE72E;"
                                                    FontFamily="Segoe MDL2 Assets"
                                                    FontSize="20"
-                                                   Foreground="{StaticResource StitchOutlineVariantBrush}"
+                                                   Foreground="{DynamicResource StitchOutlineVariantBrush}"
                                                    VerticalAlignment="Center"
                                                    Margin="16,0,0,0"
                                                    IsHitTestVisible="False"/>
@@ -129,7 +129,7 @@
                                     <TextBlock Text="&#xE946;"
                                                FontFamily="Segoe MDL2 Assets"
                                                FontSize="16"
-                                               Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                               Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
                                                VerticalAlignment="Center"
                                                Margin="0,0,8,0"/>
                                     <TextBlock Text="Cuentas de prueba:"
@@ -144,7 +144,7 @@
                                                        Foreground="{StaticResource StitchPrimaryBrush}"
                                                        HorizontalAlignment="Left"/>
                                             <TextBlock Text="Admin123" FontSize="12"
-                                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                                       Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
                                                        HorizontalAlignment="Right" Opacity="0.9"/>
                                         </Grid>
                                     </Border>
@@ -154,7 +154,7 @@
                                                        Foreground="{StaticResource StitchPrimaryBrush}"
                                                        HorizontalAlignment="Left"/>
                                             <TextBlock Text="Supervisor123" FontSize="12"
-                                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                                       Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
                                                        HorizontalAlignment="Right" Opacity="0.9"/>
                                         </Grid>
                                     </Border>
@@ -164,7 +164,7 @@
                                                        Foreground="{StaticResource StitchPrimaryBrush}"
                                                        HorizontalAlignment="Left"/>
                                             <TextBlock Text="Empleado123" FontSize="12"
-                                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                                       Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
                                                        HorizontalAlignment="Right" Opacity="0.9"/>
                                         </Grid>
                                     </Border>

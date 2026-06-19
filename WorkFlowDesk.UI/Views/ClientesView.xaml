@@ -100,7 +100,7 @@
                 </Border>
                 <Border Style="{StaticResource GlassCardBorderStyle}" Margin="10,0,0,0" Padding="16">
                     <StackPanel Orientation="Horizontal">
-                        <Border Width="48" Height="48" CornerRadius="24" Background="{StaticResource StitchSurfaceContainerBrush}" Margin="0,0,12,0">
+                        <Border Width="48" Height="48" CornerRadius="24" Background="{DynamicResource StitchSurfaceContainerBrush}" Margin="0,0,12,0">
                             <TextBlock Text="&#xE7C4;" FontFamily="Segoe MDL2 Assets" FontSize="20"
                                        Foreground="{StaticResource StitchPrimaryBrush}"
                                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -122,7 +122,8 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <Border Grid.Row="0" Background="#80F6F2FF" BorderBrush="#1AD6C0D3" BorderThickness="0,0,0,1" Padding="24,14">
+                    <Border Grid.Row="0" Background="{DynamicResource StitchFilterBarBackgroundBrush}"
+                            BorderBrush="{DynamicResource StitchRowDividerBrush}" BorderThickness="0,0,0,1" Padding="24,14">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*"/>
@@ -175,7 +176,7 @@
                                             </Border>
                                             <StackPanel VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding NombreDisplay}" FontWeight="SemiBold" FontSize="14"
-                                                           Foreground="{StaticResource StitchOnSurfaceBrush}"/>
+                                                           Foreground="{DynamicResource StitchOnSurfaceBrush}"/>
                                                 <TextBlock Text="{Binding CodigoId}" Style="{StaticResource StitchCaptionTextStyle}" Margin="0,2,0,0"/>
                                             </StackPanel>
                                         </StackPanel>
@@ -199,7 +200,7 @@
 
                                         <StackPanel Grid.Column="4" Orientation="Horizontal" VerticalAlignment="Center">
                                             <TextBlock Text="{Binding ProyectosCount}" FontWeight="SemiBold" FontSize="14"
-                                                       Foreground="{StaticResource StitchOnSurfaceBrush}" Margin="0,0,4,0"/>
+                                                       Foreground="{DynamicResource StitchOnSurfaceBrush}" Margin="0,0,4,0"/>
                                             <TextBlock Text="{Binding ProyectosEtiqueta}" Style="{StaticResource StitchCaptionTextStyle}" VerticalAlignment="Center"/>
                                         </StackPanel>
 
@@ -266,7 +267,7 @@
                     <StackPanel Grid.Row="1" Visibility="{Binding MostrarEstadoVacio, Converter={StaticResource BooleanToVisibilityConverter}}"
                                 VerticalAlignment="Center" HorizontalAlignment="Center" Margin="48">
                         <Border Width="96" Height="96" CornerRadius="48"
-                                Background="{StaticResource StitchSurfaceContainerBrush}"
+                                Background="{DynamicResource StitchSurfaceContainerBrush}"
                                 HorizontalAlignment="Center" Margin="0,0,0,16">
                             <TextBlock Text="&#xE8CB;" FontFamily="Segoe MDL2 Assets" FontSize="48"
                                        Foreground="#4D524251" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -287,7 +288,8 @@
                     <controls:LoadingIndicator Grid.Row="1"
                                                Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-                    <Border Grid.Row="2" Background="#4DF6F2FF" BorderBrush="#1AD6C0D3" BorderThickness="0,1,0,0" Padding="24,14">
+                    <Border Grid.Row="2" Background="{DynamicResource StitchFilterBarBackgroundBrush}"
+                            BorderBrush="{DynamicResource StitchRowDividerBrush}" BorderThickness="0,1,0,0" Padding="24,14">
                         <TextBlock Text="{Binding InfoPaginacion}" Style="{StaticResource StitchCaptionTextStyle}" VerticalAlignment="Center"/>
                     </Border>
                 </Grid>
@@ -306,11 +308,16 @@
                         <TextBlock Text="Perspectiva de Negocio" Style="{StaticResource StitchH2TextStyle}" Margin="0,0,0,8"/>
                         <TextBlock Text="{Binding PerspectivaNegocio}" Style="{StaticResource StitchBodyTextStyle}"
                                    TextWrapping="Wrap" MaxWidth="640" Margin="0,0,0,12"/>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Ver reporte detallado" FontWeight="Bold"
-                                       Foreground="{StaticResource StitchPrimaryBrush}" VerticalAlignment="Center"/>
-                            <TextBlock Text="&#xE72A;" FontFamily="Segoe MDL2 Assets" FontSize="14"
-                                       Foreground="{StaticResource StitchPrimaryBrush}" Margin="8,0,0,0"/>
+                        <StackPanel Orientation="Horizontal" Cursor="Hand">
+                            <Button Command="{Binding VerReporteDetalladoCommand}"
+                                    Style="{StaticResource StitchGhostButtonStyle}" Padding="0" Cursor="Hand">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Ver reporte detallado" FontWeight="Bold"
+                                               Foreground="{StaticResource StitchPrimaryBrush}" VerticalAlignment="Center"/>
+                                    <TextBlock Text="&#xE72A;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                               Foreground="{StaticResource StitchPrimaryBrush}" Margin="8,0,0,0"/>
+                                </StackPanel>
+                            </Button>
                         </StackPanel>
                     </StackPanel>
                 </Border>
@@ -322,7 +329,9 @@
                         <TextBlock Text="Acción sugerida" Style="{StaticResource StitchH3TextStyle}" Margin="0,0,0,4"/>
                         <TextBlock Text="{Binding AccionSugerida}" Style="{StaticResource StitchCaptionTextStyle}"
                                    TextWrapping="Wrap" Margin="0,0,0,16"/>
-                        <Button Style="{StaticResource StitchAuthOutlineButtonStyle}" Padding="12,8" HorizontalAlignment="Stretch">
+                        <Button Style="{StaticResource StitchAuthOutlineButtonStyle}" Padding="12,8"
+                                HorizontalAlignment="Stretch"
+                                Command="{Binding PrepararMensajeCommand}">
                             <TextBlock Text="Preparar mensaje" FontWeight="SemiBold"
                                        Foreground="{StaticResource StitchPrimaryBrush}"/>
                         </Button>

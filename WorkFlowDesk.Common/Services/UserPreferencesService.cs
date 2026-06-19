@@ -29,6 +29,38 @@ public static class UserPreferencesService
         AvatarChanged?.Invoke(null, userId);
     }
 
+    public static UserProfileData GetProfileData(int userId)
+    {
+        EnsureLoaded();
+        if (_store!.Profiles.TryGetValue(userId, out var data))
+            return data;
+
+        data = new UserProfileData();
+        _store.Profiles[userId] = data;
+        return data;
+    }
+
+    public static void SetProfileData(int userId, UserProfileData data)
+    {
+        EnsureLoaded();
+        _store!.Profiles[userId] = data;
+        Save();
+    }
+
+    public static void SetPasswordChangedAt(int userId, DateTime changedAt)
+    {
+        var data = GetProfileData(userId);
+        data.PasswordChangedAt = changedAt;
+        SetProfileData(userId, data);
+    }
+
+    public static void UpdateProfile(int userId, Action<UserProfileData> update)
+    {
+        var data = GetProfileData(userId);
+        update(data);
+        SetProfileData(userId, data);
+    }
+
     private static void EnsureLoaded()
     {
         if (_store != null)
@@ -66,5 +98,6 @@ public static class UserPreferencesService
     private sealed class UserPreferencesStore
     {
         public Dictionary<int, int> AvatarIndices { get; set; } = new();
+        public Dictionary<int, UserProfileData> Profiles { get; set; } = new();
     }
 }

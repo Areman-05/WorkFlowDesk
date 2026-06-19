@@ -409,6 +409,7 @@ public class ConfiguracionViewModel : ViewModelBase, ISearchableViewModel
             PasswordActual = string.Empty;
             PasswordNuevo = string.Empty;
             PasswordConfirmacion = string.Empty;
+            UserPreferencesService.SetPasswordChangedAt(usuario.Id, DateTime.Now);
             OperacionCompletada?.Invoke(this, "Contraseña actualizada correctamente.");
             RegistrarActividad("SECURITY: Contraseña administrativa actualizada correctamente");
         }

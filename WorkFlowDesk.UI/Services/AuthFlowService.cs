@@ -43,6 +43,11 @@ public static class AuthFlowService
         {
             SessionService.SetCurrentUser(usuario);
 
+            AppThemeService.ApplyForUser(usuario.Id);
+            var prefs = UserPreferencesService.GetProfileData(usuario.Id);
+            LocalizationService.Apply(prefs.Idioma);
+            DesktopNotificationService.SetEnabled(prefs.NotificacionesEscritorio);
+
             var mainWindow = new MainWindow();
             Application.Current.MainWindow = mainWindow;
             Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;

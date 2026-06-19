@@ -21,7 +21,7 @@
                      Padding="12,0,8,0"
                      FontSize="14"
                      FlowDirection="LeftToRight"
-                     Foreground="{StaticResource StitchOnSurfaceBrush}"
+                     Foreground="{DynamicResource StitchOnSurfaceBrush}"
                      VerticalContentAlignment="Center"
                      LostFocus="OnDateTextLostFocus"
                      KeyDown="OnDateTextKeyDown"/>
@@ -64,8 +64,8 @@
                    AllowsTransparency="True"
                    PopupAnimation="Fade"
                    HorizontalOffset="-220">
-                <Border Background="{StaticResource StitchSurfaceBrush}"
-                        BorderBrush="{StaticResource StitchOutlineVariantBrush}"
+                <Border Background="{DynamicResource StitchSurfaceBrush}"
+                        BorderBrush="{DynamicResource StitchOutlineVariantBrush}"
                         BorderThickness="1"
                         CornerRadius="12"
                         Padding="8"

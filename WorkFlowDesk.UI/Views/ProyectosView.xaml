@@ -10,7 +10,7 @@
     <UserControl.Resources>
         <Style x:Key="StitchProgresoBarStyle" TargetType="ProgressBar">
             <Setter Property="Height" Value="6"/>
-            <Setter Property="Background" Value="{StaticResource StitchSurfaceContainerBrush}"/>
+            <Setter Property="Background" Value="{DynamicResource StitchSurfaceContainerBrush}"/>
             <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
             <Setter Property="BorderThickness" Value="0"/>
         </Style>
@@ -34,8 +34,8 @@
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0">
-                        <Border Background="{StaticResource StitchSurfaceContainerLowBrush}"
-                                BorderBrush="{StaticResource StitchOutlineVariantBrush}"
+                        <Border Background="{DynamicResource StitchSurfaceContainerLowBrush}"
+                                BorderBrush="{DynamicResource StitchOutlineVariantBrush}"
                                 BorderThickness="1" CornerRadius="12" Padding="4,2">
                             <StackPanel Orientation="Horizontal">
                                 <Button Content="Todos" Command="{Binding FiltrarTodosCommand}" Padding="14,6" Margin="2"
@@ -43,10 +43,10 @@
                                     <Button.Style>
                                         <Style TargetType="Button">
                                             <Setter Property="Background" Value="Transparent"/>
-                                            <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceVariantBrush}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource StitchOnSurfaceVariantBrush}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding FiltroTodosActivo}" Value="True">
-                                                    <Setter Property="Background" Value="{StaticResource StitchSurfaceBrush}"/>
+                                                    <Setter Property="Background" Value="{DynamicResource StitchSurfaceBrush}"/>
                                                     <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
                                                     <Setter Property="FontWeight" Value="SemiBold"/>
                                                 </DataTrigger>
@@ -59,10 +59,10 @@
                                     <Button.Style>
                                         <Style TargetType="Button">
                                             <Setter Property="Background" Value="Transparent"/>
-                                            <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceVariantBrush}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource StitchOnSurfaceVariantBrush}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding FiltroActivosActivo}" Value="True">
-                                                    <Setter Property="Background" Value="{StaticResource StitchSurfaceBrush}"/>
+                                                    <Setter Property="Background" Value="{DynamicResource StitchSurfaceBrush}"/>
                                                     <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
                                                     <Setter Property="FontWeight" Value="SemiBold"/>
                                                 </DataTrigger>
@@ -75,10 +75,10 @@
                                     <Button.Style>
                                         <Style TargetType="Button">
                                             <Setter Property="Background" Value="Transparent"/>
-                                            <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceVariantBrush}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource StitchOnSurfaceVariantBrush}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding FiltroCompletadosActivo}" Value="True">
-                                                    <Setter Property="Background" Value="{StaticResource StitchSurfaceBrush}"/>
+                                                    <Setter Property="Background" Value="{DynamicResource StitchSurfaceBrush}"/>
                                                     <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
                                                     <Setter Property="FontWeight" Value="SemiBold"/>
                                                 </DataTrigger>
@@ -187,7 +187,8 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <Border Grid.Row="0" Background="#80F6F2FF" BorderBrush="#1AD6C0D3" BorderThickness="0,0,0,1" Padding="24,14">
+                    <Border Grid.Row="0" Background="{DynamicResource StitchFilterBarBackgroundBrush}"
+                            BorderBrush="{DynamicResource StitchRowDividerBrush}" BorderThickness="0,0,0,1" Padding="24,14">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*"/>
@@ -232,7 +233,7 @@
 
                                         <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                             <Border Width="40" Height="40" CornerRadius="8"
-                                                    Background="{StaticResource StitchSurfaceContainerBrush}"
+                                                    Background="{DynamicResource StitchSurfaceContainerBrush}"
                                                     Margin="0,0,12,0">
                                                 <TextBlock Text="{Binding Iniciales}" FontWeight="Bold" FontSize="13"
                                                            Foreground="{StaticResource StitchPrimaryBrush}"
@@ -240,7 +241,7 @@
                                             </Border>
                                             <StackPanel VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding Proyecto.Nombre}" FontWeight="SemiBold" FontSize="14"
-                                                           Foreground="{StaticResource StitchOnSurfaceBrush}"/>
+                                                           Foreground="{DynamicResource StitchOnSurfaceBrush}"/>
                                                 <TextBlock Text="{Binding CodigoId}" Style="{StaticResource StitchCaptionTextStyle}" Margin="0,2,0,0"/>
                                             </StackPanel>
                                         </StackPanel>
@@ -256,7 +257,7 @@
 
                                         <StackPanel Grid.Column="4" VerticalAlignment="Center" Margin="0,0,8,0">
                                             <TextBlock Text="{Binding Progreso, StringFormat={}{0}%}" FontSize="11" FontWeight="Medium"
-                                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
+                                                       Foreground="{DynamicResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
                                             <ProgressBar Value="{Binding Progreso}" Maximum="100" Style="{StaticResource StitchProgresoBarStyle}"/>
                                         </StackPanel>
 
@@ -327,7 +328,7 @@
                     <controls:LoadingIndicator Grid.Row="1"
                                                Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-                    <Border Grid.Row="2" BorderBrush="#1AD6C0D3" BorderThickness="0,1,0,0" Padding="24,14">
+                    <Border Grid.Row="2" BorderBrush="{DynamicResource StitchRowDividerBrush}" BorderThickness="0,1,0,0" Padding="24,14">
                         <TextBlock Text="{Binding InfoPaginacion}" Style="{StaticResource StitchCaptionTextStyle}" VerticalAlignment="Center"/>
                     </Border>
                 </Grid>

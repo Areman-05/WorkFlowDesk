@@ -97,7 +97,19 @@ public class UsuarioService : IUsuarioService
     /// <summary>Actualiza los datos del usuario en la base de datos.</summary>
     public async Task UpdateAsync(Usuario usuario)
     {
-        _context.Usuarios.Update(usuario);
+        var existing = await _context.Usuarios.FindAsync(usuario.Id)
+            ?? await GetByIdAsync(usuario.Id);
+
+        if (existing == null)
+            throw new InvalidOperationException($"No se encontró el usuario con ID {usuario.Id}.");
+
+        existing.NombreUsuario = usuario.NombreUsuario;
+        existing.Email = usuario.Email;
+        existing.NombreCompleto = usuario.NombreCompleto;
+        existing.RolId = usuario.RolId;
+        existing.Activo = usuario.Activo;
+        existing.UltimoAcceso = usuario.UltimoAcceso;
+
         await _context.SaveChangesAsync();
     }
 

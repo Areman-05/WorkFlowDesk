@@ -77,8 +77,8 @@
                             <Border Background="#1AA45E86" CornerRadius="8" Padding="8" HorizontalAlignment="Left" Width="36" Height="36">
                                 <TextBlock Text="&#xE7C3;" FontFamily="Segoe MDL2 Assets" Foreground="#87466D" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
-                            <Border HorizontalAlignment="Right" Background="{StaticResource StitchSurfaceContainerBrush}" CornerRadius="10" Padding="8,4">
-                                <TextBlock Text="{Binding BadgeTareas}" FontSize="11" Foreground="{StaticResource StitchOnSurfaceVariantBrush}"/>
+                            <Border HorizontalAlignment="Right" Background="{DynamicResource StitchSurfaceContainerBrush}" CornerRadius="10" Padding="8,4">
+                                <TextBlock Text="{Binding BadgeTareas}" FontSize="11" Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"/>
                             </Border>
                         </Grid>
                         <TextBlock Text="{Binding TotalTareas}" Style="{StaticResource StitchStatNumberStyle}"/>
@@ -127,7 +127,7 @@
                                 <Ellipse Stroke="#E9E5FF" StrokeThickness="8"/>
                                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                                     <TextBlock Text="{Binding TareasPendientes}" FontSize="22" FontWeight="SemiBold"
-                                               Foreground="{StaticResource StitchOnSurfaceBrush}" HorizontalAlignment="Center"/>
+                                               Foreground="{DynamicResource StitchOnSurfaceBrush}" HorizontalAlignment="Center"/>
                                     <TextBlock Text="Quedan" Style="{StaticResource StitchCaptionTextStyle}" HorizontalAlignment="Center"/>
                                     <TextBlock Text="{Binding PorcentajePendientes, StringFormat={}{0}% del total}"
                                                Style="{StaticResource StitchCaptionTextStyle}" HorizontalAlignment="Center" Margin="0,4,0,0"/>
@@ -142,13 +142,13 @@
                                 </Grid>
                                 <Grid Margin="0,0,0,10">
                                     <TextBlock Text="Esta semana" Style="{StaticResource StitchBodyTextStyle}"/>
-                                    <Border HorizontalAlignment="Right" Background="{StaticResource StitchSurfaceContainerBrush}" CornerRadius="8" Padding="8,4">
+                                    <Border HorizontalAlignment="Right" Background="{DynamicResource StitchSurfaceContainerBrush}" CornerRadius="8" Padding="8,4">
                                         <TextBlock Text="{Binding TareasEstaSemana}" FontWeight="SemiBold" FontSize="12"/>
                                     </Border>
                                 </Grid>
                                 <Grid>
                                     <TextBlock Text="Pendientes sin fecha" Style="{StaticResource StitchBodyTextStyle}"/>
-                                    <Border HorizontalAlignment="Right" Background="{StaticResource StitchSurfaceContainerBrush}" CornerRadius="8" Padding="8,4">
+                                    <Border HorizontalAlignment="Right" Background="{DynamicResource StitchSurfaceContainerBrush}" CornerRadius="8" Padding="8,4">
                                         <TextBlock Text="{Binding TareasSinFecha}" FontWeight="SemiBold" FontSize="12"/>
                                     </Border>
                                 </Grid>
@@ -166,7 +166,7 @@
                             </Border>
                         </Grid>
                         <TextBlock Text="{Binding ProyectosEnProgreso}" FontSize="48" FontWeight="Bold"
-                                   Foreground="{StaticResource StitchOnSurfaceBrush}" Margin="0,0,0,4"/>
+                                   Foreground="{DynamicResource StitchOnSurfaceBrush}" Margin="0,0,0,4"/>
                         <TextBlock Text="Proyectos activos" Style="{StaticResource StitchBodyTextStyle}" Margin="0,0,0,16"/>
                         <ItemsControl ItemsSource="{Binding ProyectosActivos}">
                             <ItemsControl.ItemTemplate>
@@ -211,7 +211,7 @@
 
                 <Border Grid.Column="0" Style="{StaticResource GlassCardBorderStyle}" Margin="0,0,12,0" Padding="0">
                     <StackPanel>
-                        <Border BorderBrush="#1AD6C0D3" BorderThickness="0,0,0,1" Padding="24,16">
+                        <Border BorderBrush="{DynamicResource StitchRowDividerBrush}" BorderThickness="0,0,0,1" Padding="24,16">
                             <TextBlock Text="Actividad reciente" Style="{StaticResource StitchH3TextStyle}"/>
                         </Border>
                         <ItemsControl ItemsSource="{Binding ActividadesRecientes}" Margin="24,16,24,20">
@@ -264,7 +264,8 @@
             <!-- Tabla proyectos prioritarios -->
             <Border Style="{StaticResource GlassCardBorderStyle}" Padding="0" Margin="0,0,0,16">
                 <StackPanel>
-                    <Border BorderBrush="#1AD6C0D3" BorderThickness="0,0,0,1" Padding="24,16" Background="#80FFFFFF">
+                    <Border BorderBrush="{DynamicResource StitchRowDividerBrush}" BorderThickness="0,0,0,1" Padding="24,16"
+                            Background="{DynamicResource StitchFilterBarBackgroundBrush}">
                         <TextBlock Text="Proyectos prioritarios" Style="{StaticResource StitchH3TextStyle}"/>
                     </Border>
                     <Border Background="#F6F2FF" Padding="24,12">
@@ -282,7 +283,13 @@
                     <ItemsControl ItemsSource="{Binding ProyectosPrioritarios}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border BorderBrush="#0DD6C0D3" BorderThickness="0,0,0,1" Padding="24,14">
+                                <Border BorderBrush="#0DD6C0D3" BorderThickness="0,0,0,1" Padding="24,14"
+                                        Cursor="Hand" ToolTip="Clic para editar proyecto">
+                                    <Border.InputBindings>
+                                        <MouseBinding MouseAction="LeftClick"
+                                                      Command="{Binding DataContext.EditarProyectoCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                      CommandParameter="{Binding}"/>
+                                    </Border.InputBindings>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="2*"/>

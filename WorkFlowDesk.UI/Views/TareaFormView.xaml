@@ -27,7 +27,7 @@
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0"
-                        BorderBrush="{StaticResource StitchOutlineVariantBrush}"
+                        BorderBrush="{DynamicResource StitchOutlineVariantBrush}"
                         BorderThickness="0,0,0,1"
                         Padding="24,16">
                     <Grid>
@@ -57,7 +57,7 @@
                                             <ControlTemplate TargetType="Button">
                                                 <Border x:Name="Bd" Background="{TemplateBinding Background}" CornerRadius="18" Padding="6">
                                                     <TextBlock Text="&#xE711;" FontFamily="Segoe MDL2 Assets" FontSize="14"
-                                                               Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                                               Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
                                                                HorizontalAlignment="Center"/>
                                                 </Border>
                                                 <ControlTemplate.Triggers>
@@ -78,7 +78,7 @@
                     <StackPanel>
                         <StackPanel Margin="0,0,0,16">
                             <TextBlock Text="Título" Style="{StaticResource StitchLabelTextStyle}"
-                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
+                                       Foreground="{DynamicResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
                             <Border Style="{StaticResource StitchModalFieldBorderStyle}">
                                 <Grid>
                                     <TextBlock Text="&#xE163;" FontFamily="Segoe MDL2 Assets" FontSize="16"
@@ -93,7 +93,7 @@
 
                         <StackPanel Margin="0,0,0,16">
                             <TextBlock Text="Descripción" Style="{StaticResource StitchLabelTextStyle}"
-                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
+                                       Foreground="{DynamicResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
                             <Border Style="{StaticResource StitchModalFieldBorderStyle}" Padding="4">
                                 <TextBox local:TextBoxBindingHelper.BoundText="{Binding Descripcion, UpdateSourceTrigger=PropertyChanged}"
                                          ToolTip="{x:Static helpers:FormTooltips.DescripcionTarea}"
@@ -101,7 +101,7 @@
                                          Padding="12,10" FontSize="14" MinHeight="72"
                                          TextWrapping="Wrap" AcceptsReturn="True"
                                          VerticalScrollBarVisibility="Auto"
-                                         Foreground="{StaticResource StitchOnSurfaceBrush}"/>
+                                         Foreground="{DynamicResource StitchOnSurfaceBrush}"/>
                             </Border>
                         </StackPanel>
 
@@ -113,7 +113,7 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0">
                                 <TextBlock Text="Prioridad" Style="{StaticResource StitchLabelTextStyle}"
-                                           Foreground="{StaticResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
+                                           Foreground="{DynamicResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
                                 <Border Style="{StaticResource StitchModalFieldBorderStyle}">
                                     <Grid>
                                         <TextBlock Text="&#xE735;" FontFamily="Segoe MDL2 Assets" FontSize="16"
@@ -136,7 +136,7 @@
                             </StackPanel>
                             <StackPanel Grid.Column="2">
                                 <TextBlock Text="Estado" Style="{StaticResource StitchLabelTextStyle}"
-                                           Foreground="{StaticResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
+                                           Foreground="{DynamicResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
                                 <Border Style="{StaticResource StitchModalFieldBorderStyle}">
                                     <Grid>
                                         <TextBlock Text="&#xE9D5;" FontFamily="Segoe MDL2 Assets" FontSize="16"
@@ -160,7 +160,7 @@
 
                         <StackPanel Margin="0,0,0,16">
                             <TextBlock Text="Fecha límite" Style="{StaticResource StitchLabelTextStyle}"
-                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
+                                       Foreground="{DynamicResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
                             <controls:StitchDateField SelectedDate="{Binding FechaVencimiento, Mode=TwoWay}"
                                                       ToolTip="{x:Static helpers:FormTooltips.FechaVencimiento}"/>
                         </StackPanel>
@@ -173,7 +173,7 @@
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0">
                                 <TextBlock Text="Proyecto" Style="{StaticResource StitchLabelTextStyle}"
-                                           Foreground="{StaticResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
+                                           Foreground="{DynamicResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
                                 <Border Style="{StaticResource StitchModalFieldBorderStyle}">
                                     <Grid>
                                         <TextBlock Text="&#xE838;" FontFamily="Segoe MDL2 Assets" FontSize="16"
@@ -191,7 +191,7 @@
                             </StackPanel>
                             <StackPanel Grid.Column="2">
                                 <TextBlock Text="Asignado a" Style="{StaticResource StitchLabelTextStyle}"
-                                           Foreground="{StaticResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
+                                           Foreground="{DynamicResource StitchOnSurfaceVariantBrush}" Margin="0,0,0,4"/>
                                 <Border Style="{StaticResource StitchModalFieldBorderStyle}">
                                     <Grid>
                                         <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" FontSize="16"
@@ -221,7 +221,7 @@
                         </Grid>
 
                         <Border Visibility="{Binding MuestraComentarios, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                BorderBrush="{StaticResource StitchOutlineVariantBrush}"
+                                BorderBrush="{DynamicResource StitchOutlineVariantBrush}"
                                 BorderThickness="0,1,0,0"
                                 Padding="0,16,0,0"
                                 Margin="0,0,0,8">
@@ -231,7 +231,7 @@
                                 <ItemsControl ItemsSource="{Binding Comentarios}" Margin="0,0,0,12">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Border Background="{StaticResource StitchSurfaceContainerLowBrush}"
+                                            <Border Background="{DynamicResource StitchSurfaceContainerLowBrush}"
                                                     CornerRadius="8"
                                                     Padding="12"
                                                     Margin="0,0,0,8">
@@ -255,7 +255,7 @@
                                              Padding="12,10" FontSize="14" MinHeight="60"
                                              TextWrapping="Wrap" AcceptsReturn="True"
                                              Tag="Escribe un comentario..."
-                                             Foreground="{StaticResource StitchOnSurfaceBrush}"/>
+                                             Foreground="{DynamicResource StitchOnSurfaceBrush}"/>
                                 </Border>
                                 <Button Content="Añadir comentario"
                                         Command="{Binding AgregarComentarioCommand}"
@@ -270,7 +270,7 @@
                                    Margin="0,0,0,8"
                                    Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
 
-                        <Border BorderBrush="{StaticResource StitchOutlineVariantBrush}" BorderThickness="0,1,0,0" Padding="0,16,0,16" Margin="0,8,0,0">
+                        <Border BorderBrush="{DynamicResource StitchOutlineVariantBrush}" BorderThickness="0,1,0,0" Padding="0,16,0,16" Margin="0,8,0,0">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                 <Button Content="Cancelar"
                                         Command="{Binding CancelarCommand}"

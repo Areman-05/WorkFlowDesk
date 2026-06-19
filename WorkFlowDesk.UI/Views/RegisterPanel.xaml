@@ -37,14 +37,14 @@
                             <StackPanel Margin="0,0,0,16">
                                 <TextBlock Text="Nombre completo"
                                            Style="{StaticResource StitchLabelTextStyle}"
-                                           Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                           Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
                                            Margin="4,0,0,4"/>
                                 <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
                                     <Grid>
                                         <TextBlock Text="&#xE77B;"
                                                    FontFamily="Segoe MDL2 Assets"
                                                    FontSize="20"
-                                                   Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                                   Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
                                                    VerticalAlignment="Center"
                                                    Margin="16,0,0,0"
                                                    IsHitTestVisible="False"/>
@@ -65,14 +65,14 @@
                                 <StackPanel Grid.Column="0">
                                     <TextBlock Text="Nombre de usuario"
                                                Style="{StaticResource StitchLabelTextStyle}"
-                                               Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                               Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
                                                Margin="4,0,0,4"/>
                                     <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
                                         <Grid>
                                             <TextBlock Text="&#xE972;"
                                                        FontFamily="Segoe MDL2 Assets"
                                                        FontSize="20"
-                                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                                       Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
                                                        VerticalAlignment="Center"
                                                        Margin="16,0,0,0"
                                                        IsHitTestVisible="False"/>
@@ -85,14 +85,14 @@
                                 <StackPanel Grid.Column="2">
                                     <TextBlock Text="Correo electrónico"
                                                Style="{StaticResource StitchLabelTextStyle}"
-                                               Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                               Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
                                                Margin="4,0,0,4"/>
                                     <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
                                         <Grid>
                                             <TextBlock Text="&#xE715;"
                                                        FontFamily="Segoe MDL2 Assets"
                                                        FontSize="20"
-                                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                                       Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
                                                        VerticalAlignment="Center"
                                                        Margin="16,0,0,0"
                                                        IsHitTestVisible="False"/>
@@ -107,14 +107,14 @@
                             <StackPanel Margin="0,0,0,16">
                                 <TextBlock Text="Rol"
                                            Style="{StaticResource StitchLabelTextStyle}"
-                                           Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                           Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
                                            Margin="4,0,0,4"/>
                                 <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
                                     <Grid>
                                         <TextBlock Text="&#xECAA;"
                                                    FontFamily="Segoe MDL2 Assets"
                                                    FontSize="20"
-                                                   Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                                   Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
                                                    VerticalAlignment="Center"
                                                    Margin="16,0,0,0"
                                                    IsHitTestVisible="False"/>
@@ -125,7 +125,7 @@
                                         <TextBlock Text="&#xE70D;"
                                                    FontFamily="Segoe MDL2 Assets"
                                                    FontSize="20"
-                                                   Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                                   Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
                                                    VerticalAlignment="Center"
                                                    HorizontalAlignment="Right"
                                                    Margin="0,0,16,0"
@@ -149,14 +149,14 @@
                                 <StackPanel Grid.Column="0">
                                     <TextBlock Text="Contraseña"
                                                Style="{StaticResource StitchLabelTextStyle}"
-                                               Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                               Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
                                                Margin="4,0,0,4"/>
                                     <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
                                         <Grid>
                                             <TextBlock Text="&#xE72E;"
                                                        FontFamily="Segoe MDL2 Assets"
                                                        FontSize="20"
-                                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                                       Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
                                                        VerticalAlignment="Center"
                                                        Margin="16,0,0,0"
                                                        IsHitTestVisible="False"/>
@@ -169,14 +169,14 @@
                                 <StackPanel Grid.Column="2">
                                     <TextBlock Text="Confirmar contraseña"
                                                Style="{StaticResource StitchLabelTextStyle}"
-                                               Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                               Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
                                                Margin="4,0,0,4"/>
                                     <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
                                         <Grid>
                                             <TextBlock Text="&#xE785;"
                                                        FontFamily="Segoe MDL2 Assets"
                                                        FontSize="20"
-                                                       Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                                       Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
                                                        VerticalAlignment="Center"
                                                        Margin="16,0,0,0"
                                                        IsHitTestVisible="False"/>
