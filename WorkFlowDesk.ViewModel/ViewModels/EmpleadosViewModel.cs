@@ -12,7 +12,7 @@ using WorkFlowDesk.ViewModel.Models;
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
 /// <summary>ViewModel de listado y gestión de empleados.</summary>
-public class EmpleadosViewModel : ListViewModelBase
+public class EmpleadosViewModel : ListViewModelBase, ISearchableViewModel
 {
     private readonly IEmpleadoService _empleadoService;
     private readonly IExportService _exportService;

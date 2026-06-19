@@ -115,7 +115,8 @@
                 <Grid>
                     <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="16"
                                Foreground="#66524251" VerticalAlignment="Center" Margin="12,0,0,0" IsHitTestVisible="False"/>
-                    <TextBox local:TextBoxBindingHelper.BoundText="{Binding TextoBusqueda, UpdateSourceTrigger=PropertyChanged}"
+                    <TextBox Text="{Binding TextoBusqueda, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                             FlowDirection="LeftToRight"
                              Style="{StaticResource StitchModalInnerTextBoxStyle}"
                              Tag="Buscar proyectos, clientes..."/>
                 </Grid>

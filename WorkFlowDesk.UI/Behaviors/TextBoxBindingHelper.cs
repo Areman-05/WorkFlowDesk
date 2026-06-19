@@ -78,7 +78,7 @@ public static class TextBoxBindingHelper
         SetIsUpdating(textBox, true);
         try
         {
-            textBox.SetCurrentValue(BoundTextProperty, textBox.Text);
+            textBox.SetValue(BoundTextProperty, textBox.Text);
             BindingOperations.GetBindingExpression(textBox, BoundTextProperty)?.UpdateSource();
         }
         finally

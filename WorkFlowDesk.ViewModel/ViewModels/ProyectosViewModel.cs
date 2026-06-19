@@ -10,7 +10,7 @@ using WorkFlowDesk.ViewModel.Models;
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
 /// <summary>ViewModel de listado y gestión de proyectos.</summary>
-public class ProyectosViewModel : ListViewModelBase
+public class ProyectosViewModel : ListViewModelBase, ISearchableViewModel
 {
     private readonly IProyectoService _proyectoService;
     private readonly IExportService _exportService;

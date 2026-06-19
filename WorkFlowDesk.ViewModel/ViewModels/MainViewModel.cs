@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using WorkFlowDesk.Common.Authorization;
 using WorkFlowDesk.Common.Services;
@@ -12,6 +13,10 @@ public class MainViewModel : ViewModelBase
     private string _userRole = SessionService.GetUserRole();
     private string _currentSection = "Dashboard";
     private string _avatarUrl = string.Empty;
+    private ISearchableViewModel? _activeSearchable;
+    private INotifyPropertyChanged? _activeSearchNotifiable;
+    private bool _syncingSearchFromChild;
+    private string _textoBusqueda = string.Empty;
 
     public MainViewModel()
     {
@@ -92,6 +97,32 @@ public class MainViewModel : ViewModelBase
     public bool IsConfiguracionActive => CurrentSection == "Configuracion";
     public bool IsPerfilActive => CurrentSection == "Perfil";
 
+    public bool IsSearchVisible => _activeSearchable != null;
+
+    public string SearchPlaceholder => CurrentSection switch
+    {
+        "Empleados" => "Buscar empleados...",
+        "Proyectos" => "Buscar proyectos, clientes...",
+        "Tareas" => "Buscar tareas...",
+        "Clientes" => "Buscar clientes...",
+        _ => "Buscar..."
+    };
+
+    public string TextoBusqueda
+    {
+        get => _textoBusqueda;
+        set
+        {
+            if (!SetProperty(ref _textoBusqueda, value))
+                return;
+
+            if (_syncingSearchFromChild || _activeSearchable == null)
+                return;
+
+            _activeSearchable.TextoBusqueda = value;
+        }
+    }
+
     public IRelayCommand NavigateToDashboardCommand { get; }
     public IRelayCommand NavigateToEmpleadosCommand { get; }
     public IRelayCommand NavigateToProyectosCommand { get; }
@@ -119,6 +150,41 @@ public class MainViewModel : ViewModelBase
         AvatarUrl = AvatarCatalog.GetUrl(index);
         OnPropertyChanged(nameof(AvatarIndex));
         OnPropertyChanged(nameof(UserInitials));
+    }
+
+    /// <summary>Enlaza el buscador superior con la vista activa.</summary>
+    public void SetActiveSearchable(object? dataContext)
+    {
+        if (_activeSearchNotifiable != null)
+            _activeSearchNotifiable.PropertyChanged -= OnActiveSearchPropertyChanged;
+
+        _activeSearchable = dataContext as ISearchableViewModel;
+        _activeSearchNotifiable = dataContext as INotifyPropertyChanged;
+
+        if (_activeSearchNotifiable != null)
+            _activeSearchNotifiable.PropertyChanged += OnActiveSearchPropertyChanged;
+
+        _syncingSearchFromChild = true;
+        _textoBusqueda = _activeSearchable?.TextoBusqueda ?? string.Empty;
+        OnPropertyChanged(nameof(TextoBusqueda));
+        _syncingSearchFromChild = false;
+
+        OnPropertyChanged(nameof(IsSearchVisible));
+        OnPropertyChanged(nameof(SearchPlaceholder));
+    }
+
+    private void OnActiveSearchPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName != nameof(TextoBusqueda) || _activeSearchable == null)
+            return;
+
+        var childText = _activeSearchable.TextoBusqueda ?? string.Empty;
+        if (_textoBusqueda == childText)
+            return;
+
+        _syncingSearchFromChild = true;
+        SetProperty(ref _textoBusqueda, childText, nameof(TextoBusqueda));
+        _syncingSearchFromChild = false;
     }
 
     private void Navigate(string section)

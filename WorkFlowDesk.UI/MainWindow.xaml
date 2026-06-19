@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:WorkFlowDesk.UI.Controls"
+        xmlns:local="clr-namespace:WorkFlowDesk.UI.Behaviors"
         mc:Ignorable="d"
         Title="WorkFlowDesk"
         Height="720"
@@ -241,17 +242,32 @@
                     <Grid Margin="24,0">
                         <Border HorizontalAlignment="Left" VerticalAlignment="Center"
                                 Background="{StaticResource StitchSurfaceContainerBrush}"
-                                BorderBrush="#33D6C0D3" BorderThickness="1" CornerRadius="12" Padding="12,6">
-                            <StackPanel Orientation="Horizontal">
+                                BorderBrush="#33D6C0D3" BorderThickness="1" CornerRadius="12" Padding="12,6"
+                                Visibility="{Binding IsSearchVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Grid MinWidth="280">
                                 <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets"
-                                           Foreground="{StaticResource StitchOnSurfaceVariantBrush}" Margin="0,0,8,0"/>
-                                <TextBox Width="220" BorderThickness="0" Background="Transparent"
+                                           Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left" IsHitTestVisible="False"/>
+                                <TextBox BorderThickness="0" Background="Transparent"
                                          Foreground="{StaticResource StitchOnSurfaceBrush}"
-                                         VerticalAlignment="Center"
-                                         Tag="Buscar..."
-                                         IsReadOnly="True"
-                                         ToolTip="Búsqueda global (próximamente)"/>
-                            </StackPanel>
+                                         FlowDirection="LeftToRight"
+                                         VerticalAlignment="Center" Padding="28,4,8,4"
+                                         Text="{Binding TextoBusqueda, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                <TextBlock Text="{Binding SearchPlaceholder}" IsHitTestVisible="False"
+                                           Margin="28,0,8,0" VerticalAlignment="Center"
+                                           Foreground="#99524251" FontSize="14">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding TextoBusqueda}" Value="">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
                         </Border>
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">

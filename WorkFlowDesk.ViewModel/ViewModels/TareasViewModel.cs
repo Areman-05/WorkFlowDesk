@@ -11,7 +11,7 @@ using WorkFlowDesk.ViewModel.Models;
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
 /// <summary>ViewModel de listado y gestión de tareas.</summary>
-public class TareasViewModel : ListViewModelBase
+public class TareasViewModel : ListViewModelBase, ISearchableViewModel
 {
     private readonly ITareaService _tareaService;
     private readonly IExportService _exportService;

@@ -29,6 +29,7 @@ public class ClienteService : IClienteService
     public async Task<IEnumerable<Cliente>> GetAllAsync()
     {
         return await _context.Clientes
+            .Include(c => c.Proyectos)
             .AsReadOnly()
             .OrderBy(c => c.Nombre)
             .ToListAsync();
@@ -38,6 +39,7 @@ public class ClienteService : IClienteService
     public async Task<IEnumerable<Cliente>> GetActivosAsync()
     {
         return await _context.Clientes
+            .Include(c => c.Proyectos)
             .AsReadOnly()
             .Where(c => c.Activo)
             .OrderBy(c => c.Nombre)

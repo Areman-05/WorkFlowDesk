@@ -29,6 +29,10 @@ public class ClienteFormViewModel : ViewModelBase
 
     public string Titulo => _esNuevo ? "Nuevo Cliente" : "Editar Cliente";
 
+    public string Subtitulo => _esNuevo
+        ? "Registra un nuevo cliente en la cartera"
+        : "Actualiza los datos del cliente";
+
     public string Nombre
     {
         get => _cliente.Nombre;

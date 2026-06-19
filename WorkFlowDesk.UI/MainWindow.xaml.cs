@@ -80,7 +80,9 @@ public partial class MainWindow : Window
         }
 
         _mainViewModel.SetActiveSection(viewName);
-        _navigationService.NavigateTo(NavigationViewFactory.CreateView(viewName));
+        var view = NavigationViewFactory.CreateView(viewName);
+        _mainViewModel.SetActiveSearchable(view.DataContext);
+        _navigationService.NavigateTo(view);
     }
 
     private static bool CanNavigateTo(string viewName) => viewName switch
