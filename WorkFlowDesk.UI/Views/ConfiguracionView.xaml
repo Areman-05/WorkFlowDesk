@@ -1,113 +1,272 @@
 <UserControl x:Class="WorkFlowDesk.UI.Views.ConfiguracionView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:WorkFlowDesk.UI.Behaviors"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+             xmlns:controls="clr-namespace:WorkFlowDesk.UI.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="1100" d:DesignWidth="1100">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="32" MaxWidth="1152" HorizontalAlignment="Center">
 
-        <TextBlock Grid.Row="0"
-                   Text="Configuración del Sistema" 
-                   FontSize="24" 
-                   FontWeight="Bold" 
-                   Margin="0,0,0,30"/>
-
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-                <GroupBox Header="Configuración General" Margin="0,0,0,20">
-                    <StackPanel Margin="20">
-                        <TextBlock Text="Tamaño de página por defecto" 
-                                   Style="{StaticResource FormLabelStyle}"/>
-                        <TextBox local:TextBoxBindingHelper.BoundText="{Binding DefaultPageSize, UpdateSourceTrigger=PropertyChanged}" 
-                                 Style="{StaticResource ModernTextBoxStyle}"
-                                 Margin="0,0,0,15"/>
-
-                        <TextBlock Text="Nivel de logging" 
-                                   Style="{StaticResource FormLabelStyle}"/>
-                        <ComboBox ItemsSource="{Binding NivelesLog}"
-                                  SelectedItem="{Binding LogLevel}" 
-                                  Style="{StaticResource ModernComboBoxStyle}"
-                                  Margin="0,0,0,15"/>
-
-                        <TextBlock Text="Minutos de expiración de caché" 
-                                   Style="{StaticResource FormLabelStyle}"/>
-                        <TextBox local:TextBoxBindingHelper.BoundText="{Binding CacheExpirationMinutes, UpdateSourceTrigger=PropertyChanged}" 
-                                 Style="{StaticResource ModernTextBoxStyle}"
-                                 Margin="0,0,0,15"/>
-
-                        <CheckBox Content="Habilitar logging" 
-                                  IsChecked="{Binding EnableLogging}"
-                                  Margin="0,0,0,15"/>
-
-                        <Button Content="Guardar Configuración" 
-                                Command="{Binding GuardarConfiguracionCommand}"
-                                Style="{StaticResource PrimaryButtonStyle}"
-                                HorizontalAlignment="Left"
-                                Margin="0,10,0,0"/>
-                    </StackPanel>
-                </GroupBox>
-
-                <GroupBox Header="Seguridad" Margin="0,0,0,20">
-                    <StackPanel Margin="20">
-                        <TextBlock Text="Contraseña actual"
-                                   Style="{StaticResource FormLabelStyle}"/>
-                        <PasswordBox local:PasswordBoxHelper.Password="{Binding PasswordActual, UpdateSourceTrigger=PropertyChanged}"
-                                     Margin="0,0,0,15"/>
-
-                        <TextBlock Text="Nueva contraseña (mín. 6 caracteres)"
-                                   Style="{StaticResource FormLabelStyle}"/>
-                        <PasswordBox local:PasswordBoxHelper.Password="{Binding PasswordNuevo, UpdateSourceTrigger=PropertyChanged}"
-                                     Margin="0,0,0,15"/>
-
-                        <TextBlock Text="Confirmar nueva contraseña"
-                                   Style="{StaticResource FormLabelStyle}"/>
-                        <PasswordBox local:PasswordBoxHelper.Password="{Binding PasswordConfirmacion, UpdateSourceTrigger=PropertyChanged}"
-                                     Margin="0,0,0,15"/>
-
-                        <Button Content="Cambiar contraseña"
-                                Command="{Binding CambiarPasswordCommand}"
-                                Style="{StaticResource PrimaryButtonStyle}"
-                                HorizontalAlignment="Left"/>
-                    </StackPanel>
-                </GroupBox>
-
-                <GroupBox Header="Base de Datos" Margin="0,0,0,20">
-                    <StackPanel Margin="20">
-                        <Button Content="Crear Backup" 
-                                Command="{Binding CrearBackupCommand}"
-                                Style="{StaticResource PrimaryButtonStyle}"
-                                Margin="0,0,0,10"/>
-                        <TextBlock Text="Restaurar desde backup"
-                                   Style="{StaticResource FormLabelStyle}"/>
-                        <ComboBox ItemsSource="{Binding BackupsDisponibles}"
-                                  SelectedItem="{Binding BackupSeleccionado}"
-                                  Style="{StaticResource ModernComboBoxStyle}"
-                                  Margin="0,0,0,10"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                            <Button Content="Restaurar Backup"
-                                    Command="{Binding RestaurarBackupCommand}"
-                                    Style="{StaticResource DangerButtonStyle}"
-                                    Margin="0,0,10,0"/>
-                            <Button Content="Actualizar lista"
-                                    Command="{Binding CargarBackupsCommand}"
-                                    Padding="12,8"/>
-                        </StackPanel>
-                        <Button Content="Inicializar Base de Datos" 
-                                Command="{Binding InicializarBaseDatosCommand}"
-                                Style="{StaticResource PrimaryButtonStyle}"/>
-                    </StackPanel>
-                </GroupBox>
-
-                <TextBlock Text="{Binding ErrorMessage}" 
-                           Style="{StaticResource ErrorMessageStyle}"
+            <!-- Cabecera -->
+            <StackPanel Margin="0,0,0,32">
+                <TextBlock Text="Panel de Control de Infraestructura" Style="{StaticResource StitchBodyTextStyle}" Margin="0,0,0,4"/>
+                <TextBlock Text="Gestión Global de WorkFlowDesk" Style="{StaticResource StitchH1TextStyle}"/>
+                <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorMessageStyle}" Margin="0,12,0,0"
                            Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
             </StackPanel>
-        </ScrollViewer>
-    </Grid>
+
+            <!-- Fila: BD + Backup -->
+            <Grid Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="7*"/>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Base de datos -->
+                <Border Grid.Column="0" Style="{StaticResource GlassCardBorderStyle}" Padding="32" ClipToBounds="True">
+                    <Grid>
+                        <TextBlock Text="&#xE7C3;" FontFamily="Segoe MDL2 Assets" FontSize="80"
+                                   Foreground="{StaticResource StitchPrimaryBrush}" Opacity="0.08"
+                                   HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-8,0,0"/>
+
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
+                                <Border Width="48" Height="48" CornerRadius="8" Background="#1A9E00B5" Margin="0,0,16,0">
+                                    <TextBlock Text="&#xE7F4;" FontFamily="Segoe MDL2 Assets" FontSize="22"
+                                               Foreground="{StaticResource StitchPrimaryBrush}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Base de Datos" Style="{StaticResource StitchH3TextStyle}"/>
+                                    <TextBlock Text="Configure la ubicación y el estado del motor SQLite"
+                                               Style="{StaticResource StitchCaptionTextStyle}"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <TextBlock Text="Ruta SQLite" Style="{StaticResource StitchLabelTextStyle}" Margin="0,0,0,6"/>
+                            <Grid Margin="0,0,0,24">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Background="{StaticResource StitchSurfaceContainerLowBrush}"
+                                        BorderBrush="#4DD6C0D3" BorderThickness="1" CornerRadius="8" Padding="12,10" Margin="0,0,8,0">
+                                    <TextBox Text="{Binding RutaSqlite, Mode=OneWay}" IsReadOnly="True" BorderThickness="0"
+                                             Background="Transparent" FontSize="14"/>
+                                </Border>
+                                <Button Grid.Column="1" Style="{StaticResource StitchAuthCancelButtonStyle}"
+                                        Command="{Binding ExplorarRutaSqliteCommand}" Padding="16,10">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE838;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"/>
+                                        <TextBlock Text="Explorar"/>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+
+                            <!-- Zona de peligro -->
+                            <Border Background="#0DBA1A1A" BorderBrush="#33BA1A1A" BorderThickness="1" CornerRadius="8" Padding="16">
+                                <StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                                        <TextBlock Text="&#xE7BA;" FontFamily="Segoe MDL2 Assets" FontSize="20"
+                                                   Foreground="{StaticResource StitchErrorBrush}" Margin="0,0,12,0"/>
+                                        <StackPanel>
+                                            <TextBlock Text="Zona de Peligro" FontWeight="SemiBold" FontSize="16"
+                                                       Foreground="{StaticResource StitchErrorBrush}"/>
+                                            <TextBlock Text="Esta acción borrará todos los datos actuales de la aplicación de forma irreversible."
+                                                       Style="{StaticResource StitchBodyTextStyle}" TextWrapping="Wrap"
+                                                       Foreground="#CCBA1A1A"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <Button Style="{StaticResource StitchDangerButtonStyle}"
+                                            Command="{Binding InicializarBaseDatosCommand}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="&#xE107;" FontFamily="Segoe MDL2 Assets" FontSize="16" Margin="0,0,10,0"/>
+                                            <TextBlock Text="Inicializar base de datos"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Copia de seguridad -->
+                <Border Grid.Column="2" Style="{StaticResource GlassCardBorderStyle}" Padding="32">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
+                            <Border Width="48" Height="48" CornerRadius="8" Background="#1AFD933D" Margin="0,0,16,0">
+                                <TextBlock Text="&#xE14F;" FontFamily="Segoe MDL2 Assets" FontSize="22"
+                                           Foreground="{StaticResource StitchSecondaryBrush}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Copia de Seguridad" Style="{StaticResource StitchH3TextStyle}"/>
+                                <TextBlock Text="Resguarde la integridad de sus datos" Style="{StaticResource StitchCaptionTextStyle}"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <Button Command="{Binding CrearBackupCommand}" Cursor="Hand" Margin="0,0,0,12"
+                                HorizontalAlignment="Stretch" Padding="24,28" Background="Transparent">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border x:Name="Bd" CornerRadius="8" BorderThickness="2"
+                                            BorderBrush="#80847183" Background="Transparent" Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource StitchPrimaryBrush}"/>
+                                            <Setter TargetName="Bd" Property="Background" Value="#0D9E00B5"/>
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter TargetName="Bd" Property="Opacity" Value="0.5"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="&#xE753;" FontFamily="Segoe MDL2 Assets" FontSize="22"
+                                           Foreground="{StaticResource StitchOnSurfaceVariantBrush}"
+                                           HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                                <TextBlock Text="Crear backup" Style="{StaticResource StitchH3TextStyle}" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding UltimoBackupTexto, StringFormat=Último backup: {0}}"
+                                           HorizontalAlignment="Center" Style="{StaticResource StitchCaptionTextStyle}" Margin="0,4,0,0"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource StitchAuthSecondaryButtonStyle}"
+                                Command="{Binding SolicitarRestaurarBackupCommand}" Padding="14,12">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock Text="&#xE777;" FontFamily="Segoe MDL2 Assets" FontSize="16" Margin="0,0,10,0"/>
+                                <TextBlock Text="Restaurar backup"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Cambiar contraseña -->
+            <Border Style="{StaticResource GlassCardBorderStyle}" Padding="32" Margin="0,0,0,24">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
+                        <Border Width="48" Height="48" CornerRadius="8" Background="#1AA45E86" Margin="0,0,16,0">
+                            <TextBlock Text="&#xE72E;" FontFamily="Segoe MDL2 Assets" FontSize="22"
+                                       Foreground="{StaticResource StitchTertiaryBrush}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Cambiar Contraseña" Style="{StaticResource StitchH3TextStyle}"/>
+                            <TextBlock Text="Actualice las credenciales de acceso administrativo"
+                                       Style="{StaticResource StitchCaptionTextStyle}"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="24"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="24"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Contraseña actual" Style="{StaticResource StitchLabelTextStyle}" Margin="0,0,0,6"/>
+                            <Border Background="{StaticResource StitchSurfaceContainerLowBrush}"
+                                    BorderBrush="#4DD6C0D3" BorderThickness="1" CornerRadius="8">
+                                <Grid>
+                                    <PasswordBox x:Name="PasswordActualBox"
+                                                 local:PasswordBoxHelper.Password="{Binding PasswordActual, UpdateSourceTrigger=PropertyChanged}"
+                                                 Style="{StaticResource StitchModalInnerPasswordBoxStyle}" Padding="12,12,40,12"/>
+                                    <TextBox x:Name="PasswordActualTextBox" Visibility="Collapsed"
+                                             Text="{Binding PasswordActual, UpdateSourceTrigger=PropertyChanged}"
+                                             BorderThickness="0" Background="Transparent" Padding="12,12,40,12" FontSize="14"/>
+                                    <Button HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,8,0"
+                                            Background="Transparent" BorderThickness="0" Cursor="Hand"
+                                            Click="OnTogglePasswordActualVisibility" ToolTip="Mostrar/ocultar">
+                                        <TextBlock x:Name="PasswordActualEye" Text="&#xE890;" FontFamily="Segoe MDL2 Assets"
+                                                   Foreground="{StaticResource StitchOnSurfaceVariantBrush}"/>
+                                    </Button>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Nueva contraseña" Style="{StaticResource StitchLabelTextStyle}" Margin="0,0,0,6"/>
+                            <Border Background="{StaticResource StitchSurfaceContainerLowBrush}"
+                                    BorderBrush="#4DD6C0D3" BorderThickness="1" CornerRadius="8">
+                                <PasswordBox local:PasswordBoxHelper.Password="{Binding PasswordNuevo, UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource StitchModalInnerPasswordBoxStyle}" Padding="12,12"/>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="4">
+                            <TextBlock Text="Confirmar contraseña" Style="{StaticResource StitchLabelTextStyle}" Margin="0,0,0,6"/>
+                            <Border Background="{StaticResource StitchSurfaceContainerLowBrush}"
+                                    BorderBrush="#4DD6C0D3" BorderThickness="1" CornerRadius="8">
+                                <PasswordBox local:PasswordBoxHelper.Password="{Binding PasswordConfirmacion, UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource StitchModalInnerPasswordBoxStyle}" Padding="12,12"/>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+
+                    <Button Style="{StaticResource StitchPrimaryButtonStyle}" Command="{Binding CambiarPasswordCommand}"
+                            HorizontalAlignment="Right" MinWidth="220" Padding="16,12" Margin="0,24,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE74E;" FontFamily="Segoe MDL2 Assets" FontSize="16" Margin="0,0,10,0"/>
+                            <TextBlock Text="Guardar cambios" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Border>
+
+            <!-- Actividad del sistema -->
+            <Border Style="{StaticResource GlassCardBorderStyle}" Padding="0">
+                <StackPanel>
+                    <Border Background="#80F6F2FF" Padding="24,16" BorderBrush="#1AD6C0D3" BorderThickness="0,0,0,1">
+                        <Grid>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <TextBlock Text="&#xE756;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                           Foreground="{StaticResource StitchPrimaryBrush}" Margin="0,0,8,0"/>
+                                <TextBlock Text="ACTIVIDAD RECIENTE DEL SISTEMA" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding TiempoActividadTexto, StringFormat=Tiempo de actividad: {0}}"
+                                       HorizontalAlignment="Right" Style="{StaticResource StitchCaptionTextStyle}"/>
+                        </Grid>
+                    </Border>
+
+                    <ItemsControl ItemsSource="{Binding ActividadSistemaFiltrada}" Margin="24,16">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="{Binding Hora, StringFormat='[{0}]'}" FontFamily="Consolas" FontSize="12"
+                                               Foreground="{StaticResource StitchPrimaryBrush}" Margin="0,0,12,0"/>
+                                    <TextBlock Text="{Binding Mensaje}" FontFamily="Consolas" FontSize="12" TextWrapping="Wrap">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="{StaticResource StitchOnSurfaceVariantBrush}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding EsAdvertencia}" Value="True">
+                                                        <Setter Property="Foreground" Value="{StaticResource StitchSecondaryBrush}"/>
+                                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <controls:LoadingIndicator Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                       Margin="0,24,0,0"/>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

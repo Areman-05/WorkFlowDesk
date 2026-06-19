@@ -109,6 +109,7 @@ public class MainViewModel : ViewModelBase
         "Tareas" => "Buscar tareas...",
         "Clientes" => "Buscar clientes...",
         "Optimizacion" => "Buscar procesos o flujos...",
+        "Configuracion" => "Buscar parámetros...",
         _ => "Buscar..."
     };
 

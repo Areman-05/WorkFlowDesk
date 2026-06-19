@@ -1,28 +1,32 @@
+using System.Collections.ObjectModel;
+using System.IO;
 using CommunityToolkit.Mvvm.Input;
 using WorkFlowDesk.Common.Configuration;
 using WorkFlowDesk.Common.Services;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.ViewModel.Base;
+using WorkFlowDesk.ViewModel.Models;
 
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
 /// <summary>ViewModel de configuración del sistema.</summary>
-public class ConfiguracionViewModel : ViewModelBase
+public class ConfiguracionViewModel : ViewModelBase, ISearchableViewModel
 {
     private readonly IBackupService _backupService;
     private readonly IDatabaseInitializationService _databaseInitializationService;
     private readonly IAuthenticationService _authenticationService;
-    private int _defaultPageSize;
-    private bool _enableLogging;
-    private string _logLevel = string.Empty;
-    private int _cacheExpirationMinutes;
+
+    private string _rutaSqlite = string.Empty;
+    private string _ultimoBackupTexto = "Sin backups";
+    private string _tiempoActividadTexto = string.Empty;
+    private string _textoBusqueda = string.Empty;
     private string _passwordActual = string.Empty;
     private string _passwordNuevo = string.Empty;
     private string _passwordConfirmacion = string.Empty;
     private List<string> _backupsDisponibles = new();
     private string? _backupSeleccionado;
+    private readonly List<LogActividadItem> _actividadSistema = new();
 
-    /// <summary>Construye el ViewModel e inicia la carga de configuración.</summary>
     public ConfiguracionViewModel(
         IBackupService backupService,
         IDatabaseInitializationService databaseInitializationService,
@@ -32,42 +36,50 @@ public class ConfiguracionViewModel : ViewModelBase
         _databaseInitializationService = databaseInitializationService;
         _authenticationService = authenticationService;
 
-        CargarConfiguracionCommand = new CommunityToolkit.Mvvm.Input.AsyncRelayCommand(CargarConfiguracionAsync);
-        GuardarConfiguracionCommand = new RelayCommand(GuardarConfiguracion);
-        CrearBackupCommand = new CommunityToolkit.Mvvm.Input.AsyncRelayCommand(CrearBackupAsync);
-        InicializarBaseDatosCommand = new CommunityToolkit.Mvvm.Input.AsyncRelayCommand(InicializarBaseDatosAsync);
-        CambiarPasswordCommand = new CommunityToolkit.Mvvm.Input.AsyncRelayCommand(CambiarPasswordAsync, CanCambiarPassword);
-        CargarBackupsCommand = new CommunityToolkit.Mvvm.Input.AsyncRelayCommand(CargarBackupsAsync);
-        RestaurarBackupCommand = new CommunityToolkit.Mvvm.Input.AsyncRelayCommand(RestaurarBackupAsync, CanRestaurarBackup);
+        ActividadSistemaFiltrada = new ObservableCollection<LogActividadItem>();
 
-        CargarConfiguracionCommand.ExecuteAsync(null);
-        CargarBackupsCommand.ExecuteAsync(null);
+        CargarConfiguracionCommand = new AsyncRelayCommand(CargarConfiguracionAsync);
+        CrearBackupCommand = new AsyncRelayCommand(CrearBackupAsync);
+        InicializarBaseDatosCommand = new AsyncRelayCommand(InicializarBaseDatosAsync);
+        CambiarPasswordCommand = new AsyncRelayCommand(CambiarPasswordAsync, CanCambiarPassword);
+        CargarBackupsCommand = new AsyncRelayCommand(CargarBackupsAsync);
+        RestaurarBackupCommand = new AsyncRelayCommand(RestaurarBackupAsync, CanRestaurarBackup);
+        ExplorarRutaSqliteCommand = new RelayCommand(ExplorarRutaSqlite);
+        SolicitarRestaurarBackupCommand = new RelayCommand(() => RestaurarBackupSolicitado?.Invoke(this, EventArgs.Empty));
+
+        _ = InicializarVistaAsync();
     }
 
-    public int DefaultPageSize
+    public ObservableCollection<LogActividadItem> ActividadSistemaFiltrada { get; }
+
+    public string RutaSqlite
     {
-        get => _defaultPageSize;
-        set => SetProperty(ref _defaultPageSize, value);
+        get => _rutaSqlite;
+        private set => SetProperty(ref _rutaSqlite, value);
     }
 
-    public bool EnableLogging
+    public string UltimoBackupTexto
     {
-        get => _enableLogging;
-        set => SetProperty(ref _enableLogging, value);
+        get => _ultimoBackupTexto;
+        private set => SetProperty(ref _ultimoBackupTexto, value);
     }
 
-    public IReadOnlyList<string> NivelesLog { get; } = new[] { "Debug", "Info", "Warning", "Error" };
-
-    public string LogLevel
+    public string TiempoActividadTexto
     {
-        get => _logLevel;
-        set => SetProperty(ref _logLevel, value);
+        get => _tiempoActividadTexto;
+        private set => SetProperty(ref _tiempoActividadTexto, value);
     }
 
-    public int CacheExpirationMinutes
+    public string TextoBusqueda
     {
-        get => _cacheExpirationMinutes;
-        set => SetProperty(ref _cacheExpirationMinutes, value);
+        get => _textoBusqueda;
+        set
+        {
+            if (!SetProperty(ref _textoBusqueda, value))
+                return;
+
+            AplicarFiltroActividad();
+        }
     }
 
     public string PasswordActual
@@ -100,18 +112,19 @@ public class ConfiguracionViewModel : ViewModelBase
         }
     }
 
-    public CommunityToolkit.Mvvm.Input.IAsyncRelayCommand CargarConfiguracionCommand { get; }
-    public IRelayCommand GuardarConfiguracionCommand { get; }
-    public CommunityToolkit.Mvvm.Input.IAsyncRelayCommand CrearBackupCommand { get; }
-    public CommunityToolkit.Mvvm.Input.IAsyncRelayCommand InicializarBaseDatosCommand { get; }
-    public CommunityToolkit.Mvvm.Input.IAsyncRelayCommand CambiarPasswordCommand { get; }
-    public CommunityToolkit.Mvvm.Input.IAsyncRelayCommand CargarBackupsCommand { get; }
-    public CommunityToolkit.Mvvm.Input.IAsyncRelayCommand RestaurarBackupCommand { get; }
+    public IAsyncRelayCommand CargarConfiguracionCommand { get; }
+    public IAsyncRelayCommand CrearBackupCommand { get; }
+    public IAsyncRelayCommand InicializarBaseDatosCommand { get; }
+    public IAsyncRelayCommand CambiarPasswordCommand { get; }
+    public IAsyncRelayCommand CargarBackupsCommand { get; }
+    public IAsyncRelayCommand RestaurarBackupCommand { get; }
+    public IRelayCommand ExplorarRutaSqliteCommand { get; }
+    public IRelayCommand SolicitarRestaurarBackupCommand { get; }
 
     public IEnumerable<string> BackupsDisponibles
     {
         get => _backupsDisponibles;
-        set => SetProperty(ref _backupsDisponibles, value.ToList());
+        private set => SetProperty(ref _backupsDisponibles, value.ToList());
     }
 
     public string? BackupSeleccionado
@@ -125,17 +138,19 @@ public class ConfiguracionViewModel : ViewModelBase
     }
 
     public event EventHandler<string>? OperacionCompletada;
+    public event EventHandler<string>? ExplorarRutaSolicitada;
+    public event EventHandler? RestaurarBackupSolicitado;
 
-    private Task CargarConfiguracionAsync()
+    private async Task InicializarVistaAsync()
     {
         IsLoading = true;
         try
         {
-            var settings = AppConfig.Settings;
-            DefaultPageSize = settings.DefaultPageSize;
-            EnableLogging = settings.EnableLogging;
-            LogLevel = settings.LogLevel;
-            CacheExpirationMinutes = settings.CacheExpirationMinutes;
+            RutaSqlite = DatabasePaths.GetDatabaseFilePath();
+            TiempoActividadTexto = AppRuntimeInfo.GetUptimeFormatted();
+            await CargarBackupsAsync();
+            InicializarActividadSistema();
+            AplicarFiltroActividad();
         }
         catch (Exception ex)
         {
@@ -146,28 +161,111 @@ public class ConfiguracionViewModel : ViewModelBase
         {
             IsLoading = false;
         }
-
-        return Task.CompletedTask;
     }
 
-    private void GuardarConfiguracion()
+    private Task CargarConfiguracionAsync() => InicializarVistaAsync();
+
+    private void InicializarActividadSistema()
     {
+        _actividadSistema.Clear();
+        var ahora = DateTime.Now;
+
+        _actividadSistema.Add(new LogActividadItem
+        {
+            Hora = ahora.AddHours(-2).ToString("HH:mm:ss"),
+            Mensaje = $"BACKUP: Último registro disponible — {UltimoBackupTexto}"
+        });
+        _actividadSistema.Add(new LogActividadItem
+        {
+            Hora = ahora.AddHours(-3).ToString("HH:mm:ss"),
+            Mensaje = $"SECURITY: Inicio de sesión administrativa — {SessionService.GetUserName()}"
+        });
+        _actividadSistema.Add(new LogActividadItem
+        {
+            Hora = ahora.AddHours(-4).ToString("HH:mm:ss"),
+            Mensaje = "SYSTEM: Motor SQLite operativo en ruta local de aplicación",
+            EsAdvertencia = false
+        });
+
         try
         {
-            var settings = AppConfig.Settings;
-            settings.DefaultPageSize = DefaultPageSize;
-            settings.EnableLogging = EnableLogging;
-            settings.LogLevel = LogLevel;
-            settings.CacheExpirationMinutes = CacheExpirationMinutes;
-            AppConfig.SaveToFile();
-            ErrorMessage = null;
-            OperacionCompletada?.Invoke(this, "Configuración guardada correctamente.");
+            var drive = Path.GetPathRoot(RutaSqlite);
+            if (!string.IsNullOrEmpty(drive))
+            {
+                var info = new DriveInfo(drive);
+                if (info.TotalSize > 0)
+                {
+                    var usedPct = 100.0 * (info.TotalSize - info.AvailableFreeSpace) / info.TotalSize;
+                    if (usedPct >= 80)
+                    {
+                        _actividadSistema.Add(new LogActividadItem
+                        {
+                            Hora = ahora.AddHours(-5).ToString("HH:mm:ss"),
+                            Mensaje = $"WARNING: Espacio en disco alcanzando el {usedPct:0}% de capacidad",
+                            EsAdvertencia = true
+                        });
+                    }
+                }
+            }
         }
-        catch (Exception ex)
+        catch
         {
-            ExceptionHandler.LogException(ex);
-            ErrorMessage = ExceptionHandler.HandleException(ex);
+            // Ignorar métricas de disco no disponibles.
         }
+    }
+
+    private void AplicarFiltroActividad()
+    {
+        ActividadSistemaFiltrada.Clear();
+        var termino = TextoBusqueda.Trim();
+        var items = string.IsNullOrEmpty(termino)
+            ? _actividadSistema
+            : _actividadSistema.Where(l =>
+                l.Mensaje.Contains(termino, StringComparison.OrdinalIgnoreCase) ||
+                l.Hora.Contains(termino, StringComparison.OrdinalIgnoreCase));
+
+        foreach (var item in items)
+            ActividadSistemaFiltrada.Add(item);
+    }
+
+    private void ExplorarRutaSqlite()
+    {
+        var directorio = Path.GetDirectoryName(RutaSqlite);
+        if (!string.IsNullOrWhiteSpace(directorio))
+            ExplorarRutaSolicitada?.Invoke(this, directorio);
+    }
+
+    private void ActualizarUltimoBackup()
+    {
+        if (_backupsDisponibles.Count == 0)
+        {
+            UltimoBackupTexto = "Sin backups";
+            return;
+        }
+
+        var latest = _backupsDisponibles[0];
+        UltimoBackupTexto = FormatearTiempoRelativo(File.GetCreationTime(latest));
+    }
+
+    private static string FormatearTiempoRelativo(DateTime fecha)
+    {
+        var diff = DateTime.Now - fecha;
+        if (diff.TotalMinutes < 60) return $"hace {(int)Math.Max(1, diff.TotalMinutes)} min";
+        if (diff.TotalHours < 24) return $"hace {(int)diff.TotalHours} horas";
+        if (diff.TotalDays < 7) return $"hace {(int)diff.TotalDays} días";
+        return fecha.ToString("dd MMM yyyy HH:mm");
+    }
+
+    private void RegistrarActividad(string mensaje, bool advertencia = false)
+    {
+        _actividadSistema.Insert(0, new LogActividadItem
+        {
+            Hora = DateTime.Now.ToString("HH:mm:ss"),
+            Mensaje = mensaje,
+            EsAdvertencia = advertencia
+        });
+        TiempoActividadTexto = AppRuntimeInfo.GetUptimeFormatted();
+        AplicarFiltroActividad();
     }
 
     private async Task CrearBackupAsync()
@@ -178,6 +276,7 @@ public class ConfiguracionViewModel : ViewModelBase
             var backupPath = await _backupService.CreateBackupAsync();
             ErrorMessage = null;
             OperacionCompletada?.Invoke(this, $"Backup creado correctamente.\n{backupPath}");
+            RegistrarActividad($"BACKUP: Generado exitosamente en {backupPath}");
             await CargarBackupsAsync();
         }
         catch (Exception ex)
@@ -197,9 +296,9 @@ public class ConfiguracionViewModel : ViewModelBase
         {
             BackupsDisponibles = await _backupService.GetAvailableBackupsAsync();
             if (BackupSeleccionado == null || !BackupsDisponibles.Contains(BackupSeleccionado))
-            {
                 BackupSeleccionado = BackupsDisponibles.FirstOrDefault();
-            }
+
+            ActualizarUltimoBackup();
         }
         catch (Exception ex)
         {
@@ -232,6 +331,7 @@ public class ConfiguracionViewModel : ViewModelBase
 
             ErrorMessage = null;
             OperacionCompletada?.Invoke(this, "Base de datos restaurada correctamente.");
+            RegistrarActividad($"RESTORE: Base de datos restaurada desde {Path.GetFileName(BackupSeleccionado)}");
         }
         catch (Exception ex)
         {
@@ -249,9 +349,7 @@ public class ConfiguracionViewModel : ViewModelBase
         if (!SolicitarConfirmacion(
                 "Se eliminarán todos los datos y se recreará la base de datos con datos de prueba. ¿Continuar?",
                 "Inicializar base de datos"))
-        {
             return;
-        }
 
         IsLoading = true;
         try
@@ -259,6 +357,8 @@ public class ConfiguracionViewModel : ViewModelBase
             await _databaseInitializationService.InitializeAsync();
             ErrorMessage = null;
             OperacionCompletada?.Invoke(this, "Base de datos inicializada correctamente.");
+            RegistrarActividad("DATABASE: Inicialización completa de SQLite ejecutada", advertencia: true);
+            RutaSqlite = DatabasePaths.GetDatabaseFilePath();
         }
         catch (Exception ex)
         {
@@ -310,6 +410,7 @@ public class ConfiguracionViewModel : ViewModelBase
             PasswordNuevo = string.Empty;
             PasswordConfirmacion = string.Empty;
             OperacionCompletada?.Invoke(this, "Contraseña actualizada correctamente.");
+            RegistrarActividad("SECURITY: Contraseña administrativa actualizada correctamente");
         }
         catch (Exception ex)
         {

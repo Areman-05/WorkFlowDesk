@@ -1,6 +1,7 @@
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using WorkFlowDesk.Common.Configuration;
+using WorkFlowDesk.Common.Services;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.UI.Helpers;
 using WorkFlowDesk.UI.Services;
@@ -23,6 +24,7 @@ namespace WorkFlowDesk.UI
             };
 
             AppConfig.LoadFromFile();
+            AppRuntimeInfo.MarkStarted();
             DatabasePaths.GetDataDirectory();
             ServiceLocator.ConfigureServices();
             base.OnStartup(e);
