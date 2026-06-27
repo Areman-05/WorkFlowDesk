@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using WorkFlowDesk.Common.Authorization;
@@ -18,9 +19,14 @@ public class MainViewModel : ViewModelBase
     private bool _syncingSearchFromChild;
     private string _textoBusqueda = string.Empty;
 
+    private IListToolbarProvider? _activeToolbar;
+    private INotifyPropertyChanged? _activeToolbarNotifiable;
+    private bool _isNotificationPanelOpen;
+
     public MainViewModel()
     {
         RefreshAvatarUrl();
+        InAppNotificationCenter.Changed += (_, _) => NotifyNotificationState();
 
         NavigateToDashboardCommand = new RelayCommand(() => Navigate("Dashboard"));
         NavigateToEmpleadosCommand = new RelayCommand(() => Navigate("Empleados"));
@@ -32,7 +38,36 @@ public class MainViewModel : ViewModelBase
         NavigateToConfiguracionCommand = new RelayCommand(() => Navigate("Configuracion"));
         NavigateToPerfilCommand = new RelayCommand(() => Navigate("Perfil"));
         LogoutCommand = new RelayCommand(() => LogoutRequested?.Invoke(this, EventArgs.Empty));
+        ToggleNotificationPanelCommand = new RelayCommand(() => IsNotificationPanelOpen = !IsNotificationPanelOpen);
+        MarcarNotificacionesLeidasCommand = new RelayCommand(MarcarNotificacionesLeidas);
+        EliminarNotificacionCommand = new RelayCommand<AppNotificationItem>(EliminarNotificacion);
+        EliminarTodasNotificacionesCommand = new RelayCommand(EliminarTodasNotificaciones);
+        NavegarDesdeNotificacionCommand = new RelayCommand<AppNotificationItem>(NavegarDesdeNotificacion);
     }
+
+    public ObservableCollection<AppNotificationItem> Notificaciones => InAppNotificationCenter.Items;
+
+    public bool TieneNotificacionesNoLeidas => InAppNotificationCenter.NoLeidas > 0;
+
+    public bool HayNotificaciones => InAppNotificationCenter.Items.Count > 0;
+
+    public bool IsNotificationPanelOpen
+    {
+        get => _isNotificationPanelOpen;
+        set => SetProperty(ref _isNotificationPanelOpen, value);
+    }
+
+    public bool IsToolbarVisible => _activeToolbar != null;
+
+    public bool ToolbarExportVisible => _activeToolbar?.ToolbarExportVisible ?? false;
+
+    public bool ToolbarCreateVisible => _activeToolbar?.ToolbarCreateVisible ?? false;
+
+    public string ToolbarCreateLabel => _activeToolbar?.ToolbarCreateLabel ?? "Nuevo";
+
+    public IAsyncRelayCommand? ToolbarExportCommand => _activeToolbar?.ToolbarExportCommand;
+
+    public IRelayCommand? ToolbarCreateCommand => _activeToolbar?.ToolbarCreateCommand;
 
     public string UserName
     {
@@ -139,9 +174,15 @@ public class MainViewModel : ViewModelBase
     public IRelayCommand NavigateToConfiguracionCommand { get; }
     public IRelayCommand NavigateToPerfilCommand { get; }
     public IRelayCommand LogoutCommand { get; }
+    public IRelayCommand ToggleNotificationPanelCommand { get; }
+    public IRelayCommand MarcarNotificacionesLeidasCommand { get; }
+    public IRelayCommand<AppNotificationItem> EliminarNotificacionCommand { get; }
+    public IRelayCommand EliminarTodasNotificacionesCommand { get; }
+    public IRelayCommand<AppNotificationItem> NavegarDesdeNotificacionCommand { get; }
 
     public event EventHandler<string>? NavigateRequested;
     public event EventHandler? LogoutRequested;
+    public event EventHandler<string>? NotificationNavigationRequested;
 
     /// <summary>Actualiza la URL del avatar según preferencias del usuario.</summary>
     public void RefreshAvatarUrl()
@@ -178,6 +219,73 @@ public class MainViewModel : ViewModelBase
 
         OnPropertyChanged(nameof(IsSearchVisible));
         OnPropertyChanged(nameof(SearchPlaceholder));
+    }
+
+    /// <summary>Enlaza la barra de acciones con la vista activa.</summary>
+    public void SetActiveToolbar(object? dataContext)
+    {
+        if (_activeToolbarNotifiable != null)
+            _activeToolbarNotifiable.PropertyChanged -= OnActiveToolbarPropertyChanged;
+
+        _activeToolbar = dataContext as IListToolbarProvider;
+        _activeToolbarNotifiable = dataContext as INotifyPropertyChanged;
+
+        if (_activeToolbarNotifiable != null)
+            _activeToolbarNotifiable.PropertyChanged += OnActiveToolbarPropertyChanged;
+
+        NotifyToolbarState();
+    }
+
+    private void OnActiveToolbarPropertyChanged(object? sender, PropertyChangedEventArgs e) =>
+        NotifyToolbarState();
+
+    private void NotifyToolbarState()
+    {
+        OnPropertyChanged(nameof(IsToolbarVisible));
+        OnPropertyChanged(nameof(ToolbarExportVisible));
+        OnPropertyChanged(nameof(ToolbarCreateVisible));
+        OnPropertyChanged(nameof(ToolbarCreateLabel));
+        OnPropertyChanged(nameof(ToolbarExportCommand));
+        OnPropertyChanged(nameof(ToolbarCreateCommand));
+    }
+
+    private void NotifyNotificationState()
+    {
+        OnPropertyChanged(nameof(TieneNotificacionesNoLeidas));
+        OnPropertyChanged(nameof(HayNotificaciones));
+        OnPropertyChanged(nameof(Notificaciones));
+    }
+
+    private void MarcarNotificacionesLeidas()
+    {
+        InAppNotificationCenter.MarkAllRead();
+        IsNotificationPanelOpen = false;
+    }
+
+    private void EliminarNotificacion(AppNotificationItem? item)
+    {
+        if (item == null)
+            return;
+
+        InAppNotificationCenter.Remove(item);
+    }
+
+    private void EliminarTodasNotificaciones()
+    {
+        InAppNotificationCenter.RemoveAll();
+        IsNotificationPanelOpen = false;
+    }
+
+    private void NavegarDesdeNotificacion(AppNotificationItem? item)
+    {
+        if (item == null)
+            return;
+
+        InAppNotificationCenter.MarkRead(item);
+        IsNotificationPanelOpen = false;
+
+        if (!string.IsNullOrWhiteSpace(item.Seccion))
+            NotificationNavigationRequested?.Invoke(this, item.Seccion);
     }
 
     private void OnActiveSearchPropertyChanged(object? sender, PropertyChangedEventArgs e)

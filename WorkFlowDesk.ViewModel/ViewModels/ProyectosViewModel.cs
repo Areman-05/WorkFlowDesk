@@ -10,7 +10,7 @@ using WorkFlowDesk.ViewModel.Models;
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
 /// <summary>ViewModel de listado y gestión de proyectos.</summary>
-public class ProyectosViewModel : ListViewModelBase, ISearchableViewModel
+public class ProyectosViewModel : ListViewModelBase, ISearchableViewModel, IListToolbarProvider
 {
     private readonly IProyectoService _proyectoService;
     private readonly IExportService _exportService;
@@ -134,6 +134,12 @@ public class ProyectosViewModel : ListViewModelBase, ISearchableViewModel
     public event EventHandler<Proyecto>? ProyectoCreado;
     public event EventHandler<Proyecto>? ProyectoEditado;
     public event EventHandler<string>? ExportacionCompletada;
+
+    public bool ToolbarExportVisible => CanExport;
+    public bool ToolbarCreateVisible => CanManage;
+    public string ToolbarCreateLabel => "Nuevo proyecto";
+    public IAsyncRelayCommand? ToolbarExportCommand => ExportarCommand;
+    public IRelayCommand? ToolbarCreateCommand => CrearProyectoCommand;
 
     private async Task CargarProyectosAsync()
     {

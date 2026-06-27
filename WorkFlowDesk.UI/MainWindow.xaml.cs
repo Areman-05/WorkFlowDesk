@@ -25,7 +25,10 @@ public partial class MainWindow : Window
         _mainViewModel = new MainViewModel();
         _mainViewModel.NavigateRequested += OnNavigateRequested;
         _mainViewModel.LogoutRequested += OnLogoutRequested;
+        _mainViewModel.NotificationNavigationRequested += OnNotificationNavigationRequested;
         DataContext = _mainViewModel;
+
+        NotificationPopup.Closed += (_, _) => _mainViewModel.IsNotificationPanelOpen = false;
 
         AppNavigationService.SectionRequested += OnSectionRequested;
         UserPreferencesService.AvatarChanged += OnAvatarChanged;
@@ -38,6 +41,7 @@ public partial class MainWindow : Window
     {
         _mainViewModel.RefreshAvatarUrl();
         await AvatarImageLoader.PreloadCatalogAsync();
+        await NotificationContextService.RefreshAsync(ServiceLocator.Provider);
     }
 
     private void OnSectionRequested(string section)
@@ -87,8 +91,14 @@ public partial class MainWindow : Window
         _mainViewModel.SetActiveSection(viewName);
         var view = NavigationViewFactory.CreateView(viewName);
         _mainViewModel.SetActiveSearchable(view.DataContext);
+        _mainViewModel.SetActiveToolbar(view.DataContext);
         _navigationService.NavigateTo(view);
+
+        _ = NotificationContextService.RefreshAsync(ServiceLocator.Provider);
     }
+
+    private void OnNotificationNavigationRequested(object? sender, string section) =>
+        NavigateTo(section);
 
     private static bool CanNavigateTo(string viewName) => viewName switch
     {

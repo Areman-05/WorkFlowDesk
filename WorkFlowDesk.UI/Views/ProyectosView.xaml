@@ -32,95 +32,63 @@
                     <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorMessageStyle}" Margin="0,8,0,0"
                                Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
                 </StackPanel>
-                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0">
-                        <Border Background="{DynamicResource StitchSurfaceContainerLowBrush}"
-                                BorderBrush="{DynamicResource StitchOutlineVariantBrush}"
-                                BorderThickness="1" CornerRadius="12" Padding="4,2">
-                            <StackPanel Orientation="Horizontal">
-                                <Button Content="Todos" Command="{Binding FiltrarTodosCommand}" Padding="14,6" Margin="2"
-                                        Cursor="Hand" BorderThickness="0" FontSize="13">
-                                    <Button.Style>
-                                        <Style TargetType="Button">
-                                            <Setter Property="Background" Value="Transparent"/>
-                                            <Setter Property="Foreground" Value="{DynamicResource StitchOnSurfaceVariantBrush}"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding FiltroTodosActivo}" Value="True">
-                                                    <Setter Property="Background" Value="{DynamicResource StitchSurfaceBrush}"/>
-                                                    <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
-                                                    <Setter Property="FontWeight" Value="SemiBold"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                </Button>
-                                <Button Content="Activos" Command="{Binding FiltrarActivosCommand}" Padding="14,6" Margin="2"
-                                        Cursor="Hand" BorderThickness="0" FontSize="13">
-                                    <Button.Style>
-                                        <Style TargetType="Button">
-                                            <Setter Property="Background" Value="Transparent"/>
-                                            <Setter Property="Foreground" Value="{DynamicResource StitchOnSurfaceVariantBrush}"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding FiltroActivosActivo}" Value="True">
-                                                    <Setter Property="Background" Value="{DynamicResource StitchSurfaceBrush}"/>
-                                                    <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
-                                                    <Setter Property="FontWeight" Value="SemiBold"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                </Button>
-                                <Button Content="Completados" Command="{Binding FiltrarCompletadosCommand}" Padding="14,6" Margin="2"
-                                        Cursor="Hand" BorderThickness="0" FontSize="13">
-                                    <Button.Style>
-                                        <Style TargetType="Button">
-                                            <Setter Property="Background" Value="Transparent"/>
-                                            <Setter Property="Foreground" Value="{DynamicResource StitchOnSurfaceVariantBrush}"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding FiltroCompletadosActivo}" Value="True">
-                                                    <Setter Property="Background" Value="{DynamicResource StitchSurfaceBrush}"/>
-                                                    <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
-                                                    <Setter Property="FontWeight" Value="SemiBold"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                </Button>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
-                    <Button Style="{StaticResource StitchAuthOutlineButtonStyle}"
-                            Command="{Binding ExportarCommand}"
-                            Visibility="{Binding CanExport, Converter={StaticResource BooleanToVisibilityConverter}}"
-                            Padding="16,10" Margin="0,0,12,0">
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                    <Border Background="{DynamicResource StitchSurfaceContainerLowBrush}"
+                            BorderBrush="{DynamicResource StitchOutlineVariantBrush}"
+                            BorderThickness="1" CornerRadius="12" Padding="4,2">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE896;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"/>
-                            <TextBlock Text="Exportar CSV" FontWeight="SemiBold"/>
+                            <Button Content="Todos" Command="{Binding FiltrarTodosCommand}" Padding="14,6" Margin="2"
+                                    Cursor="Hand" BorderThickness="0" FontSize="13">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource StitchOnSurfaceVariantBrush}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding FiltroTodosActivo}" Value="True">
+                                                <Setter Property="Background" Value="{DynamicResource StitchSurfaceBrush}"/>
+                                                <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            <Button Content="Activos" Command="{Binding FiltrarActivosCommand}" Padding="14,6" Margin="2"
+                                    Cursor="Hand" BorderThickness="0" FontSize="13">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource StitchOnSurfaceVariantBrush}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding FiltroActivosActivo}" Value="True">
+                                                <Setter Property="Background" Value="{DynamicResource StitchSurfaceBrush}"/>
+                                                <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            <Button Content="Completados" Command="{Binding FiltrarCompletadosCommand}" Padding="14,6" Margin="2"
+                                    Cursor="Hand" BorderThickness="0" FontSize="13">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource StitchOnSurfaceVariantBrush}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding FiltroCompletadosActivo}" Value="True">
+                                                <Setter Property="Background" Value="{DynamicResource StitchSurfaceBrush}"/>
+                                                <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
                         </StackPanel>
-                    </Button>
-                    <Button Style="{StaticResource StitchPrimaryButtonStyle}"
-                            Command="{Binding CrearProyectoCommand}"
-                            Visibility="{Binding CanManage, Converter={StaticResource BooleanToVisibilityConverter}}"
-                            Padding="20,10">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="14" Margin="0,0,8,0"/>
-                            <TextBlock Text="Nuevo proyecto" FontWeight="SemiBold"/>
-                        </StackPanel>
-                    </Button>
+                    </Border>
                 </StackPanel>
             </Grid>
-
-            <!-- Búsqueda -->
-            <Border Style="{StaticResource StitchModalFieldBorderStyle}" Margin="0,0,0,20" MaxWidth="420" HorizontalAlignment="Left">
-                <Grid>
-                    <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="16"
-                               Foreground="#66524251" VerticalAlignment="Center" Margin="12,0,0,0" IsHitTestVisible="False"/>
-                    <TextBox Text="{Binding TextoBusqueda, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                             FlowDirection="LeftToRight"
-                             Style="{StaticResource StitchModalInnerTextBoxStyle}"
-                             Tag="Buscar proyectos, clientes..."/>
-                </Grid>
-            </Border>
 
             <!-- Stats -->
             <UniformGrid Columns="4" Margin="0,0,0,24">

@@ -12,7 +12,7 @@ using WorkFlowDesk.ViewModel.Models;
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
 /// <summary>ViewModel de listado y gestión de empleados.</summary>
-public class EmpleadosViewModel : ListViewModelBase, ISearchableViewModel
+public class EmpleadosViewModel : ListViewModelBase, ISearchableViewModel, IListToolbarProvider
 {
     private readonly IEmpleadoService _empleadoService;
     private readonly IExportService _exportService;
@@ -119,6 +119,12 @@ public class EmpleadosViewModel : ListViewModelBase, ISearchableViewModel
     public event EventHandler<Empleado>? EmpleadoCreado;
     public event EventHandler<string>? ExportacionCompletada;
     public event EventHandler<Empleado>? EmpleadoEditado;
+
+    public bool ToolbarExportVisible => CanExport;
+    public bool ToolbarCreateVisible => CanManage;
+    public string ToolbarCreateLabel => "Nuevo empleado";
+    public IAsyncRelayCommand? ToolbarExportCommand => ExportarCommand;
+    public IRelayCommand? ToolbarCreateCommand => CrearEmpleadoCommand;
 
     private async Task CargarEmpleadosAsync()
     {

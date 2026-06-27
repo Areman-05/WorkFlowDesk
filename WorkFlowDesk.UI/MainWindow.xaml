@@ -262,22 +262,30 @@
                 <Border Grid.Row="0" Background="{DynamicResource StitchTopBarBackgroundBrush}"
                         BorderBrush="{DynamicResource StitchTopBarBorderBrush}" BorderThickness="0,0,0,1">
                     <Grid Margin="24,0">
-                        <Border HorizontalAlignment="Left" VerticalAlignment="Center"
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" VerticalAlignment="Center"
                                 Background="{DynamicResource StitchSurfaceContainerBrush}"
                                 BorderBrush="{DynamicResource StitchInputBorderBrush}" BorderThickness="1" CornerRadius="12" Padding="12,6"
+                                Margin="0,0,12,0"
                                 Visibility="{Binding IsSearchVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <Grid MinWidth="280">
+                            <Grid MinWidth="260">
                                 <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets"
                                            Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"
                                            VerticalAlignment="Center" HorizontalAlignment="Left" IsHitTestVisible="False"/>
                                 <TextBox BorderThickness="0" Background="Transparent"
                                          Foreground="{DynamicResource StitchOnSurfaceBrush}"
                                          FlowDirection="LeftToRight"
-                                         VerticalAlignment="Center" Padding="28,4,8,4"
+                                         VerticalAlignment="Center" Padding="28,4,8,4" FontSize="13"
                                          Text="{Binding TextoBusqueda, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                                 <TextBlock Text="{Binding SearchPlaceholder}" IsHitTestVisible="False"
                                            Margin="28,0,8,0" VerticalAlignment="Center"
-                                           Foreground="#99524251" FontSize="14">
+                                           Foreground="{DynamicResource StitchOnSurfaceVariantBrush}" FontSize="13">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -292,7 +300,160 @@
                             </Grid>
                         </Border>
 
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center"
+                                    Visibility="{Binding IsToolbarVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Button Style="{StaticResource StitchAuthOutlineButtonStyle}"
+                                    Command="{Binding ToolbarExportCommand}"
+                                    Visibility="{Binding ToolbarExportVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    Padding="10,6" Margin="0,0,8,0" Cursor="Hand">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE896;" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,0,6,0"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Text="Exportar CSV" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource StitchPrimaryButtonStyle}"
+                                    Command="{Binding ToolbarCreateCommand}"
+                                    Visibility="{Binding ToolbarCreateVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    Padding="10,6" Cursor="Hand">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="12" Margin="0,0,6,0"
+                                               VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding ToolbarCreateLabel}" FontSize="12" FontWeight="SemiBold"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <Button x:Name="NotificationBellButton"
+                                    Command="{Binding ToggleNotificationPanelCommand}"
+                                    Width="36" Height="36" Cursor="Hand" Margin="0,0,12,0"
+                                    ToolTip="Notificaciones">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                                                        <Grid Width="18" Height="18">
+                                                            <TextBlock Text="&#xEA8F;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                                                       Foreground="{DynamicResource StitchOnSurfaceBrush}"
+                                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                            <Ellipse Width="8" Height="8" Fill="#FACC15"
+                                                                     HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-2,-2,0"
+                                                                     Visibility="{Binding DataContext.TieneNotificacionesNoLeidas, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                        </Grid>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+
+                            <Popup x:Name="NotificationPopup"
+                                   PlacementTarget="{Binding ElementName=NotificationBellButton}"
+                                   Placement="Bottom"
+                                   StaysOpen="False"
+                                   AllowsTransparency="True"
+                                   IsOpen="{Binding IsNotificationPanelOpen, Mode=TwoWay}">
+                                <Border Background="{DynamicResource StitchSurfaceBrush}"
+                                        BorderBrush="{DynamicResource StitchOutlineVariantBrush}"
+                                        BorderThickness="1" CornerRadius="12" Width="340"
+                                        MaxHeight="420" Margin="0,8,0,0">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="24" ShadowDepth="0" Opacity="0.12" Color="#2E0A65"/>
+                                    </Border.Effect>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Border Padding="16,12"
+                                                BorderBrush="{DynamicResource StitchRowDividerBrush}"
+                                                BorderThickness="0,0,0,1">
+                                            <Grid>
+                                                <TextBlock Text="Notificaciones" FontWeight="SemiBold" FontSize="14"
+                                                           Foreground="{DynamicResource StitchOnSurfaceBrush}"/>
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                                    <Button Command="{Binding MarcarNotificacionesLeidasCommand}"
+                                                            Cursor="Hand" Background="Transparent" BorderThickness="0" Padding="4,0" Margin="0,0,8,0"
+                                                            Visibility="{Binding TieneNotificacionesNoLeidas, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                        <TextBlock Text="Marcar leídas" FontSize="12"
+                                                                   Foreground="{DynamicResource StitchPrimaryBrush}"/>
+                                                    </Button>
+                                                    <Button Command="{Binding EliminarTodasNotificacionesCommand}"
+                                                            Cursor="Hand" Background="Transparent" BorderThickness="0" Padding="4,0"
+                                                            Visibility="{Binding HayNotificaciones, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                        <TextBlock Text="Eliminar todas" FontSize="12"
+                                                                   Foreground="{DynamicResource StitchErrorBrush}"/>
+                                                    </Button>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" MaxHeight="340">
+                                            <ItemsControl ItemsSource="{Binding Notificaciones}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Button Grid.Column="0"
+                                                                    Command="{Binding DataContext.NavegarDesdeNotificacionCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                    CommandParameter="{Binding}"
+                                                                    Style="{StaticResource StitchGhostButtonStyle}"
+                                                                    HorizontalContentAlignment="Stretch"
+                                                                    Padding="14,12" Cursor="Hand">
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <Border Width="32" Height="32" CornerRadius="8"
+                                                                            Background="{DynamicResource StitchThemeOptionSelectedBrush}"
+                                                                            Margin="0,0,10,0">
+                                                                        <TextBlock Text="{Binding IconoGlyph}" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                                                                   Foreground="{DynamicResource StitchPrimaryBrush}"
+                                                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                    </Border>
+                                                                    <StackPanel Grid.Column="1">
+                                                                        <TextBlock Text="{Binding Titulo}" FontWeight="SemiBold" FontSize="13"
+                                                                                   Foreground="{DynamicResource StitchOnSurfaceBrush}"/>
+                                                                        <TextBlock Text="{Binding Mensaje}" FontSize="12" TextWrapping="Wrap"
+                                                                                   Foreground="{DynamicResource StitchOnSurfaceVariantBrush}" Margin="0,2,0,0"/>
+                                                                        <TextBlock Text="{Binding TiempoRelativo}" FontSize="11"
+                                                                                   Foreground="{DynamicResource StitchOnSurfaceVariantBrush}" Margin="0,4,0,0"/>
+                                                                    </StackPanel>
+                                                                </Grid>
+                                                            </Button>
+                                                            <Button Grid.Column="1"
+                                                                    Command="{Binding DataContext.EliminarNotificacionCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                    CommandParameter="{Binding}"
+                                                                    ToolTip="Eliminar"
+                                                                    Width="36" Height="36" Cursor="Hand"
+                                                                    VerticalAlignment="Center" Margin="0,0,8,0"
+                                                                    Background="Transparent" BorderThickness="0">
+                                                                <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                                                           Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"/>
+                                                            </Button>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </ScrollViewer>
+                                        <TextBlock Grid.Row="1" Text="No hay notificaciones"
+                                                   Style="{StaticResource StitchCaptionTextStyle}"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center" Margin="16"
+                                                   Visibility="{Binding HayNotificaciones, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+                                    </Grid>
+                                </Border>
+                            </Popup>
+
                             <StackPanel VerticalAlignment="Center" Margin="0,0,12,0">
                                 <TextBlock Text="{Binding UserName}" FontWeight="SemiBold" FontSize="13"
                                            Foreground="{DynamicResource StitchOnSurfaceBrush}" HorizontalAlignment="Right"/>

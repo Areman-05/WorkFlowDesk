@@ -11,7 +11,7 @@ using WorkFlowDesk.ViewModel.Models;
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
 /// <summary>ViewModel de listado y gestión de tareas.</summary>
-public class TareasViewModel : ListViewModelBase, ISearchableViewModel
+public class TareasViewModel : ListViewModelBase, ISearchableViewModel, IListToolbarProvider
 {
     private readonly ITareaService _tareaService;
     private readonly IExportService _exportService;
@@ -159,6 +159,12 @@ public class TareasViewModel : ListViewModelBase, ISearchableViewModel
     public event EventHandler<Tarea>? TareaCreada;
     public event EventHandler<string>? ExportacionCompletada;
     public event EventHandler<Tarea>? TareaEditada;
+
+    public bool ToolbarExportVisible => CanExport;
+    public bool ToolbarCreateVisible => CanManage;
+    public string ToolbarCreateLabel => "Nueva tarea";
+    public IAsyncRelayCommand? ToolbarExportCommand => ExportarCommand;
+    public IRelayCommand? ToolbarCreateCommand => CrearTareaCommand;
 
     private async Task CargarTareasAsync()
     {

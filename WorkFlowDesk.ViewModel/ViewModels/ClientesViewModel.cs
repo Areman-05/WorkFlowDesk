@@ -12,7 +12,7 @@ using WorkFlowDesk.ViewModel.Models;
 namespace WorkFlowDesk.ViewModel.ViewModels;
 
 /// <summary>ViewModel de listado y gestión de clientes.</summary>
-public class ClientesViewModel : ListViewModelBase, ISearchableViewModel
+public class ClientesViewModel : ListViewModelBase, ISearchableViewModel, IListToolbarProvider
 {
     private readonly IClienteService _clienteService;
     private readonly IExportService _exportService;
@@ -134,6 +134,12 @@ public class ClientesViewModel : ListViewModelBase, ISearchableViewModel
     public event EventHandler<Cliente>? ClienteEditado;
     public event EventHandler<string>? ExportacionCompletada;
     public event EventHandler<string>? MensajePreparado;
+
+    public bool ToolbarExportVisible => CanExport;
+    public bool ToolbarCreateVisible => CanManage;
+    public string ToolbarCreateLabel => "Nuevo cliente";
+    public IAsyncRelayCommand? ToolbarExportCommand => ExportarCommand;
+    public IRelayCommand? ToolbarCreateCommand => CrearClienteCommand;
 
     private async Task CargarClientesAsync()
     {
