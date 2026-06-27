@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:WorkFlowDesk.UI.Controls"
+             xmlns:local="clr-namespace:WorkFlowDesk.UI.Behaviors"
              mc:Ignorable="d"
              d:DesignHeight="1200" d:DesignWidth="1100">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
@@ -361,11 +362,39 @@
                                               Style="{StaticResource StitchToggleSwitchStyle}"
                                               VerticalAlignment="Center" HorizontalAlignment="Right"/>
                                 </Grid>
-                                <TextBlock Text="Protege tu cuenta utilizando un código de seguridad enviado a tu dispositivo móvil."
+                                <TextBlock Text="Protege tu cuenta con un PIN local que se solicitará tras iniciar sesión."
                                            Style="{StaticResource StitchCaptionTextStyle}" TextWrapping="Wrap" Margin="0,0,48,8"/>
-                                <Button Command="{Binding ConfigurarMetodosRespaldoCommand}" Cursor="Hand"
-                                        Background="Transparent" BorderThickness="0" HorizontalAlignment="Left" Padding="0">
-                                    <TextBlock Text="Configurar métodos de respaldo" Foreground="{StaticResource StitchPrimaryBrush}"
+                                <StackPanel Visibility="{Binding MostrarConfiguracionPin, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,48,8">
+                                    <TextBlock Text="Configurar PIN" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold" Margin="0,0,0,6"/>
+                                    <Grid Margin="0,0,0,8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="8"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Background="{DynamicResource StitchInputBackgroundBrush}"
+                                                BorderBrush="{DynamicResource StitchInputBorderBrush}"
+                                                BorderThickness="1" CornerRadius="8" Padding="10">
+                                            <PasswordBox x:Name="NuevoPinBox" local:PasswordBoxHelper.Password="{Binding NuevoPin, UpdateSourceTrigger=PropertyChanged}"/>
+                                        </Border>
+                                        <Border Grid.Column="2" Background="{DynamicResource StitchInputBackgroundBrush}"
+                                                BorderBrush="{DynamicResource StitchInputBorderBrush}"
+                                                BorderThickness="1" CornerRadius="8" Padding="10">
+                                            <PasswordBox local:PasswordBoxHelper.Password="{Binding ConfirmarPin, UpdateSourceTrigger=PropertyChanged}"/>
+                                        </Border>
+                                    </Grid>
+                                    <Button Command="{Binding ConfigurarPinCommand}" Cursor="Hand"
+                                            Background="Transparent" BorderThickness="0" HorizontalAlignment="Left" Padding="0" Margin="0,0,0,4">
+                                        <TextBlock Text="Guardar PIN" Foreground="{StaticResource StitchPrimaryBrush}"
+                                                   FontSize="12" FontWeight="SemiBold"/>
+                                    </Button>
+                                </StackPanel>
+                                <TextBlock Visibility="{Binding TienePinConfigurado, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                           Text="PIN configurado" Foreground="#15803D" FontSize="12" FontWeight="SemiBold" Margin="0,0,48,0"/>
+                                <Button Command="{Binding ConfigurarPinCommand}" Cursor="Hand"
+                                        Visibility="{Binding TienePinConfigurado, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Background="Transparent" BorderThickness="0" HorizontalAlignment="Left" Padding="0" Margin="0,4,0,0">
+                                    <TextBlock Text="Cambiar PIN" Foreground="{StaticResource StitchPrimaryBrush}"
                                                FontSize="12" FontWeight="SemiBold"/>
                                 </Button>
                             </StackPanel>

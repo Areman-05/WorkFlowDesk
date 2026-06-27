@@ -1,5 +1,6 @@
 using System.Text.Json;
 using WorkFlowDesk.Common.Configuration;
+using WorkFlowDesk.Common.Security;
 
 namespace WorkFlowDesk.Common.Services;
 
@@ -59,6 +60,28 @@ public static class UserPreferencesService
         var data = GetProfileData(userId);
         update(data);
         SetProfileData(userId, data);
+    }
+
+    public static bool TienePinSecundario(int userId)
+    {
+        var data = GetProfileData(userId);
+        return !string.IsNullOrWhiteSpace(data.PinSecundario);
+    }
+
+    public static void SetPinSecundario(int userId, string pin)
+    {
+        var data = GetProfileData(userId);
+        data.PinSecundario = PasswordHashHelper.HashPassword(pin);
+        SetProfileData(userId, data);
+    }
+
+    public static bool VerifyPinSecundario(int userId, string pin)
+    {
+        var data = GetProfileData(userId);
+        if (string.IsNullOrWhiteSpace(data.PinSecundario))
+            return false;
+
+        return PasswordHashHelper.VerifyPassword(pin, data.PinSecundario);
     }
 
     private static void EnsureLoaded()

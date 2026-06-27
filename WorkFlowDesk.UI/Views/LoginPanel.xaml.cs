@@ -24,6 +24,17 @@ public partial class LoginPanel : UserControl
         }
     }
 
+    private void OnPinFieldKeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.Enter)
+        {
+            _ = AttemptVerifyPinAsync();
+            e.Handled = true;
+        }
+    }
+
+    private async void OnVerifyPinClick(object sender, RoutedEventArgs e) => await AttemptVerifyPinAsync();
+
     private async Task AttemptLoginAsync()
     {
         if (DataContext is not LoginViewModel vm)
@@ -34,5 +45,16 @@ public partial class LoginPanel : UserControl
         vm.LoginCommand.NotifyCanExecuteChanged();
 
         await vm.LoginCommand.ExecuteAsync(null);
+    }
+
+    private Task AttemptVerifyPinAsync()
+    {
+        if (DataContext is not LoginViewModel vm)
+            return Task.CompletedTask;
+
+        vm.SetPinFromView(PinRevealBox.Password);
+        vm.VerifyPinCommand.NotifyCanExecuteChanged();
+        vm.VerifyPinCommand.Execute(null);
+        return Task.CompletedTask;
     }
 }

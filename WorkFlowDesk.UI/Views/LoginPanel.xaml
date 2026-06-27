@@ -51,8 +51,9 @@
                                        Margin="0,4,0,0"/>
                         </StackPanel>
 
-                        <!-- Formulario -->
-                        <StackPanel Margin="0,32,0,0">
+                        <!-- Formulario login -->
+                        <StackPanel Margin="0,32,0,0"
+                                    Visibility="{Binding RequiresPinVerification, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
                             <StackPanel Margin="0,0,0,16">
                                 <TextBlock Text="Nombre de usuario"
                                            Style="{StaticResource StitchLabelTextStyle}"
@@ -121,9 +122,45 @@
                                          Foreground="{StaticResource StitchPrimaryBrush}"/>
                         </StackPanel>
 
-                        <!-- Cuentas de prueba (dentro de la tarjeta) -->
+                        <!-- Verificación PIN (2FA) -->
+                        <StackPanel Margin="0,32,0,0"
+                                    Visibility="{Binding RequiresPinVerification, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <TextBlock Text="&#xE72E;" FontFamily="Segoe MDL2 Assets" FontSize="18"
+                                           Foreground="{StaticResource StitchPrimaryBrush}" Margin="0,0,8,0"/>
+                                <TextBlock Text="Verificación en dos pasos" Style="{StaticResource StitchH3TextStyle}"/>
+                            </StackPanel>
+                            <TextBlock Text="Introduce tu PIN de seguridad para continuar."
+                                       Style="{StaticResource StitchBodyTextStyle}" Margin="0,0,0,16" TextWrapping="Wrap"/>
+
+                            <TextBlock Text="PIN de seguridad" Style="{StaticResource StitchLabelTextStyle}" Margin="4,0,0,4"/>
+                            <Border Style="{StaticResource StitchAuthFieldBorderStyle}">
+                                <controls:PasswordRevealBox x:Name="PinRevealBox" KeyDown="OnPinFieldKeyDown"/>
+                            </Border>
+
+                            <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorMessageStyle}"
+                                       Margin="0,16,0,0" TextWrapping="Wrap"
+                                       Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>
+
+                            <StackPanel Margin="0,16,0,0">
+                                <Button Style="{StaticResource StitchAuthPrimaryButtonLargeStyle}"
+                                        Click="OnVerifyPinClick"
+                                        IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBooleanConverter}}"
+                                        HorizontalAlignment="Stretch" Content="Verificar PIN" Margin="0,0,0,12"/>
+                                <Button Style="{StaticResource StitchAuthSecondaryButtonStyle}"
+                                        Command="{Binding VolverAlLoginCommand}" Content="Volver al inicio de sesión"/>
+                            </StackPanel>
+
+                            <ProgressBar IsIndeterminate="True"
+                                         Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                         Height="4" Margin="0,16,0,0"
+                                         Foreground="{StaticResource StitchPrimaryBrush}"/>
+                        </StackPanel>
+
+                        <!-- Cuentas de prueba (solo en login) -->
                         <Border Style="{StaticResource StitchAuthGlassSubtleStyle}"
-                                Margin="0,32,0,0">
+                                Margin="0,32,0,0"
+                                Visibility="{Binding RequiresPinVerification, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8" Opacity="0.8">
                                     <TextBlock Text="&#xE946;"

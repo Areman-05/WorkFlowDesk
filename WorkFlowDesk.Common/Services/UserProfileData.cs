@@ -19,6 +19,7 @@ public class UserProfileData
     public string Tema { get; set; } = "Claro";
     public bool NotificacionesEscritorio { get; set; } = true;
     public bool AutenticacionDosFactores { get; set; }
+    public string? PinSecundario { get; set; }
     public DateTime? PasswordChangedAt { get; set; }
     public List<SesionPerfilData> Sesiones { get; set; } = new();
     public List<string> SesionesRevocadas { get; set; } = new();

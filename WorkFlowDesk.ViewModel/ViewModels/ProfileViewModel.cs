@@ -25,6 +25,9 @@ public class ProfileViewModel : ViewModelBase, ISearchableViewModel
     private string _tema = "Claro";
     private bool _notificacionesEscritorio = true;
     private bool _autenticacionDosFactores;
+    private bool _mostrarConfiguracionPin;
+    private string _nuevoPin = string.Empty;
+    private string _confirmarPin = string.Empty;
     private string _ultimaActualizacionPassword = "Sin registros";
     private string _cargoDisplay = string.Empty;
     private string _textoBusqueda = string.Empty;
@@ -59,7 +62,7 @@ public class ProfileViewModel : ViewModelBase, ISearchableViewModel
         CerrarOtrasSesionesCommand = new RelayCommand(CerrarOtrasSesiones);
         DesactivarCuentaCommand = new AsyncRelayCommand(DesactivarCuentaAsync);
         SeleccionarTemaCommand = new RelayCommand<string>(SeleccionarTema);
-        ConfigurarMetodosRespaldoCommand = new RelayCommand(ConfigurarMetodosRespaldo);
+        ConfigurarPinCommand = new RelayCommand(ConfigurarPin);
         SelectAvatarCommand = new RelayCommand<int>(index => SelectedAvatarIndex = index);
 
         _ = CargarPerfilAsync();
@@ -143,9 +146,38 @@ public class ProfileViewModel : ViewModelBase, ISearchableViewModel
                 return;
 
             OnPropertyChanged(nameof(EstadoDosFactoresTexto));
+            OnPropertyChanged(nameof(TienePinConfigurado));
+            OnPropertyChanged(nameof(MostrarConfiguracionPin));
+
+            if (value && _usuario != null && !UserPreferencesService.TienePinSecundario(_usuario.Id))
+                MostrarConfiguracionPin = true;
+            else if (!value)
+                MostrarConfiguracionPin = false;
+
             PersistirPreferenciasParciales();
         }
     }
+
+    public bool MostrarConfiguracionPin
+    {
+        get => _mostrarConfiguracionPin;
+        set => SetProperty(ref _mostrarConfiguracionPin, value);
+    }
+
+    public string NuevoPin
+    {
+        get => _nuevoPin;
+        set => SetProperty(ref _nuevoPin, value);
+    }
+
+    public string ConfirmarPin
+    {
+        get => _confirmarPin;
+        set => SetProperty(ref _confirmarPin, value);
+    }
+
+    public bool TienePinConfigurado =>
+        _usuario != null && UserPreferencesService.TienePinSecundario(_usuario.Id);
 
     public string UltimaActualizacionPassword
     {
@@ -203,7 +235,7 @@ public class ProfileViewModel : ViewModelBase, ISearchableViewModel
     public IRelayCommand CerrarOtrasSesionesCommand { get; }
     public IAsyncRelayCommand DesactivarCuentaCommand { get; }
     public IRelayCommand<string> SeleccionarTemaCommand { get; }
-    public IRelayCommand ConfigurarMetodosRespaldoCommand { get; }
+    public IRelayCommand ConfigurarPinCommand { get; }
     public IRelayCommand<int> SelectAvatarCommand { get; }
 
     public event EventHandler<string>? OperacionCompletada;
@@ -250,6 +282,7 @@ public class ProfileViewModel : ViewModelBase, ISearchableViewModel
             OnPropertyChanged(nameof(NotificacionesEscritorio));
             NotificacionesChanged?.Invoke(this, NotificacionesEscritorio);
             AutenticacionDosFactores = _profileData.AutenticacionDosFactores;
+            OnPropertyChanged(nameof(TienePinConfigurado));
             ActualizarTextoPassword(_profileData.PasswordChangedAt);
             LocalizationService.Apply(Idioma);
 
@@ -315,63 +348,6 @@ public class ProfileViewModel : ViewModelBase, ISearchableViewModel
             EsActual = true,
             EsDemo = false
         });
-
-        foreach (var sesion in _profileData.Sesiones
-                     .Where(s => !_profileData.SesionesRevocadas.Contains(s.Id))
-                     .OrderByDescending(s => s.UltimaActividad))
-        {
-            SesionesActivas.Add(new SesionActivaItem
-            {
-                Id = sesion.Id,
-                Dispositivo = sesion.Dispositivo,
-                Detalle = FormatearDetalleSesion(sesion),
-                Icono = sesion.Icono,
-                EsDemo = false
-            });
-        }
-
-        if (SesionesActivas.Count == 1)
-            InicializarSesionesDemo();
-    }
-
-    private void InicializarSesionesDemo()
-    {
-        if (_profileData == null) return;
-
-        var demo = new[]
-        {
-            new SesionPerfilData
-            {
-                Id = "iphone",
-                Dispositivo = "iPhone 14 Pro",
-                Detalle = $"{Ubicacion} • Hace 2 horas",
-                Icono = "\uE8EA",
-                UltimaActividad = DateTime.Now.AddHours(-2)
-            },
-            new SesionPerfilData
-            {
-                Id = "mac",
-                Dispositivo = "Safari en MacBook Pro",
-                Detalle = "Barcelona, España • Ayer, 14:30",
-                Icono = "\uE7F8",
-                UltimaActividad = DateTime.Now.AddDays(-1)
-            }
-        };
-
-        foreach (var sesion in demo.Where(s => !_profileData.SesionesRevocadas.Contains(s.Id)))
-        {
-            if (_profileData.Sesiones.All(s => s.Id != sesion.Id))
-                _profileData.Sesiones.Add(sesion);
-
-            SesionesActivas.Add(new SesionActivaItem
-            {
-                Id = sesion.Id,
-                Dispositivo = sesion.Dispositivo,
-                Detalle = FormatearDetalleSesion(sesion),
-                Icono = sesion.Icono,
-                EsDemo = true
-            });
-        }
     }
 
     private static string FormatearDetalleSesion(SesionPerfilData sesion)
@@ -448,6 +424,7 @@ public class ProfileViewModel : ViewModelBase, ISearchableViewModel
             Tema = Tema,
             NotificacionesEscritorio = NotificacionesEscritorio,
             AutenticacionDosFactores = AutenticacionDosFactores,
+            PinSecundario = _profileData?.PinSecundario,
             PasswordChangedAt = _profileData?.PasswordChangedAt,
             Sesiones = _profileData?.Sesiones ?? new List<SesionPerfilData>(),
             SesionesRevocadas = _profileData?.SesionesRevocadas ?? new List<string>()
@@ -531,16 +508,34 @@ public class ProfileViewModel : ViewModelBase, ISearchableViewModel
         OperacionCompletada?.Invoke(this, "Se han cerrado las demás sesiones activas.");
     }
 
-    private void ConfigurarMetodosRespaldo()
+    private void ConfigurarPin()
     {
-        if (!AutenticacionDosFactores)
+        if (_usuario == null) return;
+
+        if (string.IsNullOrWhiteSpace(NuevoPin) && TienePinConfigurado)
         {
-            OperacionCompletada?.Invoke(this, "Active la autenticación de 2 factores para configurar métodos de respaldo.");
+            MostrarConfiguracionPin = true;
             return;
         }
 
-        OperacionCompletada?.Invoke(this,
-            "Métodos de respaldo configurados: SMS al teléfono registrado y códigos de recuperación por email.");
+        if (string.IsNullOrWhiteSpace(NuevoPin) || NuevoPin.Length < 4)
+        {
+            ErrorMessage = "El PIN debe tener al menos 4 dígitos.";
+            return;
+        }
+
+        if (NuevoPin != ConfirmarPin)
+        {
+            ErrorMessage = "Los PIN no coinciden.";
+            return;
+        }
+
+        UserPreferencesService.SetPinSecundario(_usuario.Id, NuevoPin);
+        NuevoPin = string.Empty;
+        ConfirmarPin = string.Empty;
+        MostrarConfiguracionPin = false;
+        OnPropertyChanged(nameof(TienePinConfigurado));
+        OperacionCompletada?.Invoke(this, "PIN de verificación configurado correctamente.");
     }
 
     private async Task DesactivarCuentaAsync()
