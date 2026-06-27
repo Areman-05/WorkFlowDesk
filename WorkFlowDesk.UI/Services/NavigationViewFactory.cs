@@ -71,10 +71,16 @@ public static class NavigationViewFactory
         var empleadoService = services.GetRequiredService<IEmpleadoService>();
         var exportService = services.GetRequiredService<IExportService>();
         return new TareasView(
-            new TareasViewModel(tareaService, exportService),
+            new TareasViewModel(
+                tareaService,
+                exportService,
+                services.GetRequiredService<ITareaExtensionService>()),
             tareaService,
             proyectoService,
-            empleadoService);
+            empleadoService,
+            services.GetRequiredService<ITareaExtensionService>(),
+            services.GetRequiredService<IAttachmentService>(),
+            services.GetRequiredService<IActivityLogService>());
     }
 
     private static UserControl CreateClientes(IServiceProvider services)
@@ -107,7 +113,8 @@ public static class NavigationViewFactory
         return new ConfiguracionView(new ConfiguracionViewModel(
             services.GetRequiredService<IBackupService>(),
             services.GetRequiredService<IDatabaseInitializationService>(),
-            services.GetRequiredService<IAuthenticationService>()));
+            services.GetRequiredService<IAuthenticationService>(),
+            services.GetRequiredService<ISyncService>()));
     }
 
     private static UserControl CreatePerfil(IServiceProvider services) =>

@@ -194,5 +194,6 @@
     <local:HexToBrushConverter x:Key="HexToBrushConverter"/>
     <local:IntZeroToVisibilityConverter x:Key="IntZeroToVisibilityConverter"/>
     <local:ArcToDashArrayConverter x:Key="ArcToDashArrayConverter"/>
+    <local:KanbanMoveRequestConverter x:Key="KanbanMoveRequestConverter"/>
 
 </ResourceDictionary>

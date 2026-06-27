@@ -26,6 +26,60 @@
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                     <Border Background="{DynamicResource StitchSurfaceContainerLowBrush}"
                             BorderBrush="{DynamicResource StitchOutlineVariantBrush}"
+                            BorderThickness="1" CornerRadius="12" Padding="4,2" Margin="0,0,8,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="Lista" Command="{Binding VerListaCommand}" Padding="14,6" Margin="2"
+                                    Cursor="Hand" BorderThickness="0" FontSize="13">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource StitchOnSurfaceVariantBrush}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ModoListaActivo}" Value="True">
+                                                <Setter Property="Background" Value="{DynamicResource StitchSurfaceBrush}"/>
+                                                <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            <Button Content="Kanban" Command="{Binding VerKanbanCommand}" Padding="14,6" Margin="2"
+                                    Cursor="Hand" BorderThickness="0" FontSize="13">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource StitchOnSurfaceVariantBrush}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ModoKanbanActivo}" Value="True">
+                                                <Setter Property="Background" Value="{DynamicResource StitchSurfaceBrush}"/>
+                                                <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            <Button Content="Calendario" Command="{Binding VerCalendarioCommand}" Padding="14,6" Margin="2"
+                                    Cursor="Hand" BorderThickness="0" FontSize="13">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource StitchOnSurfaceVariantBrush}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ModoCalendarioActivo}" Value="True">
+                                                <Setter Property="Background" Value="{DynamicResource StitchSurfaceBrush}"/>
+                                                <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
+                                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                    <Border Background="{DynamicResource StitchSurfaceContainerLowBrush}"
+                            BorderBrush="{DynamicResource StitchOutlineVariantBrush}"
                             BorderThickness="1" CornerRadius="12" Padding="4,2">
                         <StackPanel Orientation="Horizontal">
                             <Button Content="Todas" Command="{Binding FiltrarTodasCommand}" Padding="14,6" Margin="2"
@@ -154,8 +208,9 @@
                 </Border>
             </UniformGrid>
 
-            <!-- Tabla -->
-            <Border Style="{StaticResource GlassCardBorderStyle}" Padding="0" MinHeight="320" Margin="0,0,0,24">
+            <!-- Tabla (vista lista) -->
+            <Border Style="{StaticResource GlassCardBorderStyle}" Padding="0" MinHeight="320" Margin="0,0,0,24"
+                    Visibility="{Binding EsVistaLista, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -334,6 +389,195 @@
                         <TextBlock Text="{Binding InfoPaginacion}" Style="{StaticResource StitchCaptionTextStyle}" VerticalAlignment="Center"/>
                     </Border>
                 </Grid>
+            </Border>
+
+            <!-- Kanban -->
+            <Border Style="{StaticResource GlassCardBorderStyle}" Padding="16" MinHeight="320" Margin="0,0,0,24"
+                    Visibility="{Binding EsVistaKanban, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid>
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"
+                                  Visibility="{Binding HayElementos, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ItemsControl ItemsSource="{Binding ColumnasKanban}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Width="280" Margin="0,0,12,0" Padding="12"
+                                            Background="{DynamicResource StitchSurfaceContainerLowBrush}"
+                                            BorderBrush="{DynamicResource StitchOutlineVariantBrush}"
+                                            BorderThickness="1" CornerRadius="12">
+                                        <StackPanel>
+                                            <Grid Margin="0,0,0,12">
+                                                <TextBlock Text="{Binding Titulo}" Style="{StaticResource StitchH3TextStyle}"/>
+                                                <TextBlock Text="{Binding Tarjetas.Count, StringFormat={}{0} tareas}"
+                                                           Style="{StaticResource StitchCaptionTextStyle}"
+                                                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                            </Grid>
+                                            <ItemsControl ItemsSource="{Binding Tarjetas}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border Style="{StaticResource GlassCardBorderStyle}"
+                                                                Padding="12" Margin="0,0,0,8">
+                                                            <StackPanel>
+                                                                <TextBlock Text="{Binding Tarea.Titulo}" FontWeight="SemiBold" FontSize="14"
+                                                                           TextWrapping="Wrap"
+                                                                           Foreground="{DynamicResource StitchOnSurfaceBrush}"/>
+                                                                <TextBlock Text="{Binding NombreProyecto}"
+                                                                           Style="{StaticResource StitchCaptionTextStyle}" Margin="0,4,0,8"/>
+                                                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                                    <Border CornerRadius="8" Padding="8,3" Margin="0,0,6,0"
+                                                                            Background="{Binding PrioridadFondo, Converter={StaticResource HexToBrushConverter}}">
+                                                                        <TextBlock Text="{Binding PrioridadTexto}" FontSize="11" FontWeight="SemiBold"
+                                                                                   Foreground="{Binding PrioridadTextoColor, Converter={StaticResource HexToBrushConverter}}"/>
+                                                                    </Border>
+                                                                    <TextBlock Text="{Binding FechaLimiteTexto}"
+                                                                               Style="{StaticResource StitchCaptionTextStyle}" VerticalAlignment="Center"/>
+                                                                </StackPanel>
+                                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                                                    <Button Command="{Binding DataContext.EditarTareaCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                            CommandParameter="{Binding}"
+                                                                            Visibility="{Binding DataContext.CanManage, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                            Width="28" Height="28" Margin="0,0,4,0" Cursor="Hand"
+                                                                            Background="Transparent" BorderThickness="0">
+                                                                        <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets" FontSize="12"
+                                                                                   Foreground="{StaticResource StitchPrimaryBrush}"/>
+                                                                    </Button>
+                                                                    <Button Command="{Binding DataContext.MoverKanbanCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                            Visibility="{Binding DataContext.CanManage, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                            Padding="10,4" Cursor="Hand" FontSize="11" FontWeight="SemiBold"
+                                                                            Background="{DynamicResource StitchSurfaceBrush}"
+                                                                            BorderBrush="{DynamicResource StitchOutlineVariantBrush}"
+                                                                            BorderThickness="1"
+                                                                            Foreground="{StaticResource StitchPrimaryBrush}">
+                                                                        <Button.CommandParameter>
+                                                                            <MultiBinding Converter="{StaticResource KanbanMoveRequestConverter}">
+                                                                                <Binding/>
+                                                                                <Binding Path="DataContext.EstadoSiguiente" RelativeSource="{RelativeSource AncestorType=ItemsControl, AncestorLevel=2}"/>
+                                                                            </MultiBinding>
+                                                                        </Button.CommandParameter>
+                                                                        <TextBlock Text="{Binding DataContext.TextoMoverSiguiente, RelativeSource={RelativeSource AncestorType=ItemsControl, AncestorLevel=2}}"/>
+                                                                        <Button.Style>
+                                                                            <Style TargetType="Button">
+                                                                                <Style.Triggers>
+                                                                                    <DataTrigger Binding="{Binding DataContext.EstadoSiguiente, RelativeSource={RelativeSource AncestorType=ItemsControl, AncestorLevel=2}}" Value="{x:Null}">
+                                                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                                                    </DataTrigger>
+                                                                                </Style.Triggers>
+                                                                            </Style>
+                                                                        </Button.Style>
+                                                                    </Button>
+                                                                </StackPanel>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    <StackPanel Visibility="{Binding MostrarEstadoVacio, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                VerticalAlignment="Center" HorizontalAlignment="Center" Margin="48">
+                        <Border Width="96" Height="96" CornerRadius="48"
+                                Background="{DynamicResource StitchSurfaceContainerBrush}"
+                                HorizontalAlignment="Center" Margin="0,0,0,16">
+                            <TextBlock Text="&#xE783;" FontFamily="Segoe MDL2 Assets" FontSize="48"
+                                       Foreground="#4D524251" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="No hay tareas en el tablero" Style="{StaticResource StitchH2TextStyle}"
+                                   HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                        <TextBlock Text="Ajuste los filtros o cree una nueva tarea para ver el tablero Kanban."
+                                   Style="{StaticResource StitchBodyTextStyle}" TextWrapping="Wrap" TextAlignment="Center"
+                                   MaxWidth="360" HorizontalAlignment="Center"/>
+                    </StackPanel>
+
+                    <controls:LoadingIndicator
+                        Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </Grid>
+            </Border>
+
+            <!-- Calendario -->
+            <Border Style="{StaticResource GlassCardBorderStyle}" Padding="16" MinHeight="420" Margin="0,0,0,24"
+                    Visibility="{Binding EsVistaCalendario, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel>
+                    <Grid Margin="0,0,0,16">
+                        <Button Command="{Binding MesAnteriorCommand}" HorizontalAlignment="Left"
+                                Width="36" Height="36" Cursor="Hand" Background="Transparent" BorderThickness="0">
+                            <TextBlock Text="&#xE76B;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                       Foreground="{StaticResource StitchPrimaryBrush}"/>
+                        </Button>
+                        <TextBlock Text="{Binding MesAnioTexto}" Style="{StaticResource StitchH2TextStyle}"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Button Command="{Binding MesSiguienteCommand}" HorizontalAlignment="Right"
+                                Width="36" Height="36" Cursor="Hand" Background="Transparent" BorderThickness="0">
+                            <TextBlock Text="&#xE76C;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                       Foreground="{StaticResource StitchPrimaryBrush}"/>
+                        </Button>
+                    </Grid>
+
+                    <UniformGrid Columns="7" Margin="0,0,0,4">
+                        <TextBlock Text="Lun" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Mar" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Mié" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Jue" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Vie" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Sáb" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Dom" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                    </UniformGrid>
+
+                    <ItemsControl ItemsSource="{Binding DiasCalendario}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="7"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border MinHeight="88" Margin="2" Padding="8"
+                                        BorderBrush="{DynamicResource StitchOutlineVariantBrush}"
+                                        BorderThickness="1" CornerRadius="8">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="{DynamicResource StitchSurfaceContainerLowBrush}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding EsMesActual}" Value="False">
+                                                    <Setter Property="Opacity" Value="0.45"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding EsHoy}" Value="True">
+                                                    <Setter Property="BorderBrush" Value="{StaticResource StitchPrimaryBrush}"/>
+                                                    <Setter Property="BorderThickness" Value="2"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Numero}" FontWeight="SemiBold" FontSize="13"
+                                                   Foreground="{DynamicResource StitchOnSurfaceBrush}"/>
+                                        <ItemsControl ItemsSource="{Binding Tareas}" Margin="0,4,0,0">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border CornerRadius="6" Padding="4,2" Margin="0,0,0,2"
+                                                            Background="{Binding EstadoFondo, Converter={StaticResource HexToBrushConverter}}"
+                                                            Cursor="Hand">
+                                                        <TextBlock Text="{Binding Tarea.Titulo}" FontSize="10" FontWeight="SemiBold"
+                                                                   TextTrimming="CharacterEllipsis"
+                                                                   Foreground="{Binding EstadoTextoColor, Converter={StaticResource HexToBrushConverter}}"/>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
             </Border>
 
             <!-- Actividad semanal + Rendimiento -->

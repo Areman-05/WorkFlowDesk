@@ -1,3 +1,5 @@
+using System.Collections.ObjectModel;
+using System.Globalization;
 using CommunityToolkit.Mvvm.Input;
 using WorkFlowDesk.Common.Authorization;
 using WorkFlowDesk.Common.Configuration;
@@ -13,9 +15,23 @@ namespace WorkFlowDesk.ViewModel.ViewModels;
 /// <summary>ViewModel de listado y gestión de tareas.</summary>
 public class TareasViewModel : ListViewModelBase, ISearchableViewModel, IListToolbarProvider
 {
+    private static readonly (EstadoTarea Estado, string Titulo, EstadoTarea? Siguiente, string? TextoMover)[] DefinicionesKanban =
+    [
+        (EstadoTarea.Pendiente, "Pendiente", EstadoTarea.EnProgreso, "→ En progreso"),
+        (EstadoTarea.EnProgreso, "En progreso", EstadoTarea.EnRevision, "→ En revisión"),
+        (EstadoTarea.EnRevision, "En revisión", EstadoTarea.Completada, "→ Completada"),
+        (EstadoTarea.Completada, "Completada", null, null)
+    ];
+
     private readonly ITareaService _tareaService;
     private readonly IExportService _exportService;
+    private readonly ITareaExtensionService _tareaExtension;
     private readonly PaginationHelper _paginacion = new();
+    private readonly ObservableCollection<KanbanColumnItem> _columnasKanban = new();
+    private readonly ObservableCollection<CalendarioDiaItem> _diasCalendario = new();
+    private DateTime _mesCalendario = DateTime.Today;
+    private string _modoVista = "Lista";
+    private string _mesAnioTexto = string.Empty;
     private IEnumerable<Tarea> _tareas = new List<Tarea>();
     private IEnumerable<TareaListItem> _tareasFiltradas = new List<TareaListItem>();
     private List<Tarea> _resultadoFiltrado = new();
@@ -28,12 +44,18 @@ public class TareasViewModel : ListViewModelBase, ISearchableViewModel, IListToo
     private int _completadas;
     private int _rendimientoPorcentaje;
     private string _rendimientoVariacion = string.Empty;
+    private int? _proyectoFiltroId;
+    private string _proyectoFiltroNombre = string.Empty;
     private IReadOnlyList<ActividadDiaItem> _actividadSemanal = Array.Empty<ActividadDiaItem>();
 
-    public TareasViewModel(ITareaService tareaService, IExportService exportService)
+    public TareasViewModel(
+        ITareaService tareaService,
+        IExportService exportService,
+        ITareaExtensionService tareaExtension)
     {
         _tareaService = tareaService;
         _exportService = exportService;
+        _tareaExtension = tareaExtension;
 
         CargarTareasCommand = new AsyncRelayCommand(CargarTareasAsync);
         CrearTareaCommand = new RelayCommand(CrearTarea);
@@ -46,6 +68,20 @@ public class TareasViewModel : ListViewModelBase, ISearchableViewModel, IListToo
         FiltrarPendientesCommand = new RelayCommand(() => AplicarFiltroEstado("Pendientes"));
         FiltrarEnCursoCommand = new RelayCommand(() => AplicarFiltroEstado("EnCurso"));
         FiltrarCompletadasCommand = new RelayCommand(() => AplicarFiltroEstado("Completadas"));
+        VerListaCommand = new RelayCommand(() => CambiarModoVista("Lista"));
+        VerKanbanCommand = new RelayCommand(() => CambiarModoVista("Kanban"));
+        VerCalendarioCommand = new RelayCommand(() => CambiarModoVista("Calendario"));
+        MoverKanbanCommand = new AsyncRelayCommand<KanbanMoveRequest>(MoverKanbanAsync, CanMoverKanban);
+        MesAnteriorCommand = new RelayCommand(IrMesAnterior);
+        MesSiguienteCommand = new RelayCommand(IrMesSiguiente);
+
+        ActualizarMesAnioTexto();
+
+        if (AppNavigationService.PendingProyectoFiltroId is int proyectoId)
+        {
+            _proyectoFiltroId = proyectoId;
+            AppNavigationService.PendingProyectoFiltroId = null;
+        }
 
         CargarTareasCommand.ExecuteAsync(null);
     }
@@ -110,6 +146,48 @@ public class TareasViewModel : ListViewModelBase, ISearchableViewModel, IListToo
     public bool FiltroEnCursoActivo => _filtroActivo == "EnCurso";
     public bool FiltroCompletadasActivo => _filtroActivo == "Completadas";
 
+    public bool TieneFiltroProyecto => _proyectoFiltroId.HasValue;
+
+    public string ProyectoFiltroNombre
+    {
+        get => _proyectoFiltroNombre;
+        private set => SetProperty(ref _proyectoFiltroNombre, value);
+    }
+
+    public string ModoVista
+    {
+        get => _modoVista;
+        private set
+        {
+            if (!SetProperty(ref _modoVista, value))
+                return;
+
+            OnPropertyChanged(nameof(EsVistaLista));
+            OnPropertyChanged(nameof(EsVistaKanban));
+            OnPropertyChanged(nameof(EsVistaCalendario));
+            OnPropertyChanged(nameof(ModoListaActivo));
+            OnPropertyChanged(nameof(ModoKanbanActivo));
+            OnPropertyChanged(nameof(ModoCalendarioActivo));
+        }
+    }
+
+    public bool EsVistaLista => ModoVista == "Lista";
+    public bool EsVistaKanban => ModoVista == "Kanban";
+    public bool EsVistaCalendario => ModoVista == "Calendario";
+
+    public bool ModoListaActivo => ModoVista == "Lista";
+    public bool ModoKanbanActivo => ModoVista == "Kanban";
+    public bool ModoCalendarioActivo => ModoVista == "Calendario";
+
+    public ObservableCollection<KanbanColumnItem> ColumnasKanban => _columnasKanban;
+    public ObservableCollection<CalendarioDiaItem> DiasCalendario => _diasCalendario;
+
+    public string MesAnioTexto
+    {
+        get => _mesAnioTexto;
+        private set => SetProperty(ref _mesAnioTexto, value);
+    }
+
     public IEnumerable<TareaListItem> Tareas
     {
         get => _tareasFiltradas;
@@ -155,6 +233,12 @@ public class TareasViewModel : ListViewModelBase, ISearchableViewModel, IListToo
     public IRelayCommand FiltrarPendientesCommand { get; }
     public IRelayCommand FiltrarEnCursoCommand { get; }
     public IRelayCommand FiltrarCompletadasCommand { get; }
+    public IRelayCommand VerListaCommand { get; }
+    public IRelayCommand VerKanbanCommand { get; }
+    public IRelayCommand VerCalendarioCommand { get; }
+    public IAsyncRelayCommand<KanbanMoveRequest> MoverKanbanCommand { get; }
+    public IRelayCommand MesAnteriorCommand { get; }
+    public IRelayCommand MesSiguienteCommand { get; }
 
     public event EventHandler<Tarea>? TareaCreada;
     public event EventHandler<string>? ExportacionCompletada;
@@ -173,6 +257,14 @@ public class TareasViewModel : ListViewModelBase, ISearchableViewModel, IListToo
         try
         {
             _tareas = (await _tareaService.GetAllAsync()).ToList();
+
+            if (_proyectoFiltroId.HasValue)
+            {
+                var proyecto = _tareas.FirstOrDefault(t => t.ProyectoId == _proyectoFiltroId)?.Proyecto;
+                ProyectoFiltroNombre = proyecto?.Nombre ?? $"Proyecto #{_proyectoFiltroId}";
+                OnPropertyChanged(nameof(TieneFiltroProyecto));
+            }
+
             ActualizarEstadisticas();
             FiltrarTareas();
         }
@@ -306,6 +398,9 @@ public class TareasViewModel : ListViewModelBase, ISearchableViewModel, IListToo
     {
         var consulta = _tareas.AsEnumerable();
 
+        if (_proyectoFiltroId.HasValue)
+            consulta = consulta.Where(t => t.ProyectoId == _proyectoFiltroId);
+
         consulta = _filtroActivo switch
         {
             "Pendientes" => consulta.Where(t => t.Estado == EstadoTarea.Pendiente),
@@ -329,6 +424,8 @@ public class TareasViewModel : ListViewModelBase, ISearchableViewModel, IListToo
         _resultadoFiltrado = consulta.ToList();
         _paginacion.Reiniciar();
         AplicarPaginacion();
+        ConstruirKanban();
+        ConstruirCalendario();
     }
 
     private void AplicarPaginacion()
@@ -339,6 +436,104 @@ public class TareasViewModel : ListViewModelBase, ISearchableViewModel, IListToo
         OnPropertyChanged(nameof(InfoPaginacion));
         PaginaAnteriorCommand.NotifyCanExecuteChanged();
         PaginaSiguienteCommand.NotifyCanExecuteChanged();
+    }
+
+    private void CambiarModoVista(string modo) => ModoVista = modo;
+
+    private void ConstruirKanban()
+    {
+        var items = _resultadoFiltrado.Select(MapToListItem).ToList();
+        _columnasKanban.Clear();
+
+        foreach (var def in DefinicionesKanban)
+        {
+            var columna = new KanbanColumnItem
+            {
+                Titulo = def.Titulo,
+                Estado = def.Estado,
+                EstadoSiguiente = def.Siguiente,
+                TextoMoverSiguiente = def.TextoMover
+            };
+
+            foreach (var item in items.Where(i => i.Tarea.Estado == def.Estado))
+                columna.Tarjetas.Add(item);
+
+            _columnasKanban.Add(columna);
+        }
+    }
+
+    private void ConstruirCalendario()
+    {
+        var inicioMes = new DateTime(_mesCalendario.Year, _mesCalendario.Month, 1);
+        var inicioGrilla = inicioMes.AddDays(-(((int)inicioMes.DayOfWeek + 6) % 7));
+        var items = _resultadoFiltrado.Select(MapToListItem).ToList();
+        var hoy = DateTime.Today;
+
+        _diasCalendario.Clear();
+        for (var i = 0; i < 42; i++)
+        {
+            var fecha = inicioGrilla.AddDays(i);
+            var tareasDia = items
+                .Where(item => ObtenerFechaCalendario(item.Tarea)?.Date == fecha.Date)
+                .ToList();
+
+            _diasCalendario.Add(new CalendarioDiaItem
+            {
+                Numero = fecha.Day,
+                EsMesActual = fecha.Month == _mesCalendario.Month,
+                EsHoy = fecha.Date == hoy,
+                Tareas = tareasDia
+            });
+        }
+
+        ActualizarMesAnioTexto();
+    }
+
+    private static DateTime? ObtenerFechaCalendario(Tarea tarea) =>
+        tarea.FechaVencimiento?.Date ?? tarea.FechaInicio?.Date ?? tarea.FechaFin?.Date;
+
+    private void ActualizarMesAnioTexto()
+    {
+        var cultura = CultureInfo.GetCultureInfo("es-ES");
+        var texto = _mesCalendario.ToString("MMMM yyyy", cultura);
+        MesAnioTexto = char.ToUpper(texto[0], cultura) + texto[1..];
+    }
+
+    private void IrMesAnterior()
+    {
+        _mesCalendario = _mesCalendario.AddMonths(-1);
+        ConstruirCalendario();
+    }
+
+    private void IrMesSiguiente()
+    {
+        _mesCalendario = _mesCalendario.AddMonths(1);
+        ConstruirCalendario();
+    }
+
+    private bool CanMoverKanban(KanbanMoveRequest? request) =>
+        CanManage && request?.Item != null;
+
+    private async Task MoverKanbanAsync(KanbanMoveRequest? request)
+    {
+        if (request?.Item == null)
+            return;
+
+        IsLoading = true;
+        try
+        {
+            await _tareaExtension.CambiarEstadoAsync(request.Item.Tarea.Id, request.NuevoEstado);
+            await CargarTareasAsync();
+        }
+        catch (Exception ex)
+        {
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 
     private void IrPaginaAnterior()
