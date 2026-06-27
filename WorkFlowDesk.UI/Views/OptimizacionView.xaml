@@ -13,7 +13,7 @@
             <!-- Cabecera -->
             <StackPanel Margin="0,0,0,32">
                 <TextBlock Text="Optimización de Flujo" Style="{StaticResource StitchH1TextStyle}"/>
-                <TextBlock Text="Automatiza tareas repetitivas y mejora la eficiencia de tu equipo con IA."
+                <TextBlock Text="Automatizaciones activas se ejecutan en esta app."
                            Style="{StaticResource StitchBodyTextStyle}" Margin="0,4,0,0"/>
                 <TextBlock Text="{Binding ErrorMessage}" Style="{StaticResource ErrorMessageStyle}" Margin="0,8,0,0"
                            Visibility="{Binding ErrorMessage, Converter={StaticResource NullToVisibilityConverter}}"/>

@@ -149,6 +149,78 @@
                 </Border>
             </Grid>
 
+            <!-- Sincronización + Integraciones -->
+            <Grid Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="24"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource GlassCardBorderStyle}" Padding="32">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                            <Border Width="48" Height="48" CornerRadius="8" Background="#1A9E00B5" Margin="0,0,16,0">
+                                <TextBlock Text="&#xE895;" FontFamily="Segoe MDL2 Assets" FontSize="22"
+                                           Foreground="{StaticResource StitchPrimaryBrush}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Sincronización" Style="{StaticResource StitchH3TextStyle}"/>
+                                <TextBlock Text="{Binding UltimaSyncTexto}" Style="{StaticResource StitchCaptionTextStyle}"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <TextBlock Text="Carpeta compartida" Style="{StaticResource StitchLabelTextStyle}" Margin="0,0,0,6"/>
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Background="{DynamicResource StitchSurfaceContainerLowBrush}"
+                                    BorderBrush="#4DD6C0D3" BorderThickness="1" CornerRadius="8" Padding="12,10" Margin="0,0,8,0">
+                                <TextBox Text="{Binding CarpetaCompartida, UpdateSourceTrigger=PropertyChanged}"
+                                         BorderThickness="0" Background="Transparent" FontSize="14"/>
+                            </Border>
+                            <Button Grid.Column="1" Style="{StaticResource StitchAuthCancelButtonStyle}"
+                                    Command="{Binding ExplorarCarpetaSyncCommand}" Padding="14,10" Content="Explorar"/>
+                        </Grid>
+
+                        <StackPanel Orientation="Horizontal">
+                            <Button Command="{Binding ExportarSyncCommand}" Style="{StaticResource StitchPrimaryButtonStyle}"
+                                    Padding="16,10" Margin="0,0,12,0" Content="Exportar cambios"/>
+                            <Button Command="{Binding ImportarSyncCommand}" Style="{StaticResource StitchAuthSecondaryButtonStyle}"
+                                    Padding="16,10" Content="Importar cambios"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Style="{StaticResource GlassCardBorderStyle}" Padding="32">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                            <Border Width="48" Height="48" CornerRadius="8" Background="#1AFD933D" Margin="0,0,16,0">
+                                <TextBlock Text="&#xE8BD;" FontFamily="Segoe MDL2 Assets" FontSize="22"
+                                           Foreground="{StaticResource StitchSecondaryBrush}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Integraciones" Style="{StaticResource StitchH3TextStyle}"/>
+                                <TextBlock Text="Webhooks y notificaciones externas" Style="{StaticResource StitchCaptionTextStyle}"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <TextBlock Text="Slack Webhook URL" Style="{StaticResource StitchLabelTextStyle}" Margin="0,0,0,6"/>
+                        <Border Background="{DynamicResource StitchSurfaceContainerLowBrush}"
+                                BorderBrush="#4DD6C0D3" BorderThickness="1" CornerRadius="8" Padding="12,10" Margin="0,0,0,16">
+                            <TextBox Text="{Binding SlackWebhookUrl, UpdateSourceTrigger=PropertyChanged}"
+                                     BorderThickness="0" Background="Transparent" FontSize="14"/>
+                        </Border>
+                        <Button Command="{Binding GuardarIntegracionesCommand}" Style="{StaticResource StitchPrimaryButtonStyle}"
+                                HorizontalAlignment="Left" Padding="20,10" Content="Guardar integraciones"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
             <!-- Cambiar contraseña -->
             <Border Style="{StaticResource GlassCardBorderStyle}" Padding="32" Margin="0,0,0,24">
                 <StackPanel>

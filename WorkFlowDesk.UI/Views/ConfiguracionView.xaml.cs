@@ -26,6 +26,24 @@ public partial class ConfiguracionView : UserControl
         viewModel.ExplorarRutaSolicitada += (_, path) =>
             Process.Start(new ProcessStartInfo("explorer.exe", path) { UseShellExecute = true });
         viewModel.RestaurarBackupSolicitado += OnRestaurarBackupSolicitado;
+        viewModel.ExplorarCarpetaSyncSolicitada += OnExplorarCarpetaSync;
+    }
+
+    private void OnExplorarCarpetaSync(object? sender, EventArgs e)
+    {
+        var dialog = new OpenFileDialog
+        {
+            Title = "Seleccione cualquier archivo dentro de la carpeta compartida",
+            CheckFileExists = true,
+            Multiselect = false
+        };
+
+        if (dialog.ShowDialog() == true)
+        {
+            var folder = Path.GetDirectoryName(dialog.FileName);
+            if (!string.IsNullOrWhiteSpace(folder))
+                _viewModel.CarpetaCompartida = folder;
+        }
     }
 
     private async void OnRestaurarBackupSolicitado(object? sender, EventArgs e)

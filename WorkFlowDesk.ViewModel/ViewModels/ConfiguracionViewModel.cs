@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Text.Json;
 using CommunityToolkit.Mvvm.Input;
 using WorkFlowDesk.Common.Configuration;
 using WorkFlowDesk.Common.Services;
@@ -15,8 +16,12 @@ public class ConfiguracionViewModel : ViewModelBase, ISearchableViewModel
     private readonly IBackupService _backupService;
     private readonly IDatabaseInitializationService _databaseInitializationService;
     private readonly IAuthenticationService _authenticationService;
+    private readonly ISyncService _syncService;
 
     private string _rutaSqlite = string.Empty;
+    private string _carpetaCompartida = string.Empty;
+    private string _slackWebhookUrl = string.Empty;
+    private string _ultimaSyncTexto = "Sin sincronización";
     private string _ultimoBackupTexto = "Sin backups";
     private string _tiempoActividadTexto = string.Empty;
     private string _textoBusqueda = string.Empty;
@@ -30,11 +35,13 @@ public class ConfiguracionViewModel : ViewModelBase, ISearchableViewModel
     public ConfiguracionViewModel(
         IBackupService backupService,
         IDatabaseInitializationService databaseInitializationService,
-        IAuthenticationService authenticationService)
+        IAuthenticationService authenticationService,
+        ISyncService syncService)
     {
         _backupService = backupService;
         _databaseInitializationService = databaseInitializationService;
         _authenticationService = authenticationService;
+        _syncService = syncService;
 
         ActividadSistemaFiltrada = new ObservableCollection<LogActividadItem>();
 
@@ -46,11 +53,37 @@ public class ConfiguracionViewModel : ViewModelBase, ISearchableViewModel
         RestaurarBackupCommand = new AsyncRelayCommand(RestaurarBackupAsync, CanRestaurarBackup);
         ExplorarRutaSqliteCommand = new RelayCommand(ExplorarRutaSqlite);
         SolicitarRestaurarBackupCommand = new RelayCommand(() => RestaurarBackupSolicitado?.Invoke(this, EventArgs.Empty));
+        ExportarSyncCommand = new AsyncRelayCommand(ExportarSyncAsync);
+        ImportarSyncCommand = new AsyncRelayCommand(ImportarSyncAsync);
+        GuardarIntegracionesCommand = new RelayCommand(GuardarIntegraciones);
+        ExplorarCarpetaSyncCommand = new RelayCommand(() => ExplorarCarpetaSyncSolicitada?.Invoke(this, EventArgs.Empty));
 
         _ = InicializarVistaAsync();
     }
 
     public ObservableCollection<LogActividadItem> ActividadSistemaFiltrada { get; }
+
+    public string CarpetaCompartida
+    {
+        get => _carpetaCompartida;
+        set
+        {
+            SetProperty(ref _carpetaCompartida, value);
+            _syncService.CarpetaCompartida = string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+        }
+    }
+
+    public string SlackWebhookUrl
+    {
+        get => _slackWebhookUrl;
+        set => SetProperty(ref _slackWebhookUrl, value);
+    }
+
+    public string UltimaSyncTexto
+    {
+        get => _ultimaSyncTexto;
+        private set => SetProperty(ref _ultimaSyncTexto, value);
+    }
 
     public string RutaSqlite
     {
@@ -120,6 +153,10 @@ public class ConfiguracionViewModel : ViewModelBase, ISearchableViewModel
     public IAsyncRelayCommand RestaurarBackupCommand { get; }
     public IRelayCommand ExplorarRutaSqliteCommand { get; }
     public IRelayCommand SolicitarRestaurarBackupCommand { get; }
+    public IAsyncRelayCommand ExportarSyncCommand { get; }
+    public IAsyncRelayCommand ImportarSyncCommand { get; }
+    public IRelayCommand GuardarIntegracionesCommand { get; }
+    public IRelayCommand ExplorarCarpetaSyncCommand { get; }
 
     public IEnumerable<string> BackupsDisponibles
     {
@@ -140,6 +177,10 @@ public class ConfiguracionViewModel : ViewModelBase, ISearchableViewModel
     public event EventHandler<string>? OperacionCompletada;
     public event EventHandler<string>? ExplorarRutaSolicitada;
     public event EventHandler? RestaurarBackupSolicitado;
+    public event EventHandler? ExplorarCarpetaSyncSolicitada;
+
+    private static string IntegrationsPath =>
+        Path.Combine(DatabasePaths.GetDataDirectory(), "integrations.json");
 
     private async Task InicializarVistaAsync()
     {
@@ -147,10 +188,110 @@ public class ConfiguracionViewModel : ViewModelBase, ISearchableViewModel
         try
         {
             RutaSqlite = DatabasePaths.GetDatabaseFilePath();
+            CarpetaCompartida = _syncService.CarpetaCompartida ?? string.Empty;
+            CargarIntegraciones();
+            var ultima = await _syncService.GetUltimaSyncAsync();
+            UltimaSyncTexto = ultima.HasValue
+                ? $"Última sync: {ultima.Value.ToLocalTime():dd/MM/yyyy HH:mm}"
+                : "Sin sincronización";
             TiempoActividadTexto = AppRuntimeInfo.GetUptimeFormatted();
             await CargarBackupsAsync();
             InicializarActividadSistema();
             AplicarFiltroActividad();
+        }
+        catch (Exception ex)
+        {
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private void CargarIntegraciones()
+    {
+        if (!File.Exists(IntegrationsPath))
+            return;
+
+        try
+        {
+            var json = File.ReadAllText(IntegrationsPath);
+            using var doc = JsonDocument.Parse(json);
+            if (doc.RootElement.TryGetProperty("SlackWebhookUrl", out var url))
+                SlackWebhookUrl = url.GetString() ?? string.Empty;
+        }
+        catch
+        {
+            // Ignorar JSON inválido.
+        }
+    }
+
+    private void GuardarIntegraciones()
+    {
+        try
+        {
+            var payload = JsonSerializer.Serialize(new { SlackWebhookUrl = SlackWebhookUrl.Trim() },
+                new JsonSerializerOptions { WriteIndented = true });
+            Directory.CreateDirectory(DatabasePaths.GetDataDirectory());
+            File.WriteAllText(IntegrationsPath, payload);
+            OperacionCompletada?.Invoke(this, "Integraciones guardadas correctamente.");
+            RegistrarActividad("SYNC: Webhook de Slack actualizado en integrations.json");
+        }
+        catch (Exception ex)
+        {
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
+        }
+    }
+
+    private async Task ExportarSyncAsync()
+    {
+        IsLoading = true;
+        try
+        {
+            _syncService.CarpetaCompartida = string.IsNullOrWhiteSpace(CarpetaCompartida) ? null : CarpetaCompartida.Trim();
+            var result = await _syncService.ExportarCambiosAsync();
+            if (!result.Exito)
+            {
+                ErrorMessage = result.Mensaje;
+                return;
+            }
+
+            ErrorMessage = null;
+            UltimaSyncTexto = $"Última sync: {DateTime.Now:dd/MM/yyyy HH:mm}";
+            OperacionCompletada?.Invoke(this, result.Mensaje);
+            RegistrarActividad($"SYNC: Exportación — {result.RegistrosAplicados} registros");
+        }
+        catch (Exception ex)
+        {
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+
+    private async Task ImportarSyncAsync()
+    {
+        IsLoading = true;
+        try
+        {
+            _syncService.CarpetaCompartida = string.IsNullOrWhiteSpace(CarpetaCompartida) ? null : CarpetaCompartida.Trim();
+            var result = await _syncService.ImportarCambiosAsync();
+            if (!result.Exito)
+            {
+                ErrorMessage = result.Mensaje;
+                return;
+            }
+
+            ErrorMessage = null;
+            UltimaSyncTexto = $"Última sync: {DateTime.Now:dd/MM/yyyy HH:mm}";
+            OperacionCompletada?.Invoke(this, result.Mensaje);
+            RegistrarActividad($"SYNC: Importación — {result.RegistrosAplicados} registros aplicados");
         }
         catch (Exception ex)
         {
