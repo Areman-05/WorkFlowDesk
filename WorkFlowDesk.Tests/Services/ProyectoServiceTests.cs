@@ -11,7 +11,7 @@ public class ProyectoServiceTests
     public async Task CreateAsync_persiste_proyecto()
     {
         await using var context = await TestDbContextFactory.CreateSeededAsync();
-        var service = new ProyectoService(context);
+        var service = new ProyectoService(context, TestServices.ActivityLog, TestServices.Automation);
         var cliente = await context.Clientes.FirstAsync();
         var proyecto = new Proyecto
         {
@@ -31,7 +31,7 @@ public class ProyectoServiceTests
     public async Task GetByEstadoAsync_filtra_por_estado()
     {
         await using var context = await TestDbContextFactory.CreateSeededAsync();
-        var service = new ProyectoService(context);
+        var service = new ProyectoService(context, TestServices.ActivityLog, TestServices.Automation);
         var cliente = await context.Clientes.FirstAsync();
         await service.CreateAsync(new Proyecto
         {

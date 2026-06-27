@@ -1,4 +1,5 @@
 using WorkFlowDesk.Domain.Entities;
+using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.Services.Services;
 using WorkFlowDesk.Tests.Infrastructure;
 
@@ -10,7 +11,7 @@ public class ReporteServiceTests
     public async Task ObtenerEstadisticasTareasAsync_incluye_totales_por_estado()
     {
         await using var context = await TestDbContextFactory.CreateSeededAsync();
-        var tareaService = new TareaService(context);
+        var tareaService = new TareaService(context, new NoOpActivityLog(), new NoOpAutomation());
         await tareaService.CreateAsync(new Tarea
         {
             Titulo = "Extra pendiente",

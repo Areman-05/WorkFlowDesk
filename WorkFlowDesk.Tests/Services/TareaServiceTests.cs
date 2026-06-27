@@ -10,7 +10,7 @@ public class TareaServiceTests
     public async Task CreateAsync_persiste_tarea_con_fecha_creacion()
     {
         await using var context = await TestDbContextFactory.CreateSeededAsync();
-        var service = new TareaService(context);
+        var service = CreateService(context);
         var tarea = new Tarea
         {
             Titulo = "Revisar informe",
@@ -30,7 +30,7 @@ public class TareaServiceTests
     public async Task GetByEstadoAsync_filtra_correctamente()
     {
         await using var context = await TestDbContextFactory.CreateSeededAsync();
-        var service = new TareaService(context);
+        var service = CreateService(context);
         await service.CreateAsync(new Tarea { Titulo = "Pendiente A", Estado = EstadoTarea.Pendiente, Prioridad = PrioridadTarea.Baja });
         await service.CreateAsync(new Tarea { Titulo = "Completada B", Estado = EstadoTarea.Completada, Prioridad = PrioridadTarea.Baja });
 
@@ -44,7 +44,7 @@ public class TareaServiceTests
     public async Task DeleteAsync_marca_tarea_como_cancelada()
     {
         await using var context = await TestDbContextFactory.CreateSeededAsync();
-        var service = new TareaService(context);
+        var service = CreateService(context);
         var creada = await service.CreateAsync(new Tarea
         {
             Titulo = "Eliminar",
@@ -58,4 +58,7 @@ public class TareaServiceTests
         Assert.NotNull(tarea);
         Assert.Equal(EstadoTarea.Cancelada, tarea.Estado);
     }
+
+    private static TareaService CreateService(WorkFlowDesk.Data.ApplicationDbContext context) =>
+        new(context, new NoOpActivityLog(), new NoOpAutomation());
 }
