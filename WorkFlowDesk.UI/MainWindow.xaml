@@ -25,6 +25,7 @@
         <KeyBinding Key="D8" Modifiers="Control" Command="{Binding NavigateToOptimizacionCommand}"/>
         <KeyBinding Key="D7" Modifiers="Control" Command="{Binding NavigateToConfiguracionCommand}"/>
         <KeyBinding Key="L" Modifiers="Control" Command="{Binding LogoutCommand}"/>
+        <KeyBinding Key="K" Modifiers="Control" Command="{Binding OpenGlobalSearchCommand}"/>
     </Window.InputBindings>
 
     <Window.Resources>
@@ -201,6 +202,8 @@
                 <DockPanel LastChildFill="True" Margin="0,24,0,16">
                     <StackPanel DockPanel.Dock="Top" Margin="24,0,24,24">
                         <TextBlock Text="WorkFlowDesk" FontSize="20" FontWeight="SemiBold" Foreground="White"/>
+                        <TextBlock Text="{Binding ProductTagline}" Style="{StaticResource StitchCaptionTextStyle}"
+                                   Foreground="#99F3EEFF" TextWrapping="Wrap" Margin="0,4,0,0" MaxWidth="210"/>
                         <TextBlock Text="{Binding UserRole}" Style="{StaticResource StitchCaptionTextStyle}"
                                    Foreground="#99F3EEFF" Margin="0,4,0,0"/>
                     </StackPanel>
@@ -326,6 +329,33 @@
                         </StackPanel>
 
                         <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <Button Command="{Binding OpenGlobalSearchCommand}"
+                                    Width="36" Height="36" Cursor="Hand" Margin="0,0,12,0"
+                                    ToolTip="Búsqueda global (Ctrl+K)">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                                                        <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                                                   Foreground="{DynamicResource StitchOnSurfaceBrush}"
+                                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="{DynamicResource StitchSurfaceContainerBrush}"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+
                             <Button x:Name="NotificationBellButton"
                                     Command="{Binding ToggleNotificationPanelCommand}"
                                     Width="36" Height="36" Cursor="Hand" Margin="0,0,12,0"
@@ -497,5 +527,7 @@
                            Style="{StaticResource StitchCaptionTextStyle}"/>
             </StackPanel>
         </Border>
+
+        <controls:GlobalSearchOverlay Panel.ZIndex="200"/>
     </Grid>
 </Window>

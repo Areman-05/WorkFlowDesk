@@ -1,0 +1,172 @@
+<UserControl x:Class="WorkFlowDesk.UI.Controls.GlobalSearchOverlay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="480" d:DesignWidth="640"
+             Visibility="{Binding IsGlobalSearchOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
+             PreviewKeyDown="OnPreviewKeyDown">
+    <Grid Background="#B32E1065" MouseLeftButtonDown="OnOverlayBackgroundClick">
+        <Border MaxWidth="560" MinWidth="420" VerticalAlignment="Top" Margin="0,96,0,48"
+                HorizontalAlignment="Center"
+                Background="{DynamicResource StitchSurfaceBrush}"
+                BorderBrush="{DynamicResource StitchPrimaryBrush}"
+                BorderThickness="1"
+                CornerRadius="16"
+                Padding="0"
+                MouseLeftButtonDown="OnDialogClick">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="32" ShadowDepth="0" Opacity="0.28" Color="#2E1065"/>
+            </Border.Effect>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Padding="16,14"
+                        BorderBrush="{DynamicResource StitchRowDividerBrush}"
+                        BorderThickness="0,0,0,1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="&#xE721;" FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                   Foreground="{DynamicResource StitchPrimaryBrush}"
+                                   VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <TextBox x:Name="SearchBox" Grid.Column="1"
+                                 BorderThickness="0" Background="Transparent"
+                                 Foreground="{DynamicResource StitchOnSurfaceBrush}"
+                                 FontSize="15" VerticalAlignment="Center"
+                                 Text="{Binding GlobalSearchText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <TextBlock Grid.Column="1" Text="Buscar clientes, proyectos, tareas..."
+                                   IsHitTestVisible="False" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource StitchOnSurfaceVariantBrush}" FontSize="15">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding GlobalSearchText}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <Border Grid.Column="2" Background="{DynamicResource StitchSurfaceContainerBrush}"
+                                BorderBrush="{DynamicResource StitchInputBorderBrush}"
+                                BorderThickness="1" CornerRadius="6" Padding="6,2" Margin="8,0,0,0">
+                            <TextBlock Text="Ctrl+K" FontSize="11"
+                                       Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"/>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <ListBox x:Name="ResultsList" Grid.Row="1"
+                         ItemsSource="{Binding GlobalSearchResults}"
+                         MaxHeight="360"
+                         BorderThickness="0" Background="Transparent"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                         MouseDoubleClick="OnResultDoubleClick"
+                         KeyDown="OnResultKeyDown">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="8,2"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border x:Name="Bd" Background="Transparent"
+                                                CornerRadius="10" Padding="12,10"
+                                                BorderBrush="Transparent" BorderThickness="1">
+                                            <ContentPresenter/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Bd" Property="Background"
+                                                        Value="{DynamicResource StitchPrimaryTintBrush}"/>
+                                                <Setter TargetName="Bd" Property="BorderBrush"
+                                                        Value="{DynamicResource StitchPrimaryBrush}"/>
+                                            </Trigger>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter TargetName="Bd" Property="Background"
+                                                        Value="{DynamicResource StitchThemeOptionSelectedBrush}"/>
+                                                <Setter TargetName="Bd" Property="BorderBrush"
+                                                        Value="{DynamicResource StitchPrimaryBrush}"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Width="34" Height="34" CornerRadius="8"
+                                        Background="{DynamicResource StitchThemeOptionSelectedBrush}"
+                                        Margin="0,0,12,0">
+                                    <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="14"
+                                               Foreground="{DynamicResource StitchPrimaryBrush}"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="&#xE721;"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Tipo}" Value="Tarea">
+                                                        <Setter Property="Text" Value="&#xE9D5;"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Tipo}" Value="Proyecto">
+                                                        <Setter Property="Text" Value="&#xE838;"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Tipo}" Value="Cliente">
+                                                        <Setter Property="Text" Value="&#xE8CB;"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Tipo}" Value="Empleado">
+                                                        <Setter Property="Text" Value="&#xE716;"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Border>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Titulo}" FontWeight="SemiBold" FontSize="13"
+                                               Foreground="{DynamicResource StitchOnSurfaceBrush}"/>
+                                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                                        <TextBlock Text="{Binding Tipo}" FontSize="11" FontWeight="SemiBold"
+                                                   Foreground="{DynamicResource StitchPrimaryBrush}" Margin="0,0,8,0"/>
+                                        <TextBlock Text="{Binding Subtitulo}" FontSize="11"
+                                                   Foreground="{DynamicResource StitchOnSurfaceVariantBrush}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <Border Grid.Row="2" Padding="14,10"
+                        BorderBrush="{DynamicResource StitchRowDividerBrush}"
+                        BorderThickness="0,1,0,0">
+                    <TextBlock Style="{StaticResource StitchCaptionTextStyle}"
+                               HorizontalAlignment="Center">
+                        <Run Text="↑↓ navegar"/>
+                        <Run Text=" · "/>
+                        <Run Text="Enter abrir"/>
+                        <Run Text=" · "/>
+                        <Run Text="Esc cerrar"/>
+                    </TextBlock>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

@@ -4,6 +4,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using WorkFlowDesk.Common.Authorization;
 using WorkFlowDesk.Common.Services;
+using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.UI.Services;
 using WorkFlowDesk.ViewModel.ViewModels;
 
@@ -21,7 +22,7 @@ public partial class MainWindow : Window
         _navigationService = new NavigationService();
         _navigationService.Initialize(ContentArea);
 
-        _mainViewModel = new MainViewModel();
+        _mainViewModel = new MainViewModel(ServiceLocator.GetService<IGlobalSearchService>());
         _mainViewModel.NavigateRequested += OnNavigateRequested;
         _mainViewModel.LogoutRequested += OnLogoutRequested;
         _mainViewModel.NotificationNavigationRequested += OnNotificationNavigationRequested;

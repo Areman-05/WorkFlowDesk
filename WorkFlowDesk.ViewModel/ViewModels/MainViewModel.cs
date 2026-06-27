@@ -2,7 +2,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using WorkFlowDesk.Common.Authorization;
+using WorkFlowDesk.Common.Configuration;
 using WorkFlowDesk.Common.Services;
+using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.ViewModel.Base;
 
 namespace WorkFlowDesk.ViewModel.ViewModels;
@@ -22,9 +24,13 @@ public class MainViewModel : ViewModelBase
     private IListToolbarProvider? _activeToolbar;
     private INotifyPropertyChanged? _activeToolbarNotifiable;
     private bool _isNotificationPanelOpen;
+    private bool _isGlobalSearchOpen;
+    private string _globalSearchText = string.Empty;
+    private readonly IGlobalSearchService? _globalSearchService;
 
-    public MainViewModel()
+    public MainViewModel(IGlobalSearchService? globalSearchService = null)
     {
+        _globalSearchService = globalSearchService;
         RefreshAvatarUrl();
         InAppNotificationCenter.Changed += (_, _) => NotifyNotificationState();
 
@@ -43,6 +49,32 @@ public class MainViewModel : ViewModelBase
         EliminarNotificacionCommand = new RelayCommand<AppNotificationItem>(EliminarNotificacion);
         EliminarTodasNotificacionesCommand = new RelayCommand(EliminarTodasNotificaciones);
         NavegarDesdeNotificacionCommand = new RelayCommand<AppNotificationItem>(NavegarDesdeNotificacion);
+        OpenGlobalSearchCommand = new RelayCommand(OpenGlobalSearch);
+        CloseGlobalSearchCommand = new RelayCommand(CloseGlobalSearch);
+        ExecuteGlobalSearchCommand = new AsyncRelayCommand(ExecuteGlobalSearchAsync);
+        SelectGlobalSearchResultCommand = new RelayCommand<GlobalSearchResult>(SelectGlobalSearchResult);
+    }
+
+    public string ProductTagline => AppProductInfo.Tagline;
+
+    public ObservableCollection<GlobalSearchResult> GlobalSearchResults { get; } = new();
+
+    public bool IsGlobalSearchOpen
+    {
+        get => _isGlobalSearchOpen;
+        set => SetProperty(ref _isGlobalSearchOpen, value);
+    }
+
+    public string GlobalSearchText
+    {
+        get => _globalSearchText;
+        set
+        {
+            if (!SetProperty(ref _globalSearchText, value))
+                return;
+
+            _ = ExecuteGlobalSearchCommand.ExecuteAsync(null);
+        }
     }
 
     public ObservableCollection<AppNotificationItem> Notificaciones => InAppNotificationCenter.Items;
@@ -179,6 +211,10 @@ public class MainViewModel : ViewModelBase
     public IRelayCommand<AppNotificationItem> EliminarNotificacionCommand { get; }
     public IRelayCommand EliminarTodasNotificacionesCommand { get; }
     public IRelayCommand<AppNotificationItem> NavegarDesdeNotificacionCommand { get; }
+    public IRelayCommand OpenGlobalSearchCommand { get; }
+    public IRelayCommand CloseGlobalSearchCommand { get; }
+    public IAsyncRelayCommand ExecuteGlobalSearchCommand { get; }
+    public IRelayCommand<GlobalSearchResult> SelectGlobalSearchResultCommand { get; }
 
     public event EventHandler<string>? NavigateRequested;
     public event EventHandler? LogoutRequested;
@@ -300,6 +336,49 @@ public class MainViewModel : ViewModelBase
         _syncingSearchFromChild = true;
         SetProperty(ref _textoBusqueda, childText, nameof(TextoBusqueda));
         _syncingSearchFromChild = false;
+    }
+
+    private void OpenGlobalSearch()
+    {
+        IsNotificationPanelOpen = false;
+        _globalSearchText = string.Empty;
+        OnPropertyChanged(nameof(GlobalSearchText));
+        GlobalSearchResults.Clear();
+        IsGlobalSearchOpen = true;
+    }
+
+    private void CloseGlobalSearch()
+    {
+        IsGlobalSearchOpen = false;
+        _globalSearchText = string.Empty;
+        OnPropertyChanged(nameof(GlobalSearchText));
+        GlobalSearchResults.Clear();
+    }
+
+    private async Task ExecuteGlobalSearchAsync()
+    {
+        if (_globalSearchService == null)
+            return;
+
+        if (string.IsNullOrWhiteSpace(GlobalSearchText))
+        {
+            GlobalSearchResults.Clear();
+            return;
+        }
+
+        var results = await _globalSearchService.BuscarAsync(GlobalSearchText);
+        GlobalSearchResults.Clear();
+        foreach (var result in results)
+            GlobalSearchResults.Add(result);
+    }
+
+    private void SelectGlobalSearchResult(GlobalSearchResult? result)
+    {
+        if (result == null || string.IsNullOrWhiteSpace(result.Seccion))
+            return;
+
+        CloseGlobalSearch();
+        Navigate(result.Seccion);
     }
 
     private void Navigate(string section)
