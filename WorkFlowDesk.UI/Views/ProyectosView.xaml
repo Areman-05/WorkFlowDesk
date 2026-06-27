@@ -14,6 +14,31 @@
             <Setter Property="Foreground" Value="{StaticResource StitchPrimaryBrush}"/>
             <Setter Property="BorderThickness" Value="0"/>
         </Style>
+        <Style x:Key="ProyectoListBoxItemStyle" TargetType="ListBoxItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border x:Name="Bd" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#1A9E00B5"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#0D9E00B5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
@@ -175,28 +200,17 @@
                         </Grid>
                     </Border>
 
-                    <ItemsControl Grid.Row="1" ItemsSource="{Binding Proyectos}"
-                                  Visibility="{Binding HayElementos, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <ItemsControl.ItemTemplate>
+                    <ListBox x:Name="ProyectosList" Grid.Row="1"
+                             ItemsSource="{Binding Proyectos}"
+                             SelectedItem="{Binding ProyectoSeleccionado, Mode=TwoWay}"
+                             ItemContainerStyle="{StaticResource ProyectoListBoxItemStyle}"
+                             BorderThickness="0" Background="Transparent"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             MouseDoubleClick="OnProyectoDoubleClick"
+                             Visibility="{Binding HayElementos, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Border BorderBrush="#0DD6C0D3" BorderThickness="0,0,0,1" Padding="24,14" Background="Transparent" Cursor="Hand">
-                                    <Border.InputBindings>
-                                        <MouseBinding MouseAction="LeftClick"
-                                                      Command="{Binding DataContext.SeleccionarProyectoCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                      CommandParameter="{Binding}"/>
-                                    </Border.InputBindings>
-                                    <Border.Style>
-                                        <Style TargetType="Border">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding DataContext.ProyectoSeleccionado, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="{Binding}">
-                                                    <Setter Property="Background" Value="#1A9E00B5"/>
-                                                </DataTrigger>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="#0D9E00B5"/>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Border.Style>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="2*"/>
@@ -294,8 +308,8 @@
                                     </Grid>
                                 </Border>
                             </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
 
                     <controls:EmptyStateView Grid.Row="1" Title="Sin proyectos"
                                              Message="No hay proyectos registrados o ninguno coincide con la búsqueda."
@@ -310,18 +324,61 @@
                 </Grid>
             </Border>
 
-            <!-- Tareas del proyecto seleccionado -->
+            <!-- Detalle del proyecto seleccionado -->
             <Border Style="{StaticResource GlassCardBorderStyle}" Padding="24" Margin="0,24,0,0"
                     Visibility="{Binding MuestraTareasProyecto, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <StackPanel>
-                    <Grid Margin="0,0,0,16">
-                        <StackPanel>
-                            <TextBlock Text="Tareas del proyecto" Style="{StaticResource StitchH3TextStyle}"/>
-                            <TextBlock Text="{Binding ProyectoSeleccionado.Proyecto.Nombre}" Style="{StaticResource StitchCaptionTextStyle}" Margin="0,4,0,0"/>
+                    <Grid Margin="0,0,0,20">
+                        <StackPanel Orientation="Horizontal">
+                            <Border Width="52" Height="52" CornerRadius="12"
+                                    Background="{DynamicResource StitchSurfaceContainerBrush}" Margin="0,0,16,0">
+                                <TextBlock Text="{Binding ProyectoSeleccionado.Iniciales}" FontWeight="Bold" FontSize="16"
+                                           Foreground="{StaticResource StitchPrimaryBrush}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="{Binding ProyectoSeleccionado.Proyecto.Nombre}" Style="{StaticResource StitchH3TextStyle}"/>
+                                <TextBlock Text="{Binding ProyectoSeleccionado.CodigoId}" Style="{StaticResource StitchCaptionTextStyle}" Margin="0,4,0,0"/>
+                            </StackPanel>
                         </StackPanel>
-                        <Button Command="{Binding VerTareasProyectoCommand}" HorizontalAlignment="Right" VerticalAlignment="Center"
-                                Style="{StaticResource StitchPrimaryButtonStyle}" Padding="16,8" Content="Ver en Tareas"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <Button Command="{Binding EditarProyectoSeleccionadoCommand}" Style="{StaticResource StitchPrimaryButtonStyle}"
+                                    Padding="16,8" Margin="0,0,8,0" Content="Editar proyecto"
+                                    Visibility="{Binding CanManage, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            <Button Command="{Binding VerTareasProyectoCommand}" Style="{StaticResource StitchAuthOutlineButtonStyle}"
+                                    Padding="16,8" Content="Ver en Tareas"/>
+                        </StackPanel>
                     </Grid>
+
+                    <UniformGrid Columns="4" Margin="0,0,0,20">
+                        <StackPanel Margin="0,0,12,0">
+                            <TextBlock Text="CLIENTE" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding ProyectoSeleccionado.NombreCliente}" Style="{StaticResource StitchBodyTextStyle}" Margin="0,4,0,0"/>
+                        </StackPanel>
+                        <StackPanel Margin="0,0,12,0">
+                            <TextBlock Text="INICIO" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding ProyectoSeleccionado.FechaInicioTexto}" Style="{StaticResource StitchBodyTextStyle}" Margin="0,4,0,0"/>
+                        </StackPanel>
+                        <StackPanel Margin="0,0,12,0">
+                            <TextBlock Text="ESTADO" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <Border CornerRadius="10" Padding="10,4" HorizontalAlignment="Left" Margin="0,4,0,0"
+                                    Background="{Binding ProyectoSeleccionado.EstadoFondo, Converter={StaticResource HexToBrushConverter}}">
+                                <TextBlock Text="{Binding ProyectoSeleccionado.EstadoTexto}" FontSize="12" FontWeight="SemiBold"
+                                           Foreground="{Binding ProyectoSeleccionado.EstadoTextoColor, Converter={StaticResource HexToBrushConverter}}"/>
+                            </Border>
+                        </StackPanel>
+                        <StackPanel>
+                            <TextBlock Text="PROGRESO" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding ProyectoSeleccionado.Progreso, StringFormat={}{0}%}" Style="{StaticResource StitchBodyTextStyle}" Margin="0,4,0,4"/>
+                            <ProgressBar Value="{Binding ProyectoSeleccionado.Progreso}" Maximum="100" Style="{StaticResource StitchProgresoBarStyle}"/>
+                        </StackPanel>
+                    </UniformGrid>
+
+                    <TextBlock Text="{Binding ProyectoSeleccionado.Proyecto.Descripcion}" Style="{StaticResource StitchBodyTextStyle}"
+                               TextWrapping="Wrap" Margin="0,0,0,20"
+                               Visibility="{Binding ProyectoSeleccionado.Proyecto.Descripcion, Converter={StaticResource NullToVisibilityConverter}}"/>
+
+                    <TextBlock Text="Tareas del proyecto" Style="{StaticResource StitchCaptionTextStyle}" FontWeight="SemiBold" Margin="0,0,0,8"/>
                     <ItemsControl ItemsSource="{Binding TareasProyectoSeleccionado}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
@@ -340,7 +397,7 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                     <TextBlock Text="No hay tareas en este proyecto." Style="{StaticResource StitchCaptionTextStyle}" Margin="0,8,0,0"
-                               Visibility="{Binding TareasProyectoSeleccionado.Count, Converter={StaticResource IntZeroToVisibilityConverter}}"/>
+                               Visibility="{Binding SinTareasProyecto, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </StackPanel>
             </Border>
         </StackPanel>

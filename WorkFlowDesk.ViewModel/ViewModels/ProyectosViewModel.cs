@@ -51,6 +51,7 @@ public class ProyectosViewModel : ListViewModelBase, ISearchableViewModel, IList
         FiltrarActivosCommand = new RelayCommand(() => AplicarFiltroEstado("Activos"));
         FiltrarCompletadosCommand = new RelayCommand(() => AplicarFiltroEstado("Completados"));
         SeleccionarProyectoCommand = new RelayCommand<ProyectoListItem>(item => ProyectoSeleccionado = item);
+        EditarProyectoSeleccionadoCommand = new RelayCommand(EditarProyectoSeleccionado, () => ProyectoSeleccionado != null);
         VerTareasProyectoCommand = new RelayCommand(VerTareasProyecto, () => ProyectoSeleccionado != null);
 
         CargarProyectosCommand.ExecuteAsync(null);
@@ -94,6 +95,8 @@ public class ProyectosViewModel : ListViewModelBase, ISearchableViewModel, IList
 
     public bool MuestraTareasProyecto => ProyectoSeleccionado != null;
 
+    public bool SinTareasProyecto => ProyectoSeleccionado != null && _tareasProyectoSeleccionado.Count == 0;
+
     public IEnumerable<ProyectoListItem> Proyectos
     {
         get => _proyectosFiltrados;
@@ -128,7 +131,9 @@ public class ProyectosViewModel : ListViewModelBase, ISearchableViewModel, IList
             EditarProyectoCommand.NotifyCanExecuteChanged();
             EliminarProyectoCommand.NotifyCanExecuteChanged();
             VerTareasProyectoCommand.NotifyCanExecuteChanged();
+            EditarProyectoSeleccionadoCommand.NotifyCanExecuteChanged();
             OnPropertyChanged(nameof(MuestraTareasProyecto));
+            ActualizarSeleccionVisual();
             _ = CargarTareasProyectoAsync();
         }
     }
@@ -144,6 +149,7 @@ public class ProyectosViewModel : ListViewModelBase, ISearchableViewModel, IList
     public IRelayCommand FiltrarActivosCommand { get; }
     public IRelayCommand FiltrarCompletadosCommand { get; }
     public IRelayCommand<ProyectoListItem> SeleccionarProyectoCommand { get; }
+    public IRelayCommand EditarProyectoSeleccionadoCommand { get; }
     public IRelayCommand VerTareasProyectoCommand { get; }
 
     public event EventHandler<Proyecto>? ProyectoCreado;
@@ -159,6 +165,7 @@ public class ProyectosViewModel : ListViewModelBase, ISearchableViewModel, IList
     private async Task CargarTareasProyectoAsync()
     {
         _tareasProyectoSeleccionado.Clear();
+        OnPropertyChanged(nameof(SinTareasProyecto));
         if (ProyectoSeleccionado == null) return;
 
         try
@@ -177,6 +184,8 @@ public class ProyectosViewModel : ListViewModelBase, ISearchableViewModel, IList
 
             foreach (var t in tareas)
                 _tareasProyectoSeleccionado.Add(t);
+
+            OnPropertyChanged(nameof(SinTareasProyecto));
         }
         catch (Exception ex)
         {
@@ -189,6 +198,12 @@ public class ProyectosViewModel : ListViewModelBase, ISearchableViewModel, IList
     {
         if (ProyectoSeleccionado == null) return;
         AppNavigationService.RequestTareasForProyecto(ProyectoSeleccionado.Proyecto.Id);
+    }
+
+    private void EditarProyectoSeleccionado()
+    {
+        if (ProyectoSeleccionado != null)
+            EditarProyecto(ProyectoSeleccionado);
     }
 
     private async Task CargarProyectosAsync()
@@ -352,9 +367,17 @@ public class ProyectosViewModel : ListViewModelBase, ISearchableViewModel, IList
         _paginacion.TamañoPagina = Math.Max(1, _resultadoFiltrado.Count);
         var pagina = _paginacion.Aplicar(_resultadoFiltrado).Select(MapToListItem).ToList();
         Proyectos = pagina;
+        ActualizarSeleccionVisual();
         OnPropertyChanged(nameof(InfoPaginacion));
         PaginaAnteriorCommand.NotifyCanExecuteChanged();
         PaginaSiguienteCommand.NotifyCanExecuteChanged();
+    }
+
+    private void ActualizarSeleccionVisual()
+    {
+        var selectedId = ProyectoSeleccionado?.Proyecto.Id;
+        foreach (var item in _proyectosFiltrados)
+            item.IsSelected = selectedId.HasValue && item.Proyecto.Id == selectedId.Value;
     }
 
     private void IrPaginaAnterior()

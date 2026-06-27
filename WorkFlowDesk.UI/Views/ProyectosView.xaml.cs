@@ -1,4 +1,5 @@
 using System.Windows.Controls;
+using System.Windows.Input;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.UI.Helpers;
 using WorkFlowDesk.UI.Services;
@@ -30,6 +31,12 @@ public partial class ProyectosView : UserControl
         _viewModel.ProyectoCreado += OnProyectoCreado;
         _viewModel.ProyectoEditado += OnProyectoEditado;
         _viewModel.ExportacionCompletada += OnExportacionCompletada;
+    }
+
+    private void OnProyectoDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        if (_viewModel.ProyectoSeleccionado != null && _viewModel.CanManage)
+            _viewModel.EditarProyectoCommand.Execute(_viewModel.ProyectoSeleccionado);
     }
 
     private void OnExportacionCompletada(object? sender, string path)
