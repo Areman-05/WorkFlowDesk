@@ -26,4 +26,5 @@ public class Proyecto
     // Navegación
     public Cliente? Cliente { get; set; }
     public Empleado? Responsable { get; set; }
+    public ICollection<Tarea> Tareas { get; set; } = new List<Tarea>();
 }

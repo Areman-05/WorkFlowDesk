@@ -40,6 +40,11 @@ public class Tarea
     public Empleado? Creador { get; set; }
     public Proyecto? Proyecto { get; set; }
     public ICollection<ComentarioTarea> Comentarios { get; set; } = new List<ComentarioTarea>();
+    public ICollection<SubTarea> Subtareas { get; set; } = new List<SubTarea>();
+    public ICollection<TareaDependencia> Dependencias { get; set; } = new List<TareaDependencia>();
+    public ICollection<TareaDependencia> BloqueaA { get; set; } = new List<TareaDependencia>();
+    public ICollection<RegistroTiempo> RegistrosTiempo { get; set; } = new List<RegistroTiempo>();
+    public ICollection<TareaAdjunto> Adjuntos { get; set; } = new List<TareaAdjunto>();
 }
 
 /// <summary>Comentario asociado a una tarea (autor y contenido).</summary>

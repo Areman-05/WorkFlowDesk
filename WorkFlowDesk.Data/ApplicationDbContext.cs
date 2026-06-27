@@ -19,6 +19,11 @@ public class ApplicationDbContext : DbContext
     public DbSet<Proyecto> Proyectos { get; set; }
     public DbSet<Tarea> Tareas { get; set; }
     public DbSet<ComentarioTarea> ComentariosTareas { get; set; }
+    public DbSet<SubTarea> Subtareas { get; set; }
+    public DbSet<TareaDependencia> TareaDependencias { get; set; }
+    public DbSet<RegistroTiempo> RegistrosTiempo { get; set; }
+    public DbSet<TareaAdjunto> TareaAdjuntos { get; set; }
+    public DbSet<RegistroActividad> RegistrosActividad { get; set; }
 
     /// <summary>Configura el modelo de entidades (claves, índices, relaciones).</summary>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -111,8 +116,78 @@ public class ApplicationDbContext : DbContext
                   .HasForeignKey(e => e.CreadorId)
                   .OnDelete(DeleteBehavior.SetNull);
             entity.HasOne(e => e.Proyecto)
-                  .WithMany()
+                  .WithMany(p => p.Tareas)
                   .HasForeignKey(e => e.ProyectoId)
+                  .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        modelBuilder.Entity<SubTarea>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Titulo).IsRequired().HasMaxLength(300);
+            entity.HasOne(e => e.Tarea)
+                  .WithMany(t => t.Subtareas)
+                  .HasForeignKey(e => e.TareaId)
+                  .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<TareaDependencia>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.HasIndex(e => new { e.TareaId, e.DependeDeTareaId }).IsUnique();
+            entity.HasOne(e => e.Tarea)
+                  .WithMany(t => t.Dependencias)
+                  .HasForeignKey(e => e.TareaId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.DependeDe)
+                  .WithMany(t => t.BloqueaA)
+                  .HasForeignKey(e => e.DependeDeTareaId)
+                  .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<RegistroTiempo>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Nota).HasMaxLength(500);
+            entity.HasOne(e => e.Tarea)
+                  .WithMany(t => t.RegistrosTiempo)
+                  .HasForeignKey(e => e.TareaId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.Empleado)
+                  .WithMany()
+                  .HasForeignKey(e => e.EmpleadoId)
+                  .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        modelBuilder.Entity<TareaAdjunto>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.NombreArchivo).IsRequired().HasMaxLength(260);
+            entity.Property(e => e.RutaRelativa).IsRequired().HasMaxLength(500);
+            entity.HasOne(e => e.Tarea)
+                  .WithMany(t => t.Adjuntos)
+                  .HasForeignKey(e => e.TareaId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.SubidoPor)
+                  .WithMany()
+                  .HasForeignKey(e => e.SubidoPorEmpleadoId)
+                  .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        modelBuilder.Entity<RegistroActividad>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Entidad).IsRequired().HasMaxLength(80);
+            entity.Property(e => e.Accion).IsRequired().HasMaxLength(80);
+            entity.Property(e => e.Detalle).HasMaxLength(2000);
+            entity.HasIndex(e => e.FechaUtc);
+            entity.HasOne(e => e.Usuario)
+                  .WithMany()
+                  .HasForeignKey(e => e.UsuarioId)
+                  .OnDelete(DeleteBehavior.SetNull);
+            entity.HasOne(e => e.Empleado)
+                  .WithMany()
+                  .HasForeignKey(e => e.EmpleadoId)
                   .OnDelete(DeleteBehavior.SetNull);
         });
 
