@@ -10,6 +10,8 @@ public static class FlujoWorkflowService
     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
     private static FlujoWorkflowData? _data;
 
+    internal static string? StorageDirectoryOverride { get; set; }
+
     public static FlujoWorkflowData Load()
     {
         if (_data != null)
@@ -52,8 +54,10 @@ public static class FlujoWorkflowService
             File.Delete(path);
     }
 
+    internal static void InvalidateCache() => _data = null;
+
     private static string GetStorePath() =>
-        Path.Combine(DatabasePaths.GetDataDirectory(), "flujos-workflow.json");
+        Path.Combine(StorageDirectoryOverride ?? DatabasePaths.GetDataDirectory(), "flujos-workflow.json");
 
     private static FlujoWorkflowData CrearDatosPorDefecto() => new()
     {

@@ -11,7 +11,10 @@ public static class SessionPersistenceService
 
     private static readonly JsonSerializerOptions JsonOptions = new() { WriteIndented = true };
 
-    private static string FilePath => Path.Combine(DatabasePaths.GetDataDirectory(), "session.json");
+    internal static string? StorageDirectoryOverride { get; set; }
+
+    private static string FilePath =>
+        Path.Combine(StorageDirectoryOverride ?? DatabasePaths.GetDataDirectory(), "session.json");
 
     public static void Save(int userId)
     {

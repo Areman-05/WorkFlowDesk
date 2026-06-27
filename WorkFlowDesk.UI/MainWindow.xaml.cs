@@ -90,8 +90,6 @@ public partial class MainWindow : Window
         _mainViewModel.SetActiveSearchable(view.DataContext);
         _mainViewModel.SetActiveToolbar(view.DataContext);
         _navigationService.NavigateTo(view);
-
-        _ = NotificationContextService.RefreshAsync(ServiceLocator.Provider);
     }
 
     private void OnNotificationNavigationRequested(object? sender, string section) =>

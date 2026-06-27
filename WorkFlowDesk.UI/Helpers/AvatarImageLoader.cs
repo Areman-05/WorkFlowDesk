@@ -32,10 +32,12 @@ public static class AvatarImageLoader
 
     public static bool TryGetCached(string url, out BitmapImage? image)
     {
-        if (Cache.TryGetValue(url, out var task) && task.IsCompletedSuccessfully)
+        if (Cache.TryGetValue(url, out var task)
+            && task.IsCompletedSuccessfully
+            && task.GetAwaiter().GetResult() is { } cached)
         {
-            image = task.Result;
-            return image != null;
+            image = cached;
+            return true;
         }
 
         image = null;

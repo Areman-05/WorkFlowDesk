@@ -30,6 +30,7 @@ public class RolePermissionsTests
         Assert.True(RolePermissions.CanAccessTareas);
         Assert.True(RolePermissions.CanAccessClientes);
         Assert.True(RolePermissions.CanAccessReportes);
+        Assert.True(RolePermissions.CanAccessOptimizacion);
         Assert.True(RolePermissions.CanAccessConfiguracion);
         Assert.True(RolePermissions.CanManageConfiguration);
         Assert.True(RolePermissions.CanExportData);
@@ -60,6 +61,7 @@ public class RolePermissionsTests
         Assert.False(RolePermissions.CanAccessProyectos);
         Assert.False(RolePermissions.CanAccessClientes);
         Assert.False(RolePermissions.CanAccessReportes);
+        Assert.False(RolePermissions.CanAccessOptimizacion);
         Assert.False(RolePermissions.CanManageTareas);
         Assert.True(RolePermissions.IsReadOnlyUser);
     }

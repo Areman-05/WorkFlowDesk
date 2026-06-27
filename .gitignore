@@ -48,6 +48,8 @@ artifacts/
 Exports/
 Backups/
 appconfig.json
+_build_out/
+**/*_wpftmp.csproj
 
 ## OS
 Thumbs.db
