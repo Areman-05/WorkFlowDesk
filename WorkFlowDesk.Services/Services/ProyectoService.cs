@@ -10,11 +10,17 @@ namespace WorkFlowDesk.Services.Services;
 public class ProyectoService : IProyectoService
 {
     private readonly ApplicationDbContext _context;
+    private readonly IActivityLogService _activityLog;
+    private readonly IAutomationEngine _automation;
 
-    /// <summary>Inicializa el servicio con el contexto de base de datos.</summary>
-    public ProyectoService(ApplicationDbContext context)
+    public ProyectoService(
+        ApplicationDbContext context,
+        IActivityLogService activityLog,
+        IAutomationEngine automation)
     {
         _context = context;
+        _activityLog = activityLog;
+        _automation = automation;
     }
 
     /// <summary>Obtiene un proyecto por ID con cliente y responsable cargados.</summary>
@@ -55,6 +61,7 @@ public class ProyectoService : IProyectoService
         proyecto.FechaCreacion = DateTime.Now;
         _context.Proyectos.Add(proyecto);
         await _context.SaveChangesAsync();
+        await _activityLog.RegistrarAsync("Proyecto", proyecto.Id, "Creado", proyecto.Nombre);
         return proyecto;
     }
 
@@ -63,6 +70,8 @@ public class ProyectoService : IProyectoService
     {
         _context.Proyectos.Update(proyecto);
         await _context.SaveChangesAsync();
+        await _activityLog.RegistrarAsync("Proyecto", proyecto.Id, "Actualizado", proyecto.Nombre);
+        await _automation.EvaluarTrasCambioProyectoAsync(proyecto);
     }
 
     /// <summary>Cancela el proyecto (estado Cancelado) por ID.</summary>
@@ -73,6 +82,7 @@ public class ProyectoService : IProyectoService
         {
             proyecto.Estado = EstadoProyecto.Cancelado;
             await _context.SaveChangesAsync();
+            await _activityLog.RegistrarAsync("Proyecto", id, "Cancelado", proyecto.Nombre);
         }
     }
 }

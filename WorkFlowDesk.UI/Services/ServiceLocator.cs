@@ -50,6 +50,13 @@ public static class ServiceLocator
         services.AddScoped<IReporteService, ReporteService>();
         services.AddScoped<IDatabaseInitializationService, DatabaseInitializationService>();
         services.AddScoped<IExportService, ExportService>();
+        services.AddScoped<IActivityLogService, ActivityLogService>();
+        services.AddScoped<IGlobalSearchService, GlobalSearchService>();
+        services.AddScoped<IAttachmentService, AttachmentService>();
+        services.AddScoped<ISyncService, SyncService>();
+        services.AddScoped<IIntegrationService, IntegrationService>();
+        services.AddScoped<IAutomationEngine, AutomationEngineService>();
+        services.AddScoped<ITareaExtensionService, TareaExtensionService>();
         services.AddScoped<IBackupService, BackupService>();
 
         _rootProvider?.Dispose();

@@ -10,11 +10,17 @@ namespace WorkFlowDesk.Services.Services;
 public class TareaService : ITareaService
 {
     private readonly ApplicationDbContext _context;
+    private readonly IActivityLogService _activityLog;
+    private readonly IAutomationEngine _automation;
 
-    /// <summary>Inicializa el servicio con el contexto de base de datos.</summary>
-    public TareaService(ApplicationDbContext context)
+    public TareaService(
+        ApplicationDbContext context,
+        IActivityLogService activityLog,
+        IAutomationEngine automation)
     {
         _context = context;
+        _activityLog = activityLog;
+        _automation = automation;
     }
 
     /// <summary>Obtiene una tarea por ID con asignado, proyecto y comentarios.</summary>
@@ -80,6 +86,8 @@ public class TareaService : ITareaService
         tarea.FechaCreacion = DateTime.Now;
         _context.Tareas.Add(tarea);
         await _context.SaveChangesAsync();
+        await _activityLog.RegistrarAsync("Tarea", tarea.Id, "Creada", tarea.Titulo);
+        await _automation.EvaluarTrasCambioTareaAsync(tarea);
         return tarea;
     }
 
@@ -88,6 +96,8 @@ public class TareaService : ITareaService
     {
         _context.Tareas.Update(tarea);
         await _context.SaveChangesAsync();
+        await _activityLog.RegistrarAsync("Tarea", tarea.Id, "Actualizada", tarea.Titulo);
+        await _automation.EvaluarTrasCambioTareaAsync(tarea);
     }
 
     /// <summary>Cancela la tarea (estado Cancelada) por ID.</summary>

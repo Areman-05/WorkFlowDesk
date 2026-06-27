@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using WorkFlowDesk.Common.Services;
+using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.UI.Helpers;
 
@@ -27,6 +28,7 @@ public static class WorkspaceBootstrapService
             AvatarImageLoader.PreloadCatalogAsync(),
             WarmWorkspaceCacheAsync(services, cancellationToken),
             includeAlerts ? NotificationContextService.RefreshAsync(services) : Task.CompletedTask,
+            EjecutarAutomatizacionesAsync(services, cancellationToken),
             PreloadCurrentUserAvatarAsync(cancellationToken)).WaitAsync(cancellationToken);
 
         var elapsed = Environment.TickCount64 - started;
@@ -49,6 +51,22 @@ public static class WorkspaceBootstrapService
             proyectoService.GetAllAsync(),
             tareaService.GetAllAsync(),
             clienteService.GetAllAsync()).WaitAsync(cancellationToken);
+    }
+
+    private static async Task EjecutarAutomatizacionesAsync(IServiceProvider services, CancellationToken cancellationToken)
+    {
+        var automation = services.GetRequiredService<IAutomationEngine>();
+        var tareaService = services.GetRequiredService<ITareaService>();
+        await automation.EjecutarComprobacionesProgramadasAsync().WaitAsync(cancellationToken);
+
+        var hoy = DateTime.Today;
+        var tareas = await tareaService.GetAllAsync().WaitAsync(cancellationToken);
+        foreach (var tarea in tareas.Where(t =>
+                     t.FechaVencimiento?.Date == hoy.AddDays(2) &&
+                     t.Estado is not EstadoTarea.Completada and not EstadoTarea.Cancelada))
+        {
+            await automation.EvaluarTrasCambioTareaAsync(tarea).WaitAsync(cancellationToken);
+        }
     }
 
     private static async Task PreloadCurrentUserAvatarAsync(CancellationToken cancellationToken)
