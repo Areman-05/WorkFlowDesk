@@ -179,10 +179,18 @@
                                   Visibility="{Binding HayElementos, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border BorderBrush="#0DD6C0D3" BorderThickness="0,0,0,1" Padding="24,14" Background="Transparent">
+                                <Border BorderBrush="#0DD6C0D3" BorderThickness="0,0,0,1" Padding="24,14" Background="Transparent" Cursor="Hand">
+                                    <Border.InputBindings>
+                                        <MouseBinding MouseAction="LeftClick"
+                                                      Command="{Binding DataContext.SeleccionarProyectoCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                      CommandParameter="{Binding}"/>
+                                    </Border.InputBindings>
                                     <Border.Style>
                                         <Style TargetType="Border">
                                             <Style.Triggers>
+                                                <DataTrigger Binding="{Binding DataContext.ProyectoSeleccionado, RelativeSource={RelativeSource AncestorType=UserControl}}" Value="{Binding}">
+                                                    <Setter Property="Background" Value="#1A9E00B5"/>
+                                                </DataTrigger>
                                                 <Trigger Property="IsMouseOver" Value="True">
                                                     <Setter Property="Background" Value="#0D9E00B5"/>
                                                 </Trigger>
@@ -300,6 +308,40 @@
                         <TextBlock Text="{Binding InfoPaginacion}" Style="{StaticResource StitchCaptionTextStyle}" VerticalAlignment="Center"/>
                     </Border>
                 </Grid>
+            </Border>
+
+            <!-- Tareas del proyecto seleccionado -->
+            <Border Style="{StaticResource GlassCardBorderStyle}" Padding="24" Margin="0,24,0,0"
+                    Visibility="{Binding MuestraTareasProyecto, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel>
+                    <Grid Margin="0,0,0,16">
+                        <StackPanel>
+                            <TextBlock Text="Tareas del proyecto" Style="{StaticResource StitchH3TextStyle}"/>
+                            <TextBlock Text="{Binding ProyectoSeleccionado.Proyecto.Nombre}" Style="{StaticResource StitchCaptionTextStyle}" Margin="0,4,0,0"/>
+                        </StackPanel>
+                        <Button Command="{Binding VerTareasProyectoCommand}" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                Style="{StaticResource StitchPrimaryButtonStyle}" Padding="16,8" Content="Ver en Tareas"/>
+                    </Grid>
+                    <ItemsControl ItemsSource="{Binding TareasProyectoSeleccionado}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{DynamicResource StitchSurfaceContainerLowBrush}" CornerRadius="8" Padding="12" Margin="0,0,0,6">
+                                    <Grid>
+                                        <TextBlock Text="{Binding Titulo}" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <Border Background="#1A9E00B5" CornerRadius="6" Padding="8,2" Margin="0,0,8,0">
+                                                <TextBlock Text="{Binding EstadoTexto}" FontSize="11" Foreground="{StaticResource StitchPrimaryBrush}"/>
+                                            </Border>
+                                            <TextBlock Text="{Binding PrioridadTexto}" Style="{StaticResource StitchCaptionTextStyle}" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock Text="No hay tareas en este proyecto." Style="{StaticResource StitchCaptionTextStyle}" Margin="0,8,0,0"
+                               Visibility="{Binding TareasProyectoSeleccionado.Count, Converter={StaticResource IntZeroToVisibilityConverter}}"/>
+                </StackPanel>
             </Border>
         </StackPanel>
     </ScrollViewer>

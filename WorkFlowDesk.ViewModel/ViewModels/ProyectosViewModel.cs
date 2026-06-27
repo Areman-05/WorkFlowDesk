@@ -1,7 +1,9 @@
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Input;
 using WorkFlowDesk.Common.Authorization;
 using WorkFlowDesk.Common.Configuration;
 using WorkFlowDesk.Common.Helpers;
+using WorkFlowDesk.Common.Services;
 using WorkFlowDesk.Domain.Entities;
 using WorkFlowDesk.Services.Interfaces;
 using WorkFlowDesk.ViewModel.Base;
@@ -27,6 +29,7 @@ public class ProyectosViewModel : ListViewModelBase, ISearchableViewModel, IList
     private int _enProgreso;
     private int _proximosVencer;
     private int _retrasados;
+    private readonly ObservableCollection<TareaProyectoItem> _tareasProyectoSeleccionado = new();
 
     public ProyectosViewModel(
         IProyectoService proyectoService,
@@ -47,6 +50,8 @@ public class ProyectosViewModel : ListViewModelBase, ISearchableViewModel, IList
         FiltrarTodosCommand = new RelayCommand(() => AplicarFiltroEstado("Todos"));
         FiltrarActivosCommand = new RelayCommand(() => AplicarFiltroEstado("Activos"));
         FiltrarCompletadosCommand = new RelayCommand(() => AplicarFiltroEstado("Completados"));
+        SeleccionarProyectoCommand = new RelayCommand<ProyectoListItem>(item => ProyectoSeleccionado = item);
+        VerTareasProyectoCommand = new RelayCommand(VerTareasProyecto, () => ProyectoSeleccionado != null);
 
         CargarProyectosCommand.ExecuteAsync(null);
     }
@@ -85,6 +90,9 @@ public class ProyectosViewModel : ListViewModelBase, ISearchableViewModel, IList
     public bool FiltroTodosActivo => _filtroActivo == "Todos";
     public bool FiltroActivosActivo => _filtroActivo == "Activos";
     public bool FiltroCompletadosActivo => _filtroActivo == "Completados";
+    public ObservableCollection<TareaProyectoItem> TareasProyectoSeleccionado => _tareasProyectoSeleccionado;
+
+    public bool MuestraTareasProyecto => ProyectoSeleccionado != null;
 
     public IEnumerable<ProyectoListItem> Proyectos
     {
@@ -114,9 +122,14 @@ public class ProyectosViewModel : ListViewModelBase, ISearchableViewModel, IList
         get => _proyectoSeleccionado;
         set
         {
-            SetProperty(ref _proyectoSeleccionado, value);
+            if (!SetProperty(ref _proyectoSeleccionado, value))
+                return;
+
             EditarProyectoCommand.NotifyCanExecuteChanged();
             EliminarProyectoCommand.NotifyCanExecuteChanged();
+            VerTareasProyectoCommand.NotifyCanExecuteChanged();
+            OnPropertyChanged(nameof(MuestraTareasProyecto));
+            _ = CargarTareasProyectoAsync();
         }
     }
 
@@ -130,6 +143,8 @@ public class ProyectosViewModel : ListViewModelBase, ISearchableViewModel, IList
     public IRelayCommand FiltrarTodosCommand { get; }
     public IRelayCommand FiltrarActivosCommand { get; }
     public IRelayCommand FiltrarCompletadosCommand { get; }
+    public IRelayCommand<ProyectoListItem> SeleccionarProyectoCommand { get; }
+    public IRelayCommand VerTareasProyectoCommand { get; }
 
     public event EventHandler<Proyecto>? ProyectoCreado;
     public event EventHandler<Proyecto>? ProyectoEditado;
@@ -140,6 +155,41 @@ public class ProyectosViewModel : ListViewModelBase, ISearchableViewModel, IList
     public string ToolbarCreateLabel => "Nuevo proyecto";
     public IAsyncRelayCommand? ToolbarExportCommand => ExportarCommand;
     public IRelayCommand? ToolbarCreateCommand => CrearProyectoCommand;
+
+    private async Task CargarTareasProyectoAsync()
+    {
+        _tareasProyectoSeleccionado.Clear();
+        if (ProyectoSeleccionado == null) return;
+
+        try
+        {
+            var proyectoId = ProyectoSeleccionado.Proyecto.Id;
+            var tareas = (await _tareaService.GetAllAsync())
+                .Where(t => t.ProyectoId == proyectoId)
+                .OrderBy(t => t.Estado)
+                .ThenBy(t => t.Titulo)
+                .Select(t => new TareaProyectoItem
+                {
+                    Titulo = t.Titulo,
+                    EstadoTexto = t.Estado.ToString(),
+                    PrioridadTexto = t.Prioridad.ToString()
+                });
+
+            foreach (var t in tareas)
+                _tareasProyectoSeleccionado.Add(t);
+        }
+        catch (Exception ex)
+        {
+            ExceptionHandler.LogException(ex);
+            ErrorMessage = ExceptionHandler.HandleException(ex);
+        }
+    }
+
+    private void VerTareasProyecto()
+    {
+        if (ProyectoSeleccionado == null) return;
+        AppNavigationService.RequestTareasForProyecto(ProyectoSeleccionado.Proyecto.Id);
+    }
 
     private async Task CargarProyectosAsync()
     {
