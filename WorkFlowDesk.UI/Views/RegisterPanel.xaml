@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:WorkFlowDesk.UI.Behaviors"
+             xmlns:controls="clr-namespace:WorkFlowDesk.UI.Controls"
              mc:Ignorable="d"
              d:DesignHeight="820"
              d:DesignWidth="548">
@@ -160,8 +161,7 @@
                                                        VerticalAlignment="Center"
                                                        Margin="16,0,0,0"
                                                        IsHitTestVisible="False"/>
-                                            <PasswordBox x:Name="PasswordBox"
-                                                         Style="{StaticResource StitchAuthInnerPasswordBoxStyle}"/>
+                                            <controls:PasswordRevealBox x:Name="PasswordRevealBox"/>
                                         </Grid>
                                     </Border>
                                 </StackPanel>
@@ -180,8 +180,7 @@
                                                        VerticalAlignment="Center"
                                                        Margin="16,0,0,0"
                                                        IsHitTestVisible="False"/>
-                                            <PasswordBox x:Name="ConfirmPasswordBox"
-                                                         Style="{StaticResource StitchAuthInnerPasswordBoxStyle}"/>
+                                            <controls:PasswordRevealBox x:Name="ConfirmPasswordRevealBox"/>
                                         </Grid>
                                     </Border>
                                 </StackPanel>

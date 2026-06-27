@@ -15,7 +15,7 @@ public partial class RegisterPanel : UserControl
     {
         if (DataContext is RegisterViewModel vm)
         {
-            vm.SetPasswordsFromView(PasswordBox.Password, ConfirmPasswordBox.Password);
+            vm.SetPasswordsFromView(PasswordRevealBox.Password, ConfirmPasswordRevealBox.Password);
             vm.RegisterCommand.Execute(null);
         }
     }

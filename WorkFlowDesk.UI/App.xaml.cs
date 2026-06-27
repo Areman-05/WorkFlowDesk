@@ -33,6 +33,9 @@ namespace WorkFlowDesk.UI
 
         protected override void OnExit(ExitEventArgs e)
         {
+            if (SessionService.IsAuthenticated && SessionService.CurrentUser != null)
+                SessionPersistenceService.Touch(SessionService.CurrentUser.Id);
+
             DesktopNotificationService.Dispose();
             ServiceLocator.Dispose();
             base.OnExit(e);
@@ -48,7 +51,7 @@ namespace WorkFlowDesk.UI
 
             _ = AvatarImageLoader.PreloadCatalogAsync();
 
-            AuthFlowService.ShowLoginFlow();
+            await AuthFlowService.StartApplicationAsync();
         }
 
         private async Task<bool> InitializeDatabaseAsync()

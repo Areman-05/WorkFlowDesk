@@ -30,7 +30,7 @@ public partial class LoginPanel : UserControl
             return;
 
         vm.NombreUsuario = NombreUsuarioBox.Text.Trim();
-        vm.SetPasswordFromView(PasswordBox.Password);
+        vm.SetPasswordFromView(PasswordRevealBox.Password);
         vm.LoginCommand.NotifyCanExecuteChanged();
 
         await vm.LoginCommand.ExecuteAsync(null);

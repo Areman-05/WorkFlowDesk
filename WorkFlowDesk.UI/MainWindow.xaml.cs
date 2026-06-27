@@ -4,7 +4,6 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using WorkFlowDesk.Common.Authorization;
 using WorkFlowDesk.Common.Services;
-using WorkFlowDesk.UI.Helpers;
 using WorkFlowDesk.UI.Services;
 using WorkFlowDesk.ViewModel.ViewModels;
 
@@ -37,11 +36,9 @@ public partial class MainWindow : Window
         NavigateTo("Dashboard");
     }
 
-    private async void OnLoaded(object sender, RoutedEventArgs e)
+    private void OnLoaded(object sender, RoutedEventArgs e)
     {
         _mainViewModel.RefreshAvatarUrl();
-        await AvatarImageLoader.PreloadCatalogAsync();
-        await NotificationContextService.RefreshAsync(ServiceLocator.Provider);
     }
 
     private void OnSectionRequested(string section)
