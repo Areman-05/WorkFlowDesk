@@ -1,7 +1,5 @@
 # WorkFlowDesk
 
-![Build and Test](https://github.com/Areman-05/WorkFlowDesk/actions/workflows/build.yml/badge.svg)
-
 **Gestor offline de clientes, proyectos y tareas para equipos pequeños:** roles, dashboard en vivo, Kanban, calendario, automatizaciones reales y datos 100 % locales en SQLite.
 
 WorkFlowDesk es una aplicación de escritorio WPF pensada para quienes quieren operativa de verdad sin depender de la nube: dar de alta clientes, encadenar proyectos, repartir tareas, exportar reportes CSV y respaldar todo con un solo archivo `.db`. No es un mockup de CRUD: une login con roles, splash de arranque, sesión persistente, búsqueda global (Ctrl+K), historial de actividad, subtareas, dependencias, registro de tiempo, adjuntos y sincronización entre equipos vía carpeta compartida en un mismo flujo, con interfaz Stitch (claro/oscuro) y notificaciones in-app y de escritorio.
